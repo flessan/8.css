@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#0078d7"/>
+<meta name="description" content="Documentation for 8.css, a CSS-only Windows 8 UI library. Explore Start Screen tiles, controls, windows, and copyable HTML."/>
+<meta name="keywords" content="8.css, Windows 8 CSS, Modern UI, Metro UI, CSS UI library, Start Screen tiles"/>
+<meta property="og:type" content="website"/><meta property="og:title" content="8.css Documentation"/><meta property="og:description" content="A practical guide to Windows 8-inspired interfaces with CSS and semantic HTML."/><meta property="og:url" content="https://flessan.github.io/8.css/docs/"/>
+<title>8.css Documentation | Windows 8 UI in CSS</title><link rel="stylesheet" href="../dist/8.css"/><link rel="stylesheet" href="./docs.css"/><script src="./script.js" defer></script>
+</head><body>
+<div class="mobile-topbar"><button class="mobile-menu-button" type="button" aria-controls="docs-sidebar" aria-expanded="false">Menu</button><a href="../index.html">8.css documentation</a></div>
+<aside class="docs-sidebar" id="docs-sidebar" aria-label="Documentation navigation">
+<a class="docs-brand" href="../index.html"><span class="docs-mark" aria-hidden="true">8</span><span><strong>8.css</strong><small>WINDOWS 8 UI LIBRARY</small></span></a>
+<div class="sidebar-label">Documentation</div>
+<nav class="tree-view docs-nav">
+<a class="tree-link" href="#intro">Intro</a><a class="tree-link" href="#install">Installation / Usage</a><a class="tree-link tree-sub" href="#npm">npm package</a><a class="tree-link tree-sub" href="#modular">Modular stylesheets</a>
+<div class="tree-group">Components</div><a class="tree-link" href="#tiles">Start Screen and Tiles</a><a class="tree-link" href="#buttons">Button</a><a class="tree-link" href="#forms">Text fields</a><a class="tree-link" href="#toggle">Checkbox and Toggle</a><a class="tree-link" href="#feedback">Progress and Feedback</a><a class="tree-link" href="#tabs">Tabs</a><a class="tree-link" href="#window">Window</a><a class="tree-link" href="#appbar">App Bar</a><a class="tree-link" href="#dialog">Dialog Box</a>
+<div class="tree-group">Project</div><a class="tree-link" href="#history">Origin and Inspiration</a><a class="tree-link" href="#contributing">Issues, Contributing, etc.</a>
+</nav>
+<div class="sidebar-footer"><span class="release-status">PRE-RELEASE</span><small>npm package not published yet</small><small><a href="https://github.com/flessan/8.css">Source code on GitHub</a></small></div>
+</aside>
+<main class="docs-main">
+<section class="docs-section" id="intro"><h1>8.css</h1><hr class="page-rule"/>
+<p class="intro-lead">A CSS-only UI library for building faithful, Windows 8-inspired interfaces.</p><div class="tag-row"><span class="doc-tag doc-tag-blue">WINDOWS 8</span><span class="doc-tag">CSS ONLY</span><span class="doc-tag">FRAMEWORK NEUTRAL</span><span class="doc-tag">PRE-RELEASE</span></div>
+<p>8.css styles semantic HTML with the flat, colorful language of Windows 8. It includes the Start Screen tile system, common controls, app bars, and desktop window chrome. It does not ship a JavaScript runtime and works with plain HTML, React, Vue, Svelte, or another framework that can load CSS.</p>
+<p>The documentation follows a component-by-component structure: each section introduces a component, shows a rendered preview, and provides source markup that can be copied into a project.</p>
+<div class="example"><div class="example-caption">A small Start Screen preview</div><div class="preview"><section class="w8 w8-start-screen" aria-labelledby="intro-start-title"><h2 class="w8-start-heading" id="intro-start-title">Start</h2><p class="w8-start-subtitle">Everything in one place.</p><div class="w8-tiles">
+<a class="w8-tile w8-tile--wide w8-tile--blue" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">M</span><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">2 new messages</span></a><a class="w8-tile w8-tile--purple" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">P</span><span class="w8-tile__label">Photos</span></a><a class="w8-tile w8-tile--green" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">D</span><span class="w8-tile__label">Desktop</span></a><a class="w8-tile w8-tile--orange" href="#tiles"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a><a class="w8-tile w8-tile--cyan" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">W</span><span class="w8-tile__label">Weather</span></a></div></section></div>
+<details class="code"><summary>Show code</summary><pre><code>&lt;section class=&quot;w8-start-screen&quot; aria-labelledby=&quot;start-title&quot;&gt;
+  &lt;h1 class=&quot;w8-start-heading&quot; id=&quot;start-title&quot;&gt;Start&lt;/h1&gt;
+  &lt;p class=&quot;w8-start-subtitle&quot;&gt;Your apps, at a glance.&lt;/p&gt;
+  &lt;div class=&quot;w8-tiles&quot;&gt;
+    &lt;a class=&quot;w8-tile w8-tile--wide w8-tile--blue&quot; href=&quot;#mail&quot;&gt;
+      &lt;span class=&quot;w8-tile__label&quot;&gt;Mail&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+</section>
+
+<section class="docs-section" id="install"><h2>Installation / Usage</h2><p>8.css is being prepared for its first public npm release. The intended consumer workflow is to install the published package, rather than install source directly from GitHub.</p><div class="callout warning"><strong>Pre-release notice</strong><p>The package has not been published yet. These commands will work once the package name is available and the first release is published.</p></div>
+<div class="docs-subsection" id="npm"><h3>npm package</h3><p>Install the package from the public npm registry:</p><div class="example"><div class="preview gray"><code>npm install 8.css</code></div><details class="code"><summary>Show usage</summary><pre><code>import &quot;8.css/dist/8.css&quot;;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>For a plain HTML page, use the CDN build served from the npm package:</p><div class="example"><div class="preview gray"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/8.css/dist/8.css&quot; /&gt;</code></div><details class="code"><summary>Show code</summary><pre><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/8.css/dist/8.css&quot; /&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></div>
+<div class="docs-subsection" id="modular"><h3>Modular stylesheets</h3><p>For smaller bundles, load the shared base stylesheet first, followed by only the component styles you need. The full dist/8.css file already combines every module.</p><div class="example"><div class="preview gray"><code>import &quot;8.css/dist/gui/base.css&quot;;
+import &quot;8.css/dist/gui/tiles.css&quot;;
+import &quot;8.css/dist/gui/buttons.css&quot;;</code></div><details class="code"><summary>Show code</summary><pre><code>import &quot;8.css/dist/gui/base.css&quot;;
+import &quot;8.css/dist/gui/tiles.css&quot;;
+import &quot;8.css/dist/gui/buttons.css&quot;;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div><p>base.css defines the shared color and typography tokens. Each component stylesheet is a CSS file, not a JavaScript component.</p></div></section>
+
+<section class="docs-section" id="tiles"><h2>Start Screen and Tiles</h2><p>The tile system is the main Windows 8 identity of this library. Use the grid container and compose size and color modifiers on each link or button.</p><p>Size modifiers: <span class="inline-code">w8-tile--wide</span>, <span class="inline-code">w8-tile--tall</span>, and <span class="inline-code">w8-tile--large</span>. Colors include blue, cyan, purple, magenta, green, orange, red, and dark.</p>
+<div class="example"><div class="preview"><section class="w8-start-screen" aria-label="Tile size examples"><div class="w8-tiles"><a class="w8-tile w8-tile--wide w8-tile--blue" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">M</span><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">2 new messages</span></a><a class="w8-tile w8-tile--purple" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">P</span><span class="w8-tile__label">Photos</span></a><a class="w8-tile w8-tile--green" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">D</span><span class="w8-tile__label">Desktop</span></a><a class="w8-tile w8-tile--orange" href="#tiles"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a><a class="w8-tile w8-tile--cyan" href="#tiles"><span class="w8-tile__symbol" aria-hidden="true">W</span><span class="w8-tile__label">Weather</span></a></div></section></div>
+<details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-tiles&quot;&gt;
+  &lt;a class=&quot;w8-tile w8-tile--wide w8-tile--blue&quot; href=&quot;#mail&quot;&gt;
+    &lt;span class=&quot;w8-tile__label&quot;&gt;Mail&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;a class=&quot;w8-tile w8-tile--purple&quot; href=&quot;#photos&quot;&gt;
+    &lt;span class=&quot;w8-tile__label&quot;&gt;Photos&lt;/span&gt;
+  &lt;/a&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="buttons"><h2>Button</h2><p>Use native buttons for actions. The primary modifier uses the Windows blue accent; the subtle modifier removes the solid fill for low-priority commands.</p><div class="example"><div class="preview w8"><div class="button-row"><button class="w8-button" type="button">Cancel</button><button class="w8-button w8-button--primary" type="button">Save changes</button><button class="w8-button w8-button--subtle" type="button">More options</button><button class="w8-button" type="button" disabled>Unavailable</button></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;button class=&quot;w8-button&quot; type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
+&lt;button class=&quot;w8-button w8-button--primary&quot; type=&quot;button&quot;&gt;Save changes&lt;/button&gt;
+&lt;button class=&quot;w8-button w8-button--subtle&quot; type=&quot;button&quot;&gt;More options&lt;/button&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="forms"><h2>Text fields</h2><p>Use visible labels with native input, select, and textarea elements. The field wrapper keeps labels, controls, and help text aligned.</p><div class="example"><div class="preview w8"><div class="form-stack"><div class="w8-field"><label class="w8-label" for="example-name">Display name</label><input class="w8-input" id="example-name" value="Thio"/><span class="w8-help">This is shown on your profile.</span></div><div class="w8-field"><label class="w8-label" for="example-region">Region</label><select class="w8-select" id="example-region"><option>Indonesia</option><option>Other</option></select></div><div class="w8-field"><label class="w8-label" for="example-note">Notes</label><textarea class="w8-textarea" id="example-note" placeholder="Write a note..."></textarea></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-field&quot;&gt;
+  &lt;label class=&quot;w8-label&quot; for=&quot;display-name&quot;&gt;Display name&lt;/label&gt;
+  &lt;input class=&quot;w8-input&quot; id=&quot;display-name&quot; name=&quot;displayName&quot; /&gt;
+  &lt;p class=&quot;w8-help&quot;&gt;Shown on your profile.&lt;/p&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="toggle"><h2>Checkbox and Toggle</h2><p>Checkboxes and radio buttons stay native HTML controls. The toggle class only changes a checkbox visually; checked state still comes from the browser.</p><div class="example"><div class="preview w8"><div class="choice-stack"><label class="w8-choice"><input class="w8-check" type="checkbox" checked/> Start notifications</label><label class="w8-choice"><input class="w8-radio" type="radio" name="example-radio" checked/> Recommended</label><label class="w8-choice"><input class="w8-radio" type="radio" name="example-radio"/> Custom</label><label class="w8-toggle"><input class="w8-toggle__input" type="checkbox" checked/><span>Wi-Fi</span></label><label class="w8-toggle"><input class="w8-toggle__input" type="checkbox"/><span>Bluetooth</span></label></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;label class=&quot;w8-toggle&quot;&gt;
+  &lt;input class=&quot;w8-toggle__input&quot; type=&quot;checkbox&quot; checked /&gt;
+  &lt;span&gt;Wi-Fi&lt;/span&gt;
+&lt;/label&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="feedback"><h2>Progress and Feedback</h2><p>Use native progress for measurable progress, badges for compact status, and notices to communicate changes in context.</p><div class="example"><div class="preview w8"><div class="progress-wrap"><progress class="w8-progress" value="68" max="100">68%</progress></div><p style="margin-top:8px">68 percent complete</p><p><span class="w8-badge">Draft</span> <span class="w8-badge w8-badge--blue">Online</span></p><div class="w8-notice" role="status">Your settings were saved.</div><div class="w8-notice w8-notice--warning" role="status" style="margin-top:10px">Some changes require a restart.</div></div><details class="code"><summary>Show code</summary><pre><code>&lt;progress class=&quot;w8-progress&quot; value=&quot;68&quot; max=&quot;100&quot;&gt;68%&lt;/progress&gt;
+&lt;span class=&quot;w8-badge w8-badge--blue&quot;&gt;Online&lt;/span&gt;
+&lt;div class=&quot;w8-notice&quot; role=&quot;status&quot;&gt;Your settings were saved.&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="tabs"><h2>Tabs</h2><p>Tab classes style a selected item and its bottom indicator. They do not implement keyboard navigation, switching panels, or ARIA state management.</p><div class="example"><div class="preview w8"><div class="w8-tabs" role="tablist" aria-label="Example settings tabs"><button class="w8-tab" type="button" role="tab" aria-selected="true">Personalize</button><button class="w8-tab" type="button" role="tab" aria-selected="false">Accounts</button><button class="w8-tab" type="button" role="tab" aria-selected="false">Privacy</button></div><p style="margin-top:14px">This is a visual example of the selected tab state.</p></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-tabs&quot; role=&quot;tablist&quot; aria-label=&quot;Settings sections&quot;&gt;
+  &lt;button class=&quot;w8-tab&quot; type=&quot;button&quot; role=&quot;tab&quot; aria-selected=&quot;true&quot;&gt;Personalize&lt;/button&gt;
+  &lt;button class=&quot;w8-tab&quot; type=&quot;button&quot; role=&quot;tab&quot; aria-selected=&quot;false&quot;&gt;Accounts&lt;/button&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="window"><h2>Window</h2><p>Compose a title bar, body, and footer to build Windows 8 desktop-style windows. The controls are visual only unless you connect them to application behavior.</p><div class="example"><div class="preview"><section class="w8-window" aria-labelledby="demo-window-title"><header class="w8-title-bar"><span class="w8-title-bar__text" id="demo-window-title">Display settings</span><div class="w8-title-bar__controls"><button class="w8-window-control" type="button" aria-label="Minimize">−</button><button class="w8-window-control" type="button" aria-label="Maximize">□</button><button class="w8-window-control w8-window-control--close" type="button" aria-label="Close">×</button></div></header><div class="w8-window-body"><p>Adjust your display preferences.</p><label class="w8-choice"><input class="w8-check" type="checkbox" checked/> Use recommended settings</label></div><footer class="w8-window-footer"><button class="w8-button" type="button">Cancel</button><button class="w8-button w8-button--primary" type="button">Apply</button></footer></section></div><details class="code"><summary>Show code</summary><pre><code>&lt;section class=&quot;w8-window&quot; aria-labelledby=&quot;window-title&quot;&gt;
+  &lt;header class=&quot;w8-title-bar&quot;&gt;
+    &lt;span class=&quot;w8-title-bar__text&quot; id=&quot;window-title&quot;&gt;Display settings&lt;/span&gt;
+  &lt;/header&gt;
+  &lt;div class=&quot;w8-window-body&quot;&gt;&lt;p&gt;Adjust your display preferences.&lt;/p&gt;&lt;/div&gt;
+  &lt;footer class=&quot;w8-window-footer&quot;&gt;
+    &lt;button class=&quot;w8-button w8-button--primary&quot; type=&quot;button&quot;&gt;Apply&lt;/button&gt;
+  &lt;/footer&gt;
+&lt;/section&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="appbar"><h2>App Bar</h2><p>The app bar groups commands into a dark Windows 8-style action surface. Use native buttons or links and label the navigation region.</p><div class="example"><div class="preview"><nav class="w8-app-bar" aria-label="Document actions"><button class="w8-app-bar__item" type="button">Share</button><button class="w8-app-bar__item" type="button">Select</button><button class="w8-app-bar__item" type="button">Settings</button></nav></div><details class="code"><summary>Show code</summary><pre><code>&lt;nav class=&quot;w8-app-bar&quot; aria-label=&quot;Document actions&quot;&gt;
+  &lt;button class=&quot;w8-app-bar__item&quot; type=&quot;button&quot;&gt;Share&lt;/button&gt;
+  &lt;button class=&quot;w8-app-bar__item&quot; type=&quot;button&quot;&gt;Select&lt;/button&gt;
+&lt;/nav&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="dialog"><h2>Dialog Box</h2><p>Dialog styles apply to native HTML dialog elements. This visible preview is a styled container; in an app, use the browser dialog API to open and close a real dialog.</p><div class="example"><div class="preview"><div class="w8-dialog" role="group" aria-labelledby="demo-dialog-title"><div class="w8-dialog__body"><h3 id="demo-dialog-title">Delete this file?</h3><p>This action cannot be undone.</p></div><div class="w8-dialog__footer"><button class="w8-button" type="button">Cancel</button><button class="w8-button w8-button--primary" type="button">Delete</button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;dialog class=&quot;w8-dialog&quot; aria-labelledby=&quot;confirm-title&quot;&gt;
+  &lt;div class=&quot;w8-dialog__body&quot;&gt;
+    &lt;h2 id=&quot;confirm-title&quot;&gt;Delete this file?&lt;/h2&gt;
+    &lt;p&gt;This action cannot be undone.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;w8-dialog__footer&quot;&gt;
+    &lt;button class=&quot;w8-button&quot; type=&quot;button&quot;&gt;Cancel&lt;/button&gt;
+    &lt;button class=&quot;w8-button w8-button--primary&quot; type=&quot;button&quot;&gt;Delete&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div></section>
+
+<section class="docs-section" id="history"><h2>Origin and Inspiration</h2><p>8.css is very strongly inspired by <a href="https://github.com/khang-nd/7.css">7.css by khang-nd</a>, especially its focus on semantic HTML, a CSS-only UI layer, detailed component documentation, and examples that pair a visual preview with copyable markup. 8.css is not an official continuation of 7.css and does not claim affiliation with its author.</p><p>The initial code came from <a href="https://github.com/SamWanekeya/Windows-8-Metro-UI">Windows-8-Metro-UI by SamWanekeya</a>. That repository was a small Start Screen experiment with no recorded commits after June 2017. It appeared to be abandoned, so I forked it and began evolving it into a reusable component library with modular CSS source and developer-focused documentation.</p><p>The original MIT license is preserved. The goal is to make the package installable from npm so consumers do not need GitHub URLs to install or use it.</p></section>
+<section class="docs-section" id="contributing"><h2>Issues, Contributing, etc.</h2><p>The component API is still in pre-release development. Issues and pull requests are welcome for Windows 8 visual accuracy, missing components, responsive behavior, accessibility, browser compatibility, and documentation.</p><ul><li><a href="https://github.com/flessan/8.css/issues">Report an issue</a></li><li><a href="https://github.com/flessan/8.css/pulls">Review pull requests</a></li><li><a href="../AGENTS.md">Repository instructions for coding agents</a></li><li><a href="../llms.txt">llms.txt</a> or <a href="../llms-full.txt">llms-full.txt</a></li></ul><p>8.css is MIT licensed. It is an independent community project, not official Microsoft software.</p></section>
+<footer class="docs-footer"><p>8.css documentation · Windows 8-inspired UI, in plain CSS.</p><p><a href="../index.html">Project home</a> · <a href="https://github.com/flessan/8.css">GitHub</a> · <a href="../LICENSE">MIT License</a></p></footer>
+</main></body></html>
