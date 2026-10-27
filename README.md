@@ -30,6 +30,12 @@ Or use a CDN backed by the npm package:
 
 These package commands become available after the first public release. For production, pin an exact published version instead of relying on the latest tag.
 
+## Documentation site
+
+The documentation is designed for GitHub Pages using **Deploy from a branch → `master` → `/docs`**. Its entry point is `docs/index.html`, and `docs/8.css` is a generated copy of the library stylesheet so the documentation can load without referencing files outside the published folder.
+
+When you update CSS modules, run `npm run build` and commit the generated files, including `docs/8.css`. GitHub Pages branch publishing does not run the repository's npm build script for you. GitHub's setup guide confirms that the publishing folder must contain its entry file at the top level. citeturn429935search3turn429935search4
+
 ## Components
 
 The API includes Start Screen tiles, buttons, form controls, toggles, progress indicators, badges, notices, tabs, desktop windows, app bars, and native dialog styling. Browse the [interactive documentation](docs/index.html) for live previews and copyable HTML examples.
