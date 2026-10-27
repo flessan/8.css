@@ -1,33 +1,95 @@
 # 8.css consolidated reference
 
-8.css is a CSS-only UI library inspired by Windows 8 Start Screen / Modern UI and Windows 8 desktop. It is strongly inspired by 7.css by khang-nd in its semantic HTML approach, component-by-component docs, live previews, and copyable snippets. The initial code came from SamWanekeya/Windows-8-Metro-UI, an old Start Screen experiment with no new commits recorded after June 2017. The project was forked to evolve the prototype into a reusable library. The inherited MIT license is preserved. 8.css is not an official Microsoft product and is not endorsed by the 7.css author.
+8.css is a CSS-only library inspired by Windows 8 Start Screen / Modern UI and desktop. It uses semantic HTML and has no required JavaScript runtime. It is an independent community project, not official Microsoft software. The 50 Metro-style SVG symbols are original redrawings based on the clean geometry of Windows 8's visual language, rather than copied system artwork.
 
 ## Source of truth
-- Edit component modules in gui/.
-- Run npm run build to regenerate src/8.css, dist/8.css, and dist/gui/*.css.
-- Do not hand-edit generated CSS.
+- Edit component modules in `gui/`.
+- Edit the source icon sprite in `icons/icons.svg`.
+- Run `npm run build` to regenerate `src/8.css`, `dist/8.css`, `dist/gui/*.css`, `dist/icons.svg`, `docs/8.css`, and `docs/icons.svg`.
+- Do not hand-edit generated CSS or sprite copies.
 - Keep README.md, docs/index.html, docs/components.md, AGENTS.md, llms.txt, and this file synchronized.
-- Runtime package must stay CSS-only.
+- Runtime must remain CSS-only; the sprite is a static SVG asset.
 
-## Module order
-base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, responsive.css. The complete dist/8.css bundle combines modules in that order. For modular use, import dist/gui/base.css first, then one or more component modules.
+## CSS module order
+base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, icons.css, responsive.css. The complete `dist/8.css` bundle combines these modules in order. For modular use, load `dist/gui/base.css` first, then required modules. Load `dist/gui/icons.css` for icon utility classes. The SVG sprite is a separate file.
 
-## Installation target
-The planned public npm package name is @flessan/8.css. The unscoped name 8.css was rejected by npm as too similar to existing packages. The package has not been published yet. Once published, install with npm install @flessan/8.css and import @flessan/8.css. For plain HTML, use https://unpkg.com/@flessan/8.css/dist/8.css. Prefer exact version pins in production.
+## Package usage
+Install from npm using `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`. The sprite is at `dist/icons.svg`.
+
+```html
+<svg class="w8-icon w8-icon--large" role="img" aria-label="Mail">
+  <use href="https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg#w8-icon-mail"></use>
+</svg>
+```
+
+Icon-only controls must have accessible names. Use `aria-hidden="true"` on their nested SVGs when the control itself has a label. Since the SVG is external, make sure the `use` element's `href` points at the right file location.
 
 ## Public API
-Start Screen: .w8-start-screen, .w8-start-heading, .w8-start-subtitle, .w8-tiles.
-Tiles: .w8-tile, .w8-tile__symbol, .w8-tile__label, .w8-tile__meta, .w8-tile__count; size modifiers .w8-tile--wide, .w8-tile--tall, .w8-tile--large; colors .w8-tile--blue, .w8-tile--cyan, .w8-tile--purple, .w8-tile--magenta, .w8-tile--green, .w8-tile--orange, .w8-tile--red, .w8-tile--dark.
-Buttons: .w8-button, .w8-button--primary, .w8-button--subtle.
-Fields: .w8-input, .w8-select, .w8-textarea, .w8-field, .w8-label, .w8-help.
-Choices: .w8-check, .w8-radio, .w8-choice, .w8-toggle, .w8-toggle__input.
-Feedback: .w8-progress, .w8-badge, .w8-badge--blue, .w8-notice variants, .w8-divider.
-Tabs: .w8-tabs, .w8-tab.
-Desktop: .w8-window, .w8-title-bar, .w8-title-bar__text, .w8-title-bar__controls, .w8-window-control, .w8-window-control--close, .w8-window-body, .w8-window-footer.
-App bar and dialog: .w8-app-bar, .w8-app-bar__item, .w8-dialog, .w8-dialog__body, .w8-dialog__footer.
+Start Screen: `.w8-start-screen`, `.w8-start-heading`, `.w8-start-subtitle`, `.w8-tiles`.
+Tiles: `.w8-tile`, `.w8-tile__symbol`, `.w8-tile__label`, `.w8-tile__meta`, `.w8-tile__count`; size modifiers `.w8-tile--wide`, `.w8-tile--tall`, `.w8-tile--large`; colors `.w8-tile--blue`, `.w8-tile--cyan`, `.w8-tile--purple`, `.w8-tile--magenta`, `.w8-tile--green`, `.w8-tile--orange`, `.w8-tile--red`, `.w8-tile--dark`.
+Buttons: `.w8-button`, `.w8-button--primary`, `.w8-button--subtle`.
+Fields: `.w8-input`, `.w8-select`, `.w8-textarea`, `.w8-field`, `.w8-label`, `.w8-help`.
+Choices: `.w8-check`, `.w8-radio`, `.w8-choice`, `.w8-toggle`, `.w8-toggle__input`.
+Feedback: `.w8-progress`, `.w8-badge`, `.w8-notice` variants, `.w8-divider`.
+Tabs: `.w8-tabs`, `.w8-tab`.
+Desktop: `.w8-window`, `.w8-title-bar`, `.w8-title-bar__text`, `.w8-title-bar__controls`, `.w8-window-control`, `.w8-window-control--close`, `.w8-window-body`, `.w8-window-footer`.
+App bar and dialog: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
+Icons: `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
+
+## Icon IDs
+- `w8-icon-home`
+- `w8-icon-mail`
+- `w8-icon-calendar`
+- `w8-icon-photos`
+- `w8-icon-desktop`
+- `w8-icon-weather`
+- `w8-icon-search`
+- `w8-icon-settings`
+- `w8-icon-share`
+- `w8-icon-user`
+- `w8-icon-people`
+- `w8-icon-phone`
+- `w8-icon-chat`
+- `w8-icon-globe`
+- `w8-icon-wifi`
+- `w8-icon-bluetooth`
+- `w8-icon-battery`
+- `w8-icon-power`
+- `w8-icon-lock`
+- `w8-icon-folder`
+- `w8-icon-file`
+- `w8-icon-download`
+- `w8-icon-upload`
+- `w8-icon-refresh`
+- `w8-icon-edit`
+- `w8-icon-delete`
+- `w8-icon-check`
+- `w8-icon-close`
+- `w8-icon-back`
+- `w8-icon-forward`
+- `w8-icon-play`
+- `w8-icon-pause`
+- `w8-icon-stop`
+- `w8-icon-volume`
+- `w8-icon-menu`
+- `w8-icon-camera`
+- `w8-icon-music`
+- `w8-icon-video`
+- `w8-icon-info`
+- `w8-icon-help`
+- `w8-icon-heart`
+- `w8-icon-pin`
+- `w8-icon-map`
+- `w8-icon-print`
+- `w8-icon-copy`
+- `w8-icon-save`
+- `w8-icon-star`
+- `w8-icon-clock`
+- `w8-icon-notifications`
+- `w8-icon-cloud`
 
 ## Accessibility boundary
-Use semantic HTML and accessible names. Keep focus visible. Check contrast with custom colors. Test narrow viewports and reduced-motion settings. CSS styles controls but does not manage application state, tab keyboard navigation, window controls, announcements, or focus management.
+Use semantic controls and accessible names. Keep focus visible, check contrast with custom colors, and respect reduced-motion settings. Icons are decorative unless given an accessible name. CSS styles controls but does not manage state, tab keyboard navigation, window controls, announcements, or focus management.
 
 ## Validation
-Run npm run build, npm test, and npm run build:site. Tests check module/bundle parity, expected selectors, absence of CSS imports, and balanced CSS braces. These are lightweight checks, not a full CSS parser or browser test suite.
+Run `npm run build`, `npm test`, and `npm run build:site`. Checks validate module/bundle parity, CSS brace structure, icon symbol IDs, and parity of generated icon sprite files. They are not a full browser suite.
