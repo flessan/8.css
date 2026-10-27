@@ -1,25 +1,59 @@
 {
   "name": "@flessan/8.css",
-  "version": "0.1.1",
-  "description": "A lightweight CSS-only UI library inspired by Windows 8 Modern UI and desktop.",
+  "version": "0.2.0",
+  "description": "A CSS-only Windows 8 Modern UI library with flat components and a Metro-style SVG icon set.",
   "license": "MIT",
   "author": "Flessan",
   "type": "module",
   "main": "./dist/8.css",
   "style": "./dist/8.css",
-  "exports": { ".": "./dist/8.css", "./dist/8.css": "./dist/8.css", "./dist/gui/*": "./dist/gui/*" },
-  "sideEffects": ["**/*.css"],
-  "files": ["dist/8.css", "dist/gui/", "README.md", "LICENSE"],
+  "exports": {
+    ".": "./dist/8.css",
+    "./dist/8.css": "./dist/8.css",
+    "./icons.svg": "./dist/icons.svg",
+    "./dist/icons.svg": "./dist/icons.svg",
+    "./dist/gui/*": "./dist/gui/*"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist/8.css",
+    "dist/icons.svg",
+    "dist/gui/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node scripts/build.mjs",
     "build:site": "node scripts/build-site.mjs",
     "test": "node scripts/check-css.mjs",
     "prepublishOnly": "npm run build && npm test"
   },
-  "engines": { "node": ">=20" },
-  "publishConfig": { "registry": "https://registry.npmjs.org/" },
-  "repository": { "type": "git", "url": "git+https://github.com/flessan/8.css.git" },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flessan/8.css.git"
+  },
   "homepage": "https://flessan.github.io/8.css/",
-  "bugs": { "url": "https://github.com/flessan/8.css/issues" },
-  "keywords": ["css", "windows-8", "modern-ui", "metro-ui", "css-framework", "design-system", "ui-library"]
+  "bugs": {
+    "url": "https://github.com/flessan/8.css/issues"
+  },
+  "keywords": [
+    "css",
+    "windows-8",
+    "modern-ui",
+    "metro-ui",
+    "css-framework",
+    "design-system",
+    "ui-library",
+    "svg-icons",
+    "metro-icons",
+    "windows-8-icons"
+  ]
 }

@@ -1,0 +1,15 @@
+/* Metro-style vector icon helpers. Artwork lives in the separate icons.svg sprite. */
+.w8-icon { color: currentColor; display: inline-block; fill: none; flex: 0 0 auto; height: 1.25rem; stroke: currentColor; stroke-linecap: square; stroke-linejoin: miter; stroke-width: 1.6; vertical-align: -.22em; width: 1.25rem; }
+.w8-icon--small { height: 1rem; width: 1rem; stroke-width: 1.7; }
+.w8-icon--large { height: 2rem; width: 2rem; }
+.w8-icon--xl { height: 3rem; width: 3rem; stroke-width: 1.4; }
+.w8-tile__symbol.w8-icon { margin-bottom: auto; }
+.w8-icon-button { align-items: center; appearance: none; background: transparent; border: 0; border-radius: 0; color: inherit; cursor: pointer; display: inline-flex; flex-direction: column; gap: .2rem; justify-content: center; min-height: 2.75rem; min-width: 2.75rem; padding: .35rem; text-align: center; text-decoration: none; transition: background-color 100ms linear, color 100ms linear; vertical-align: middle; }
+.w8-icon-button:hover { background: var(--w8-surface-subtle, #f2f2f2); color: var(--w8-text, #1a1a1a); }
+.w8-icon-button:active { background: var(--w8-border, #c8c8c8); }
+.w8-icon-button:focus-visible { outline: 2px solid var(--w8-focus, #005a9e); outline-offset: 2px; }
+.w8-icon-button:disabled, .w8-icon-button[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
+.w8-icon-button--accent { background: var(--w8-accent, #0078d7); color: #fff; }
+.w8-icon-button--accent:hover { background: var(--w8-accent-hover, #006cc1); color: #fff; }
+.w8-icon-button__label { display: block; font-size: .68rem; line-height: 1.1; max-width: 5.5rem; overflow-wrap: anywhere; }
+.w8-sr-only { clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }

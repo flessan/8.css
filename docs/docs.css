@@ -12,3 +12,13 @@
 .code{border:1px solid #d3d3d3;margin-top:10px}.code summary{cursor:pointer;padding:9px 12px;text-decoration:underline;text-underline-offset:3px}.code summary:focus-visible,.copy:focus-visible{outline:2px dotted #222;outline-offset:2px}.code[open] summary{border-bottom:1px solid #d3d3d3}.code pre{background:var(--code);margin:0;overflow-x:auto;padding:14px}.code pre code{background:transparent;font-size:12px;line-height:1.7;padding:0;white-space:pre}.copy{display:block;margin:9px 10px 10px auto}.button-row{align-items:center;display:flex;flex-wrap:wrap;gap:8px}.form-stack{display:grid;gap:12px;max-width:480px}.choice-stack{display:grid;gap:10px}.progress-wrap{max-width:520px}.docs-main .w8-window,.docs-main .w8-dialog{max-width:560px;margin:0}.docs-footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;margin-top:42px;padding:20px 0 0}.docs-footer a{color:#005a9e}
 @media(max-width:760px){.mobile-topbar{display:flex}.docs-sidebar{box-shadow:8px 0 24px rgb(0 0 0 / .14);transform:translateX(-110%);transition:transform 150ms ease;width:min(84vw,280px)}.docs-sidebar.open{transform:translateX(0)}.docs-main{margin:0;padding:26px 18px 50px}.docs-main h1{font-size:3.5rem}.preview .w8-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.docs-sidebar{transition-duration:.01ms}}
+
+/* Metro icon catalog */
+.icon-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); margin: 18px 0 28px; }
+.icon-card { align-items: center; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; justify-content: center; min-height: 104px; padding: 14px 8px; text-align: center; }
+.icon-card:hover { border-color: var(--blue); }
+.icon-card .w8-icon { color: #222; }
+.icon-card span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.icon-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.icon-demo-row .w8-icon-button { color: #222; }
+.icon-demo-row .w8-icon-button--accent { color: #fff; }
