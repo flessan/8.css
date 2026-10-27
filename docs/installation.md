@@ -1,44 +1,41 @@
 # Installation
 
-## npm installation
+## npm
 
-The first public npm release has not been published yet. npm rejected the unscoped name `8.css` as too similar to existing packages, so the package will be published as `@flessan/8.css` once the initial release is ready:
+```sh
+npm install @flessan/8.css
+```
 
-    npm install @flessan/8.css
+Import the complete stylesheet:
 
-For a CSS-capable bundler:
+```js
+import "@flessan/8.css";
+```
 
-    import "@flessan/8.css";
+For plain HTML, use the CDN bundle:
 
-For plain HTML:
+```html
+<link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css">
+```
 
-    <link rel="stylesheet" href="https://unpkg.com/@flessan/8.css/dist/8.css" />
+## Optional: GitHub Packages
 
-For production, pin an exact published version instead of using the latest tag. The CDN resolves the published npm package, not a GitHub branch.
+The package is also available through GitHub Packages. To resolve the `@flessan` scope through that registry, add the following to the project's `.npmrc`:
 
-## Modular CSS
+```ini
+@flessan:registry=https://npm.pkg.github.com
+```
 
-The package includes separate stylesheets under dist/gui. Load the base file before any component stylesheet:
+GitHub Packages may require authentication depending on package visibility and account access. npm remains the default registry declared by the package.
 
-    import "@flessan/8.css/dist/gui/base.css";
-    import "@flessan/8.css/dist/gui/tiles.css";
-    import "@flessan/8.css/dist/gui/buttons.css";
-    import "@flessan/8.css/dist/gui/responsive.css";
+## Icons
 
-Available modules: base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, and responsive.css. Include responsive.css when you want the library's narrow-screen and reduced-motion rules. Use dist/8.css when you prefer one stylesheet.
+The stylesheet and icon sprite are separate files. Make `dist/icons.svg` accessible from your website and reference a symbol ID:
 
-## Local development
+```html
+<svg class="w8-icon w8-icon--large" role="img" aria-label="Settings">
+  <use href="./icons.svg#w8-icon-settings"></use>
+</svg>
+```
 
-Requires Node.js 20 or newer:
-
-    git clone https://github.com/flessan/8.css.git
-    cd 8.css
-    npm run build
-    npm test
-    npm run build:site
-
-## Documentation hosting
-
-The docs page is intended to be hosted with GitHub Pages from the `master` branch and `/docs` folder. The generated `docs/8.css` asset keeps the published documentation self-contained; run `npm run build` after changing CSS modules so this copy stays in sync.
-
-Consumers do not need GitHub to install or use the npm package after its release. GitHub remains the source repository and release automation location, not a runtime dependency.
+Load `gui/base.css` before modular styles and load `gui/icons.css` when using icon helpers. The full `dist/8.css` bundle already includes the helper styles.
