@@ -1,39 +1,29 @@
 # Customization
 
-Override the CSS custom properties after importing 8.css.
+8.css uses custom properties prefixed with `--w8-` so applications can override its colors without rewriting component markup.
 
-## Global tokens
+```css
+:root {
+  --w8-accent: #0078d7;
+  --w8-accent-hover: #006cc1;
+  --w8-focus: #005a9e;
+  --w8-tile-blue: #0078d7;
+  --w8-tile-cyan: #0099bc;
+  --w8-tile-purple: #744da9;
+}
+```
 
-    :root {
-      --w8-font-family: "Segoe UI", "Segoe UI Variable", Arial, sans-serif;
-      --w8-text: #1a1a1a;
-      --w8-muted: #666;
-      --w8-surface: #fff;
-      --w8-surface-subtle: #f2f2f2;
-      --w8-border: #c8c8c8;
-      --w8-accent: #0078d7;
-      --w8-accent-hover: #006cc1;
-      --w8-focus: #005a9e;
-    }
+Use solid colors and crisp edges to preserve the Windows 8 visual language. Icons inherit `currentColor`, so they adapt to foreground color in a tile, toolbar, or icon button.
 
-## Tile palette
-Available variables: --w8-tile-blue, --w8-tile-cyan, --w8-tile-purple, --w8-tile-magenta, --w8-tile-green, --w8-tile-orange, --w8-tile-red, and --w8-tile-dark.
+```html
+<button class="w8-icon-button w8-icon-button--accent" type="button" aria-label="Home">
+  <svg class="w8-icon w8-icon--large" aria-hidden="true">
+    <use href="./icons.svg#w8-icon-home"></use>
+  </svg>
+  <span class="w8-icon-button__label">Home</span>
+</button>
+```
 
-    :root {
-      --w8-tile-blue: #0078d7;
-      --w8-tile-green: #107c10;
-    }
+Load `base.css` before modular component styles. Load `icons.css` when using icon utilities, and make sure the SVG `use` URL points to the deployed `icons.svg` asset.
 
-Tile color modifiers read these variables, so overriding one value updates all tiles using that token.
-
-## Local Start Screen override
-
-    .my-start-screen {
-      --w8-start-background: #124e78;
-    }
-
-    <section class="w8-start-screen my-start-screen">
-      <!-- Start Screen content -->
-    </section>
-
-Prefer scoped tokens over global changes when only one part of a page needs a different appearance. Recheck text contrast after customization.
+See [Accessibility](accessibility.md) for focus, semantic HTML, and reduced-motion guidance.
