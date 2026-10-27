@@ -1,31 +1,31 @@
 # 8.css
 
-> A CSS-only Windows 8 UI library, strongly inspired by 7.css by khang-nd and evolved from an old Windows 8 Start Screen demo.
-
-8.css styles semantic HTML without a required JavaScript runtime. It targets Windows 8 Modern UI / Start Screen and desktop components.
+> A CSS-only Windows 8 Modern UI library, with a custom Metro-style SVG icon set.
 
 ## Source layout
-- gui/*.css: maintained component modules.
-- src/8.css: generated combined source.
-- dist/8.css: complete distribution bundle.
-- dist/gui/*.css: modular CSS distribution.
-- docs/index.html: navigable catalog with live previews and copyable examples.
-- AGENTS.md and llms-full.txt: coding-agent guidance.
+- `gui/*.css`: maintained CSS modules.
+- `icons/icons.svg`: source vector sprite.
+- `src/8.css`: generated combined stylesheet.
+- `dist/8.css`: complete distribution bundle.
+- `dist/gui/*.css`: modular stylesheet distribution.
+- `dist/icons.svg`: separate vector sprite with 50 symbols.
+- `docs/index.html`: component catalog, previews, and icon gallery.
+- `AGENTS.md` and `llms-full.txt`: maintainer and agent guidance.
 
 ## Principles
-- Keep Windows 8 Start Screen and desktop UI recognizable.
-- Use w8- class names to reduce collisions.
-- Keep the library CSS-only at runtime.
-- Use semantic HTML, visible focus, and reduced-motion support.
-- Do not claim CSS implements tab, window, or application behavior.
+- Keep Windows 8 Start Screen and desktop UI recognizable, using flat surfaces and solid color.
+- Use `w8-` class names to reduce collisions.
+- Keep runtime CSS-only; SVG icons are loaded as a static sprite, without JavaScript.
+- Use semantic HTML, visible focus, accessible labels, and reduced-motion support.
+- Do not claim CSS implements application state, keyboard navigation, or window behavior.
 
-## Installation target
-The first public npm release is pending. npm rejected the unscoped package name as too similar to existing packages, so the planned package name is @flessan/8.css. After publication, install with npm install @flessan/8.css and import @flessan/8.css.
+## Package
+Install with `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`. The SVG icon sprite is available separately at `https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg`.
 
 ## Read next
 - [README](README.md)
 - [Interactive component docs](docs/index.html)
-- [Component reference](docs/components.md)
+- [Component and icon reference](docs/components.md)
 - [Accessibility](docs/accessibility.md)
 - [AI agent guide](docs/ai-agents.md)
 - [Full reference](llms-full.txt)
