@@ -1,101 +1,66 @@
 # 8.css
 
-**A lightweight, CSS-only UI library inspired by Windows 8.**
+**A CSS-only UI library for building Windows 8-inspired interfaces.**
 
-8.css brings the Windows 8 visual language to the web: colorful Start Screen tiles, flat controls, desktop windows, app bars, and familiar typography. It is designed for plain HTML first and works with any frontend framework that can consume CSS.
+8.css brings the Windows 8 Start Screen and desktop visual language to the web: colorful tiles, flat controls, app bars, and desktop windows. It is framework-neutral, uses semantic HTML, and does not ship a JavaScript runtime.
 
-> This project is being rebuilt from an older Start Screen experiment. The component API is at its initial foundation stage and may evolve before a stable release.
+## Why this project exists
 
-## Principles
-- **Windows 8 first.** Keep Modern UI / Start Screen and Windows 8 desktop recognizable.
-- **CSS-only runtime.** Components style semantic HTML. No JavaScript runtime is bundled.
-- **Framework-neutral.** Use the classes with HTML, React, Vue, Svelte, or another framework.
-- **Small and inspectable.** No runtime dependencies.
-- **Agent-readable.** The repository includes component references and LLM-friendly entry points.
+8.css is very strongly inspired by [7.css by khang-nd](https://github.com/khang-nd/7.css). Its CSS-only approach, component-by-component learning experience, live examples, copyable code, and developer documentation showed what a focused operating-system UI library could look like. 7.css targets Windows 7; this project has a different target and an independently developed component API for Windows 8.
 
-## Quick start
+The starting point for this repository was [Windows-8-Metro-UI by SamWanekeya](https://github.com/SamWanekeya/Windows-8-Metro-UI), a small HTML and CSS Start Screen experiment. Its history shows no new commits since June 2017, and it appeared to be an abandoned prototype rather than a maintained, reusable component library. I forked it to preserve the original starting point and turn the idea into a practical Windows 8 UI library.
 
-### CDN
-After this branch is available on GitHub, include the stylesheet:
+The existing MIT license is retained. 8.css is an independent community project, not an official Microsoft product and not affiliated with or endorsed by the 7.css author.
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/flessan/8.css@main/dist/8.css" />
+## Status
 
-For production, pin a version tag instead of main once tagged releases are available.
+The library is in pre-release development. The npm package has not been published yet, and availability of the unscoped package name 8.css must be verified before the first release. The goal is for users to install it from the npm registry, with no GitHub dependency during normal installation or use.
 
-### Install from GitHub
+## Installation after the first npm release
 
-    npm install github:flessan/8.css
+    npm install 8.css
 
-Then import from a CSS-capable bundler:
+Import the complete stylesheet from your app entry point:
 
-    import "8.css";
+    import "8.css/dist/8.css";
 
-A public npm registry release is not implied by this GitHub installation method.
+Or use a CDN backed by the npm package:
 
-### Local development
+    <link rel="stylesheet" href="https://unpkg.com/8.css/dist/8.css" />
 
-    git clone https://github.com/flessan/8.css.git
-    cd 8.css
+These package commands become available after the first public release. For production, pin an exact published version instead of relying on the latest tag.
+
+## Components
+
+The API includes Start Screen tiles, buttons, form controls, toggles, progress indicators, badges, notices, tabs, desktop windows, app bars, and native dialog styling. Browse the [interactive documentation](docs/index.html) for live previews and copyable HTML examples.
+
+The source is organized by component in <code>gui/</code>. The build creates a complete stylesheet plus modular files in <code>dist/gui/</code>.
+
+## Development
+
+Requires Node.js 20 or newer for maintainer scripts.
+
     npm run build
     npm test
+    npm run build:site
 
-Link dist/8.css from your HTML. The library itself does not require Node.js at runtime.
+- Source modules: <code>gui/</code>
+- Generated combined source: <code>src/8.css</code>
+- npm distribution: <code>dist/8.css</code>
+- Modular distribution: <code>dist/gui/</code>
+- Documentation site: <code>docs/index.html</code>
+- Agent instructions: <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>llms.txt</code>, and <code>llms-full.txt</code>
 
-## Example: Start Screen tiles
+Do not edit generated files by hand. Change a module in <code>gui/</code>, rebuild, and keep the docs and examples in sync.
 
-    <div class="w8">
-      <section class="w8-start-screen" aria-labelledby="start-title">
-        <h1 class="w8-start-heading" id="start-title">Start</h1>
-        <p class="w8-start-subtitle">Your apps, at a glance.</p>
-        <div class="w8-tiles">
-          <a class="w8-tile w8-tile--wide w8-tile--blue" href="#mail">
-            <span class="w8-tile__symbol" aria-hidden="true">M</span>
-            <span class="w8-tile__label">Mail</span>
-          </a>
-          <a class="w8-tile w8-tile--purple" href="#photos">
-            <span class="w8-tile__symbol" aria-hidden="true">P</span>
-            <span class="w8-tile__label">Photos</span>
-          </a>
-        </div>
-      </section>
-    </div>
+## Publishing
 
-## Component map
+The first public publish requires an npm account with permission to publish the package name. After the package has been created, configure npm Trusted Publishing to allow the repository's <code>.github/workflows/publish.yml</code> workflow to publish future GitHub releases using short-lived OIDC credentials. Consumers install the published package from npm; GitHub Actions is only release automation.
 
-| Area | Main classes |
-| --- | --- |
-| Start Screen | w8-start-screen, w8-start-heading, w8-start-subtitle |
-| Tiles | w8-tiles, w8-tile, w8-tile--wide, w8-tile--tall, w8-tile--large |
-| Tile colors | w8-tile--blue, --cyan, --purple, --magenta, --green, --orange, --red, --dark |
-| Buttons | w8-button, w8-button--primary, w8-button--subtle |
-| Fields | w8-input, w8-select, w8-textarea, w8-field, w8-label, w8-help |
-| Choices | w8-check, w8-radio, w8-choice, w8-toggle |
-| Feedback | w8-progress, w8-badge, w8-notice, w8-divider |
-| Desktop | w8-window, w8-title-bar, w8-window-body, w8-window-footer |
-| App bar / dialog | w8-app-bar, w8-app-bar__item, w8-dialog |
+## Accessibility
 
-Read [docs/components.md](docs/components.md) for the current class reference and [docs/README.md](docs/README.md) for the documentation map.
-
-## Customization
-Override CSS custom properties after loading the library:
-
-    :root {
-      --w8-accent: #0078d7;
-      --w8-tile-blue: #0078d7;
-      --w8-tile-green: #107c10;
-      --w8-font-family: "Segoe UI", Arial, sans-serif;
-    }
-
-See [docs/customization.md](docs/customization.md) for the available tokens.
-
-## Development and accessibility
-- Source stylesheet: src/8.css
-- Generated stylesheet: dist/8.css
-- Showcase: index.html
-- Legacy experiment: examples/legacy-start-screen.html
-- Agent entry points: AGENTS.md, llms.txt, llms-full.txt
-
-Run npm run build and npm test before submitting a change. The stylesheet provides visual styling only; use semantic HTML, accessible names, native controls, visible focus, and reduced-motion support. Validate contrast and responsive behavior in your own context.
+8.css supplies visual styling only. It does not implement application state, live tile updates, tab keyboard behavior, or window-control behavior. Use semantic HTML, accessible names, native controls, visible focus indicators, and reduced-motion support. Check color contrast when customizing tokens.
 
 ## License
-MIT. See [LICENSE](LICENSE).
+
+MIT. See [LICENSE](LICENSE). The original prototype's MIT attribution remains preserved in the repository.

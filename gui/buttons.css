@@ -1,0 +1,8 @@
+/* Buttons */
+.w8-button { align-items: center; appearance: none; background: #e6e6e6; border: 1px solid #adadad; border-radius: 0; color: #1a1a1a; cursor: pointer; display: inline-flex; gap: .45rem; justify-content: center; line-height: 1.2; min-height: 2.4rem; padding: .55rem 1rem; text-align: center; text-decoration: none; vertical-align: middle; }
+.w8-button:hover { background: #d9d9d9; color: #1a1a1a; }
+.w8-button:active { background: #c9c9c9; }
+.w8-button--primary { background: var(--w8-accent); border-color: var(--w8-accent); color: #fff; }
+.w8-button--primary:hover { background: var(--w8-accent-hover); border-color: var(--w8-accent-hover); color: #fff; }
+.w8-button--subtle { background: transparent; border-color: transparent; }
+.w8-button:disabled, .w8-button[aria-disabled="true"] { cursor: not-allowed; opacity: .55; }

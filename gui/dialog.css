@@ -1,0 +1,5 @@
+/* Native dialog styling */
+.w8-dialog { background: var(--w8-surface); border: 1px solid #8a8a8a; box-shadow: 0 1rem 3rem rgb(0 0 0 / .28); color: var(--w8-text); max-width: min(92vw, 36rem); padding: 0; width: 100%; }
+.w8-dialog::backdrop { background: rgb(0 0 0 / .45); }
+.w8-dialog__body { padding: 1.25rem; }
+.w8-dialog__footer { background: #f5f5f5; display: flex; flex-wrap: wrap; gap: .5rem; justify-content: flex-end; padding: .75rem 1.25rem; }
