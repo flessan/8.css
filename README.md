@@ -14,19 +14,19 @@ The existing MIT license is retained. 8.css is an independent community project,
 
 ## Status
 
-The library is in pre-release development. The npm package has not been published yet, and availability of the unscoped package name 8.css must be verified before the first release. The goal is for users to install it from the npm registry, with no GitHub dependency during normal installation or use.
+The library is in pre-release development and the npm package has not been published yet. npm rejected the unscoped name `8.css` as too similar to existing packages, so the public package will use the scoped name `@flessan/8.css`. Users will install it from the npm registry, with no GitHub dependency during normal installation or use.
 
 ## Installation after the first npm release
 
-    npm install 8.css
+    npm install @flessan/8.css
 
 Import the complete stylesheet from your app entry point:
 
-    import "8.css/dist/8.css";
+    import "@flessan/8.css";
 
 Or use a CDN backed by the npm package:
 
-    <link rel="stylesheet" href="https://unpkg.com/8.css/dist/8.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@flessan/8.css/dist/8.css" />
 
 These package commands become available after the first public release. For production, pin an exact published version instead of relying on the latest tag.
 
