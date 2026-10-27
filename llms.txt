@@ -20,7 +20,7 @@
 - Do not claim CSS implements tab, window, or application behavior.
 
 ## Installation target
-After the first public npm release, install with npm install 8.css and import 8.css/dist/8.css. The package has not been published yet; verify that the unscoped name is available before the first release.
+The first public npm release is pending. npm rejected the unscoped package name as too similar to existing packages, so the planned package name is @flessan/8.css. After publication, install with npm install @flessan/8.css and import @flessan/8.css.
 
 ## Read next
 - [README](README.md)
