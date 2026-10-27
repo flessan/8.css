@@ -12,4 +12,5 @@ await mkdir(modularOutput,{recursive:true});
 await writeFile(sourceOutput,combined);
 await writeFile(new URL("8.css",distDirectory),combined);
 for(const part of parts) await copyFile(new URL(part.name,sourceDirectory),new URL(part.name,modularOutput));
-console.log("Built src/8.css, dist/8.css, and modular dist/gui/*.css");
+await copyFile(new URL("8.css",distDirectory), new URL("../docs/8.css", import.meta.url));
+console.log("Built src/8.css, dist/8.css, modular dist/gui/*.css, and docs/8.css for branch-based GitHub Pages.");

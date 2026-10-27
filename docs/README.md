@@ -9,4 +9,4 @@ The interactive component catalog lives in index.html. It uses a left-side tree 
 - [Accessibility](accessibility.md)
 - [AI agent guide](ai-agents.md)
 
-The site source is index.html, docs.css, and script.js. It uses static HTML and CSS with small progressive-enhancement JavaScript.
+The site source is index.html, docs.css, script.js, and the generated 8.css stylesheet. The GitHub Pages source is the master branch /docs folder, so keep 8.css committed and synchronized using npm run build. The site uses static HTML and CSS with small progressive-enhancement JavaScript.

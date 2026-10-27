@@ -7,6 +7,8 @@ const source=await readFile(new URL("../src/8.css",import.meta.url),"utf8");
 const dist=await readFile(new URL("../dist/8.css",import.meta.url),"utf8");
 assert.equal(source,expected,"src/8.css must be generated from gui modules.");
 assert.equal(dist,expected,"dist/8.css must match the generated source.");
+const docsBundle=await readFile(new URL("../docs/8.css",import.meta.url),"utf8");
+assert.equal(docsBundle,expected,"docs/8.css must match the published CSS bundle for GitHub Pages.");
 assert.ok(!/@import\b/i.test(dist),"Complete stylesheet must not require external CSS imports.");
 for(const selector of [".w8-start-screen",".w8-tiles",".w8-tile--wide",".w8-button--primary",".w8-input",".w8-toggle__input",".w8-progress",".w8-tabs",".w8-window",".w8-app-bar",".w8-dialog","@media (prefers-reduced-motion: reduce)"]) assert.ok(dist.includes(selector),"Missing selector: "+selector);
 for(const m of modules){

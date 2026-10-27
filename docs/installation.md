@@ -37,4 +37,8 @@ Requires Node.js 20 or newer:
     npm test
     npm run build:site
 
-Consumers do not need GitHub to install or use the package after its npm release. GitHub is the source repository and release automation location, not a runtime dependency.
+## Documentation hosting
+
+The docs page is intended to be hosted with GitHub Pages from the `master` branch and `/docs` folder. The generated `docs/8.css` asset keeps the published documentation self-contained; run `npm run build` after changing CSS modules so this copy stays in sync.
+
+Consumers do not need GitHub to install or use the npm package after its release. GitHub remains the source repository and release automation location, not a runtime dependency.
