@@ -1,72 +1,103 @@
 # 8.css
 
-**A CSS-only UI library for building Windows 8-inspired interfaces.**
+**A CSS-only Windows 8 Modern UI library, with a custom Metro-style SVG icon set.**
 
-8.css brings the Windows 8 Start Screen and desktop visual language to the web: colorful tiles, flat controls, app bars, and desktop windows. It is framework-neutral, uses semantic HTML, and does not ship a JavaScript runtime.
+8.css brings the flat, colorful Start Screen and Windows 8 desktop language to semantic HTML: tiles, controls, app bars, windows, dialogs, and a reusable 50-icon vector sprite. It works with plain HTML and JavaScript frameworks without requiring a JavaScript runtime.
 
-## Why this project exists
+## What is included
 
-8.css is very strongly inspired by [7.css by khang-nd](https://github.com/khang-nd/7.css). Its CSS-only approach, component-by-component learning experience, live examples, copyable code, and developer documentation showed what a focused operating-system UI library could look like. 7.css targets Windows 7; this project has a different target and an independently developed component API for Windows 8.
+- Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers.
+- Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, windows, and dialog styling.
+- 50 lightweight SVG symbols inspired by the simple geometry of Windows 8 Modern UI.
+- An icon CSS module with sizing utilities, square app-bar buttons, and accessible visually-hidden labels.
+- Interactive documentation, copyable HTML snippets, and modular stylesheets.
 
-The starting point for this repository was [Windows-8-Metro-UI by SamWanekeya](https://github.com/SamWanekeya/Windows-8-Metro-UI), a small HTML and CSS Start Screen experiment. Its history shows no new commits since June 2017, and it appeared to be an abandoned prototype rather than a maintained, reusable component library. I forked it to preserve the original starting point and turn the idea into a practical Windows 8 UI library.
+The icons are original redrawings made for this project, not extracted Microsoft artwork. 8.css is an independent community project and is not an official Microsoft product.
 
-The existing MIT license is retained. 8.css is an independent community project, not an official Microsoft product and not affiliated with or endorsed by the 7.css author.
+## Install from npm
 
-## Status
+```sh
+npm install @flessan/8.css
+```
 
-The library is in pre-release development and the npm package has not been published yet. npm rejected the unscoped name `8.css` as too similar to existing packages, so the public package will use the scoped name `@flessan/8.css`. Users will install it from the npm registry, with no GitHub dependency during normal installation or use.
+Import the complete stylesheet:
 
-## Installation after the first npm release
+```js
+import "@flessan/8.css";
+```
 
-    npm install @flessan/8.css
+For plain HTML, use the CDN bundle:
 
-Import the complete stylesheet from your app entry point:
+```html
+<link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css">
+```
 
-    import "@flessan/8.css";
+The same package is also available through GitHub Packages. To resolve the `@flessan` scope through GitHub Packages in a project, add this to its `.npmrc`:
 
-Or use a CDN backed by the npm package:
+```ini
+@flessan:registry=https://npm.pkg.github.com
+```
 
-    <link rel="stylesheet" href="https://unpkg.com/@flessan/8.css/dist/8.css" />
+npm remains the default registry declared by this package.
 
-These package commands become available after the first public release. For production, pin an exact published version instead of relying on the latest tag.
+## Use the icon sprite
 
-## Documentation site
+The vector sprite is published separately at `dist/icons.svg`. Reference an icon symbol with an SVG `use` element:
 
-The documentation is designed for GitHub Pages using **Deploy from a branch → `master` → `/docs`**. Its entry point is `docs/index.html`, and `docs/8.css` is a generated copy of the library stylesheet so the documentation can load without referencing files outside the published folder.
+```html
+<svg class="w8-icon w8-icon--large" role="img" aria-label="Mail">
+  <use href="https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg#w8-icon-mail"></use>
+</svg>
+```
 
-When you update CSS modules, run `npm run build` and commit the generated files, including `docs/8.css`. GitHub Pages branch publishing does not run the repository's npm build script for you. GitHub's setup guide confirms that the publishing folder must contain its entry file at the top level. citeturn429935search3turn429935search4
+For decorative icons, use `aria-hidden="true"`. For icon-only controls, add an accessible label to the button itself:
 
-## Components
+```html
+<button class="w8-icon-button" type="button" aria-label="Search">
+  <svg class="w8-icon w8-icon--large" aria-hidden="true">
+    <use href="https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg#w8-icon-search"></use>
+  </svg>
+  <span class="w8-icon-button__label">Search</span>
+</button>
+```
 
-The API includes Start Screen tiles, buttons, form controls, toggles, progress indicators, badges, notices, tabs, desktop windows, app bars, and native dialog styling. Browse the [interactive documentation](docs/index.html) for live previews and copyable HTML examples.
+Available symbols: `w8-icon-home`, `w8-icon-mail`, `w8-icon-calendar`, `w8-icon-photos`, `w8-icon-desktop`, `w8-icon-weather`, `w8-icon-search`, `w8-icon-settings`, `w8-icon-share`, `w8-icon-user`, `w8-icon-people`, `w8-icon-phone`, `w8-icon-chat`, `w8-icon-globe`, `w8-icon-wifi`, `w8-icon-bluetooth`, `w8-icon-battery`, `w8-icon-power`, `w8-icon-lock`, `w8-icon-folder`, `w8-icon-file`, `w8-icon-download`, `w8-icon-upload`, `w8-icon-refresh`, `w8-icon-edit`, `w8-icon-delete`, `w8-icon-check`, `w8-icon-close`, `w8-icon-back`, `w8-icon-forward`, `w8-icon-play`, `w8-icon-pause`, `w8-icon-stop`, `w8-icon-volume`, `w8-icon-menu`, `w8-icon-camera`, `w8-icon-music`, `w8-icon-video`, `w8-icon-info`, `w8-icon-help`, `w8-icon-heart`, `w8-icon-pin`, `w8-icon-map`, `w8-icon-print`, `w8-icon-copy`, `w8-icon-save`, `w8-icon-star`, `w8-icon-clock`, `w8-icon-notifications`, `w8-icon-cloud`.
 
-The source is organized by component in <code>gui/</code>. The build creates a complete stylesheet plus modular files in <code>dist/gui/</code>.
+See the [interactive documentation](docs/index.html) for the complete visual catalog and copyable examples.
+
+## Modules and customization
+
+The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup. Load `icons.css` when using icon sizing or icon-button helpers; `icons.svg` supplies the actual vector symbols.
+
+```js
+import "@flessan/8.css/dist/gui/base.css";
+import "@flessan/8.css/dist/gui/buttons.css";
+import "@flessan/8.css/dist/gui/icons.css";
+```
 
 ## Development
 
-Requires Node.js 20 or newer for maintainer scripts.
+Requires Node.js 20 or newer.
 
-    npm run build
-    npm test
-    npm run build:site
+```sh
+npm run build
+npm test
+npm run build:site
+```
 
-- Source modules: <code>gui/</code>
-- Generated combined source: <code>src/8.css</code>
-- npm distribution: <code>dist/8.css</code>
-- Modular distribution: <code>dist/gui/</code>
-- Documentation site: <code>docs/index.html</code>
-- Agent instructions: <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>llms.txt</code>, and <code>llms-full.txt</code>
+Source of truth:
+- `gui/`: maintained CSS modules.
+- `icons/icons.svg`: source icon sprite.
+- `src/8.css`: generated combined stylesheet.
+- `dist/8.css`, `dist/gui/`, `dist/icons.svg`: consumer distribution.
+- `docs/index.html`, `docs/8.css`, `docs/icons.svg`: documentation site.
 
-Do not edit generated files by hand. Change a module in <code>gui/</code>, rebuild, and keep the docs and examples in sync.
+Do not hand-edit generated CSS or sprite copies; update the source and rebuild. The checks validate module parity, CSS structure, distribution files, and expected icon IDs.
 
-## Publishing
+## Accessibility boundary
 
-The first public publish requires an npm account with permission to publish the package name. After the package has been created, configure npm Trusted Publishing to allow the repository's <code>.github/workflows/publish.yml</code> workflow to publish future GitHub releases using short-lived OIDC credentials. Consumers install the published package from npm; GitHub Actions is only release automation.
-
-## Accessibility
-
-8.css supplies visual styling only. It does not implement application state, live tile updates, tab keyboard behavior, or window-control behavior. Use semantic HTML, accessible names, native controls, visible focus indicators, and reduced-motion support. Check color contrast when customizing tokens.
+This package supplies styling and vector icons only. It does not implement tab navigation, toggle state, live tiles, or window controls. Use semantic controls, accessible names, visible focus indicators, sufficient contrast, and reduced-motion support. Icons inherit `currentColor` so they adapt to the foreground color of a tile, toolbar, or button.
 
 ## License
 
-MIT. See [LICENSE](LICENSE). The original prototype's MIT attribution remains preserved in the repository.
+MIT. See [LICENSE](LICENSE). The license and attribution for the original Windows-8-Metro-UI prototype remain preserved.
