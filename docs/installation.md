@@ -23,8 +23,9 @@ The package includes separate stylesheets under dist/gui. Load the base file bef
     import "8.css/dist/gui/base.css";
     import "8.css/dist/gui/tiles.css";
     import "8.css/dist/gui/buttons.css";
+    import "8.css/dist/gui/responsive.css";
 
-Available modules: base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, and responsive.css. Use dist/8.css when you prefer one stylesheet.
+Available modules: base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, and responsive.css. Include responsive.css when you want the library's narrow-screen and reduced-motion rules. Use dist/8.css when you prefer one stylesheet.
 
 ## Local development
 
