@@ -13,7 +13,7 @@
 base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, responsive.css. The complete dist/8.css bundle combines modules in that order. For modular use, import dist/gui/base.css first, then one or more component modules.
 
 ## Installation target
-The planned public package name is 8.css. It has not been published yet, and the unscoped name must be checked before release. Once published, install with npm install 8.css and import 8.css/dist/8.css. For plain HTML, use https://unpkg.com/8.css/dist/8.css. Prefer exact version pins in production.
+The planned public npm package name is @flessan/8.css. The unscoped name 8.css was rejected by npm as too similar to existing packages. The package has not been published yet. Once published, install with npm install @flessan/8.css and import @flessan/8.css. For plain HTML, use https://unpkg.com/@flessan/8.css/dist/8.css. Prefer exact version pins in production.
 
 ## Public API
 Start Screen: .w8-start-screen, .w8-start-heading, .w8-start-subtitle, .w8-tiles.
