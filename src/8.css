@@ -129,7 +129,6 @@
 .w8-icon-button__label { display: block; font-size: .68rem; line-height: 1.1; max-width: 5.5rem; overflow-wrap: anywhere; }
 .w8-sr-only { clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
-
 /* Responsive and reduced-motion rules */
 @media (max-width: 30rem) {
   .w8-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
