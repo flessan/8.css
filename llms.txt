@@ -1,0 +1,30 @@
+# 8.css
+
+> Lightweight CSS-only UI library inspired by Windows 8 Modern UI / Start Screen and Windows 8 desktop.
+
+8.css styles semantic HTML without requiring JavaScript at runtime and can be used with any framework that loads CSS.
+
+## Rules
+- Use w8- for public component classes.
+- Edit src/8.css and run npm run build to regenerate dist/8.css.
+- Keep Start Screen and desktop styles distinct.
+- Keep README, docs/components.md, AGENTS.md, and llms-full.txt synchronized.
+- Do not claim CSS implements application behavior.
+
+## Docs
+- [Repository instructions](AGENTS.md)
+- [Documentation index](docs/README.md)
+- [Installation](docs/installation.md)
+- [Component reference](docs/components.md)
+- [Customization](docs/customization.md)
+- [Accessibility](docs/accessibility.md)
+- [Agent guide](docs/ai-agents.md)
+- [Consolidated reference](llms-full.txt)
+
+## Components
+Start Screen: w8-start-screen, w8-start-heading, w8-start-subtitle, w8-tiles, w8-tile and size/color modifiers.
+Controls: w8-button, w8-input, w8-select, w8-textarea, w8-check, w8-radio, w8-choice, w8-toggle.
+Feedback/navigation: w8-progress, w8-badge, w8-notice, w8-divider, w8-tabs, w8-tab.
+Desktop: w8-window, w8-title-bar, w8-window-body, w8-window-footer, w8-app-bar, w8-dialog.
+
+API status: early foundation; src/8.css is the implementation source.

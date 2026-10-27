@@ -1,0 +1,55 @@
+# 8.css — consolidated reference
+
+8.css is a lightweight CSS-only library inspired by Windows 8 Modern UI / Start Screen and Windows 8 desktop. It styles semantic HTML without a framework-specific runtime.
+
+## Rules
+- Edit src/8.css; regenerate dist/8.css with npm run build.
+- Public classes use w8-.
+- Runtime must remain CSS-only.
+- Keep Start Screen tiles visually distinct from desktop windows.
+- Prefer flat edges and solid colors. Do not add gradients, neon glow, or unrelated OS styles.
+- Keep docs, examples, and distribution CSS aligned.
+- Components provide styles only, not JavaScript state, tab keyboard patterns, window controls, or live tile updates.
+
+## Installation
+After changes are available on the default branch:
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/flessan/8.css@main/dist/8.css" />
+
+Pin a version tag in production after releases exist. GitHub installation is available with npm install github:flessan/8.css, followed by import "8.css" from a CSS-capable bundler. Do not assume a public npm release exists until announced.
+
+## Start Screen
+- .w8-start-screen, .w8-start-heading, .w8-start-subtitle
+- .w8-tiles and .w8-tile
+- Content helpers: .w8-tile__symbol, .w8-tile__label, .w8-tile__meta, .w8-tile__count
+- Sizes: .w8-tile--wide, .w8-tile--tall, .w8-tile--large
+- Colors: .w8-tile--blue, .w8-tile--cyan, .w8-tile--purple, .w8-tile--magenta, .w8-tile--green, .w8-tile--orange, .w8-tile--red, .w8-tile--dark
+
+## Controls
+Buttons: .w8-button, .w8-button--primary, .w8-button--subtle.
+Fields: .w8-input, .w8-select, .w8-textarea, .w8-field, .w8-label, .w8-help.
+Choices: .w8-check, .w8-radio, .w8-choice, .w8-toggle, .w8-toggle__input.
+Feedback: .w8-progress, .w8-badge, .w8-badge--blue, .w8-notice variants, .w8-divider.
+Navigation: .w8-tabs and .w8-tab. These style selected states but do not implement behavior.
+
+## Desktop
+Window: .w8-window.
+Title bar: .w8-title-bar, .w8-title-bar__text, .w8-title-bar__controls.
+Controls: .w8-window-control and .w8-window-control--close.
+Content/footer: .w8-window-body and .w8-window-footer.
+App bar: .w8-app-bar and .w8-app-bar__item.
+Native dialog styling: .w8-dialog, .w8-dialog__body, .w8-dialog__footer.
+Window controls do not manage a real window. Dialog classes do not open the dialog; use native dialog APIs.
+
+## Custom properties
+Global: --w8-font-family, --w8-text, --w8-muted, --w8-surface, --w8-surface-subtle, --w8-border, --w8-accent, --w8-accent-hover, --w8-focus.
+Tile: --w8-tile-blue, --w8-tile-cyan, --w8-tile-purple, --w8-tile-magenta, --w8-tile-green, --w8-tile-orange, --w8-tile-red, --w8-tile-dark. A single Start Screen can override --w8-start-background.
+
+## Accessibility
+Use semantic markup and accessible names. Keep keyboard focus visible. Validate contrast with custom colors. Test narrow viewports. Respect reduced motion. Do not treat styled tabs or window controls as functional widgets. Keep state changes, announcements, and focus management in the host project.
+
+## Validation
+Run npm run build and npm test. Tests check source/distribution parity, expected selectors, absence of external CSS imports, and balanced braces. These are lightweight checks, not a full CSS parser or browser testing suite.
+
+## Agent workflow
+Read AGENTS.md and docs/components.md first. Never invent classes. When a component is missing, propose a documented API, implement it in src/8.css, update examples and references, and rebuild dist/8.css. Keep examples/legacy-start-screen.html separate from the new API.

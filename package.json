@@ -1,0 +1,16 @@
+{
+  "name": "8.css",
+  "version": "0.1.0",
+  "description": "A lightweight CSS-only UI library inspired by Windows 8 Modern UI and desktop.",
+  "license": "MIT",
+  "type": "module",
+  "style": "dist/8.css",
+  "exports": { ".": { "style": "./dist/8.css", "default": "./dist/8.css" } },
+  "files": ["dist/8.css", "src/8.css", "README.md", "LICENSE"],
+  "scripts": { "build": "node scripts/build.mjs", "test": "node scripts/check-css.mjs" },
+  "engines": { "node": ">=18" },
+  "repository": { "type": "git", "url": "https://github.com/flessan/8.css.git" },
+  "homepage": "https://github.com/flessan/8.css#readme",
+  "bugs": { "url": "https://github.com/flessan/8.css/issues" },
+  "keywords": ["css", "windows-8", "modern-ui", "metro-ui", "css-framework", "design-system"]
+}

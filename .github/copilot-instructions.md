@@ -1,0 +1,1 @@
+Follow /AGENTS.md. 8.css is a framework-neutral, CSS-only Windows 8 UI library. Edit src/8.css, run npm run build, keep component references and LLM docs synchronized, and do not introduce a runtime JavaScript dependency, gradients, or unrelated OS styles.
