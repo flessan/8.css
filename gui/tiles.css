@@ -1,0 +1,24 @@
+/* Start Screen and tiles */
+.w8-start-screen { background: var(--w8-start-background, #1f1f1f); color: #fff; min-width: 0; padding: clamp(1.25rem, 4vw, 3rem); }
+.w8-start-heading { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 200; letter-spacing: -.045em; line-height: 1.05; margin: 0 0 .6rem; }
+.w8-start-subtitle { color: rgb(255 255 255 / .78); margin: 0 0 1.6rem; }
+.w8-tiles { display: grid; grid-auto-rows: minmax(7rem, auto); grid-template-columns: repeat(auto-fill, minmax(min(100%, 7rem), 1fr)); gap: .35rem; max-width: 76rem; }
+.w8-tile { align-items: flex-start; background: var(--w8-tile-color, var(--w8-tile-blue)); border: 0; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; min-height: 7rem; min-width: 0; padding: .85rem; position: relative; text-align: left; text-decoration: none; transition: filter 120ms ease, transform 120ms ease; }
+.w8-tile:hover { color: #fff; filter: brightness(1.08); }
+.w8-tile:active { transform: scale(.985); }
+.w8-tile:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
+.w8-tile__symbol { font-size: 2rem; font-weight: 300; line-height: 1; margin-bottom: auto; }
+.w8-tile__label { display: block; font-size: .95rem; font-weight: 400; line-height: 1.2; overflow-wrap: anywhere; }
+.w8-tile__meta { display: block; font-size: .78rem; margin-top: .35rem; opacity: .88; }
+.w8-tile__count { font-size: 2rem; font-weight: 200; line-height: 1; margin-bottom: auto; }
+.w8-tile--wide { grid-column: span 2; }
+.w8-tile--tall { grid-row: span 2; }
+.w8-tile--large { grid-column: span 2; grid-row: span 2; }
+.w8-tile--blue { --w8-tile-color: var(--w8-tile-blue); }
+.w8-tile--cyan { --w8-tile-color: var(--w8-tile-cyan); }
+.w8-tile--purple { --w8-tile-color: var(--w8-tile-purple); }
+.w8-tile--magenta { --w8-tile-color: var(--w8-tile-magenta); }
+.w8-tile--green { --w8-tile-color: var(--w8-tile-green); }
+.w8-tile--orange { --w8-tile-color: var(--w8-tile-orange); }
+.w8-tile--red { --w8-tile-color: var(--w8-tile-red); }
+.w8-tile--dark { --w8-tile-color: var(--w8-tile-dark); }

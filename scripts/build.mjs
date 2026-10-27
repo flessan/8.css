@@ -1,0 +1,15 @@
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+const sourceDirectory = new URL("../gui/", import.meta.url);
+const sourceOutput = new URL("../src/8.css", import.meta.url);
+const distDirectory = new URL("../dist/", import.meta.url);
+const modularOutput = new URL("../dist/gui/", import.meta.url);
+const files = ["base.css", "tiles.css", "buttons.css", "forms.css", "feedback.css", "window.css", "app-bar.css", "dialog.css", "responsive.css"];
+const parts = await Promise.all(files.map(async (file) => ({ name:file, content:await readFile(new URL(file,sourceDirectory),"utf8") })));
+const combined = parts.map((part)=>part.content.trim()).join("\n\n")+"\n";
+await mkdir(new URL("../src/",import.meta.url),{recursive:true});
+await mkdir(distDirectory,{recursive:true});
+await mkdir(modularOutput,{recursive:true});
+await writeFile(sourceOutput,combined);
+await writeFile(new URL("8.css",distDirectory),combined);
+for(const part of parts) await copyFile(new URL(part.name,sourceDirectory),new URL(part.name,modularOutput));
+console.log("Built src/8.css, dist/8.css, and modular dist/gui/*.css");

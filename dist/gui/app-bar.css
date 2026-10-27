@@ -1,0 +1,4 @@
+/* App bar */
+.w8-app-bar { align-items: center; background: #1f1f1f; color: #fff; display: flex; flex-wrap: wrap; gap: .35rem; padding: .5rem; }
+.w8-app-bar__item { align-items: center; background: transparent; border: 0; color: inherit; cursor: pointer; display: inline-flex; gap: .45rem; min-height: 2.5rem; padding: .45rem .75rem; }
+.w8-app-bar__item:hover { background: #3a3a3a; }

@@ -1,3 +1,66 @@
-# Windows-8-Metro-UI
-Windows 8 Start Screen Metro UI created in HTML5 and CSS<br>
-NB: This is simply a play with CSS and HTML project...testing my skills and showing love for Windows
+# 8.css
+
+**A CSS-only UI library for building Windows 8-inspired interfaces.**
+
+8.css brings the Windows 8 Start Screen and desktop visual language to the web: colorful tiles, flat controls, app bars, and desktop windows. It is framework-neutral, uses semantic HTML, and does not ship a JavaScript runtime.
+
+## Why this project exists
+
+8.css is very strongly inspired by [7.css by khang-nd](https://github.com/khang-nd/7.css). Its CSS-only approach, component-by-component learning experience, live examples, copyable code, and developer documentation showed what a focused operating-system UI library could look like. 7.css targets Windows 7; this project has a different target and an independently developed component API for Windows 8.
+
+The starting point for this repository was [Windows-8-Metro-UI by SamWanekeya](https://github.com/SamWanekeya/Windows-8-Metro-UI), a small HTML and CSS Start Screen experiment. Its history shows no new commits since June 2017, and it appeared to be an abandoned prototype rather than a maintained, reusable component library. I forked it to preserve the original starting point and turn the idea into a practical Windows 8 UI library.
+
+The existing MIT license is retained. 8.css is an independent community project, not an official Microsoft product and not affiliated with or endorsed by the 7.css author.
+
+## Status
+
+The library is in pre-release development. The npm package has not been published yet, and availability of the unscoped package name 8.css must be verified before the first release. The goal is for users to install it from the npm registry, with no GitHub dependency during normal installation or use.
+
+## Installation after the first npm release
+
+    npm install 8.css
+
+Import the complete stylesheet from your app entry point:
+
+    import "8.css/dist/8.css";
+
+Or use a CDN backed by the npm package:
+
+    <link rel="stylesheet" href="https://unpkg.com/8.css/dist/8.css" />
+
+These package commands become available after the first public release. For production, pin an exact published version instead of relying on the latest tag.
+
+## Components
+
+The API includes Start Screen tiles, buttons, form controls, toggles, progress indicators, badges, notices, tabs, desktop windows, app bars, and native dialog styling. Browse the [interactive documentation](docs/index.html) for live previews and copyable HTML examples.
+
+The source is organized by component in <code>gui/</code>. The build creates a complete stylesheet plus modular files in <code>dist/gui/</code>.
+
+## Development
+
+Requires Node.js 20 or newer for maintainer scripts.
+
+    npm run build
+    npm test
+    npm run build:site
+
+- Source modules: <code>gui/</code>
+- Generated combined source: <code>src/8.css</code>
+- npm distribution: <code>dist/8.css</code>
+- Modular distribution: <code>dist/gui/</code>
+- Documentation site: <code>docs/index.html</code>
+- Agent instructions: <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>llms.txt</code>, and <code>llms-full.txt</code>
+
+Do not edit generated files by hand. Change a module in <code>gui/</code>, rebuild, and keep the docs and examples in sync.
+
+## Publishing
+
+The first public publish requires an npm account with permission to publish the package name. After the package has been created, configure npm Trusted Publishing to allow the repository's <code>.github/workflows/publish.yml</code> workflow to publish future GitHub releases using short-lived OIDC credentials. Consumers install the published package from npm; GitHub Actions is only release automation.
+
+## Accessibility
+
+8.css supplies visual styling only. It does not implement application state, live tile updates, tab keyboard behavior, or window-control behavior. Use semantic HTML, accessible names, native controls, visible focus indicators, and reduced-motion support. Check color contrast when customizing tokens.
+
+## License
+
+MIT. See [LICENSE](LICENSE). The original prototype's MIT attribution remains preserved in the repository.

@@ -1,0 +1,31 @@
+# 8.css
+
+> A CSS-only Windows 8 UI library, strongly inspired by 7.css by khang-nd and evolved from an old Windows 8 Start Screen demo.
+
+8.css styles semantic HTML without a required JavaScript runtime. It targets Windows 8 Modern UI / Start Screen and desktop components.
+
+## Source layout
+- gui/*.css: maintained component modules.
+- src/8.css: generated combined source.
+- dist/8.css: complete distribution bundle.
+- dist/gui/*.css: modular CSS distribution.
+- docs/index.html: navigable catalog with live previews and copyable examples.
+- AGENTS.md and llms-full.txt: coding-agent guidance.
+
+## Principles
+- Keep Windows 8 Start Screen and desktop UI recognizable.
+- Use w8- class names to reduce collisions.
+- Keep the library CSS-only at runtime.
+- Use semantic HTML, visible focus, and reduced-motion support.
+- Do not claim CSS implements tab, window, or application behavior.
+
+## Installation target
+After the first public npm release, install with npm install 8.css and import 8.css/dist/8.css. The package has not been published yet; verify that the unscoped name is available before the first release.
+
+## Read next
+- [README](README.md)
+- [Interactive component docs](docs/index.html)
+- [Component reference](docs/components.md)
+- [Accessibility](docs/accessibility.md)
+- [AI agent guide](docs/ai-agents.md)
+- [Full reference](llms-full.txt)

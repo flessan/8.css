@@ -1,0 +1,23 @@
+/*
+ * 8.css — Windows 8-inspired UI styles
+ * MIT License. See LICENSE.
+ * CSS-only presentation layer. Components do not require JavaScript.
+ */
+:root {
+  --w8-font-family: "Segoe UI", "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  --w8-text: #1a1a1a; --w8-muted: #666; --w8-surface: #fff; --w8-surface-subtle: #f2f2f2;
+  --w8-border: #c8c8c8; --w8-accent: #0078d7; --w8-accent-hover: #006cc1; --w8-focus: #005a9e;
+  --w8-tile-blue: #0078d7; --w8-tile-cyan: #0099bc; --w8-tile-purple: #744da9;
+  --w8-tile-magenta: #b4009e; --w8-tile-green: #107c10; --w8-tile-orange: #da3b01;
+  --w8-tile-red: #e81123; --w8-tile-dark: #333;
+}
+.w8 { color: var(--w8-text); font-family: var(--w8-font-family); font-size: 14px; line-height: 1.45; }
+.w8 *, .w8 *::before, .w8 *::after { box-sizing: border-box; }
+.w8 :where(button, input, select, textarea) { color: inherit; font: inherit; }
+.w8 :where(button, input, select, textarea, a, [tabindex]):focus-visible { outline: 2px solid var(--w8-focus); outline-offset: 2px; }
+.w8 :where(p) { margin: 0 0 .8rem; }
+.w8 :where(h1, h2, h3, h4) { font-weight: 300; line-height: 1.15; margin: 0 0 .7rem; }
+.w8 :where(h1) { font-size: clamp(2rem, 5vw, 3.25rem); }
+.w8 :where(h2) { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+.w8 :where(a) { color: var(--w8-accent); }
+.w8-muted { color: var(--w8-muted); }

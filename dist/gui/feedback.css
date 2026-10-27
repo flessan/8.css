@@ -1,0 +1,16 @@
+/* Progress, tabs, badges, and notices */
+.w8-progress { appearance: none; background: #dedede; border: 0; display: block; height: .4rem; overflow: hidden; width: 100%; }
+.w8-progress::-webkit-progress-bar { background: #dedede; }
+.w8-progress::-webkit-progress-value { background: var(--w8-accent); }
+.w8-progress::-moz-progress-bar { background: var(--w8-accent); }
+.w8-tabs { border-bottom: 1px solid var(--w8-border); display: flex; flex-wrap: wrap; gap: .2rem; }
+.w8-tab { background: transparent; border: 0; border-bottom: 3px solid transparent; color: inherit; cursor: pointer; margin-bottom: -1px; padding: .7rem 1rem; }
+.w8-tab:hover { background: #eaeaea; }
+.w8-tab[aria-selected="true"], .w8-tab[aria-current="page"] { border-bottom-color: var(--w8-accent); font-weight: 600; }
+.w8-badge { background: #e6e6e6; color: #333; display: inline-block; font-size: .78rem; line-height: 1.4; padding: .15rem .45rem; vertical-align: middle; }
+.w8-badge--blue { background: var(--w8-accent); color: #fff; }
+.w8-notice { background: #f2f2f2; border-left: 4px solid var(--w8-accent); padding: .85rem 1rem; }
+.w8-notice--success { border-left-color: #107c10; }
+.w8-notice--warning { border-left-color: #ca5010; }
+.w8-notice--error { border-left-color: #c42b1c; }
+.w8-divider { border: 0; border-top: 1px solid var(--w8-border); margin: 1.25rem 0; }

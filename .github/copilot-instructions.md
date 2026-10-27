@@ -1,0 +1,1 @@
+Follow /AGENTS.md. 8.css is a CSS-only Windows 8 UI library with a component-first documentation approach inspired by 7.css. Maintain source modules in gui/, regenerate bundles with npm run build, keep docs and LLM references synchronized, and do not introduce runtime JavaScript dependencies or generic gradient styling.
