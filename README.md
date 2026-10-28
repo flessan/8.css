@@ -32,13 +32,21 @@ For plain HTML, use the CDN bundle:
 <link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css">
 ```
 
-The same package is also available through GitHub Packages. To resolve the `@flessan` scope through GitHub Packages in a project, add this to its `.npmrc`:
+npm is the default registry, so the standard install command above does not require additional registry configuration.
+
+## GitHub Packages
+
+Each published GitHub Release triggers the release workflow. It validates that the release tag matches `package.json`, builds and tests 8.css once, creates one package tarball, and publishes that same tarball to npm and GitHub Packages. If one registry already has that version, the workflow skips that publish step so a failed partial release can be retried safely.
+
+To use the GitHub Packages copy, add the following to the consuming project's `.npmrc`:
 
 ```ini
 @flessan:registry=https://npm.pkg.github.com
 ```
 
-npm remains the default registry declared by this package.
+GitHub Packages requires authentication for npm clients. Use a GitHub Personal Access Token (classic) with `read:packages` permission for installation, and keep the token in your user-level `~/.npmrc` or another secret-managed configuration rather than committing it to a repository.
+
+A package's first GitHub Packages publication is private by default. After the first successful publication, open the package's settings on GitHub and change its visibility to **Public** if you intend it to be publicly reusable. Until then, access is restricted.
 
 ## Use the icon sprite
 
