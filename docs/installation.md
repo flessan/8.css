@@ -30,12 +30,23 @@ GitHub Packages may require authentication depending on package visibility and a
 
 ## Icons
 
-The stylesheet and icon sprite are separate files. Make `dist/icons.svg` accessible from your website and reference a symbol ID:
+Font Awesome 4.7.0 is bundled with the package. `dist/8.css` contains its stylesheet, and the font files are copied to `dist/font-awesome/fonts/`, next to the bundle, so a single import is enough:
 
 ```html
-<svg class="w8-icon w8-icon--large" role="img" aria-label="Settings">
-  <use href="./icons.svg#w8-icon-settings"></use>
-</svg>
+<link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css">
+
+<!-- Use the classic Font Awesome 4.7.0 classes -->
+<i class="fa fa-cog" aria-hidden="true"></i>
 ```
 
-Load `gui/base.css` before modular styles and load `gui/icons.css` when using icon helpers. The full `dist/8.css` bundle already includes the helper styles.
+With the modular stylesheets, load the icon font stylesheet yourself and keep the font directory next to it:
+
+```html
+<link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/gui/base.css">
+<link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/gui/icons.css">
+```
+
+Load `gui/base.css` before modular component styles and load `gui/icons.css` when using the 8.css icon hooks. The full `dist/8.css` bundle already includes the Font Awesome stylesheet and the helper styles.
+
+The bundled icon font keeps its upstream license. See [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md).

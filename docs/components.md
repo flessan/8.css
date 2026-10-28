@@ -1,6 +1,6 @@
 # Component and icon reference
 
-The [interactive catalog](index.html) includes live previews, a 50-symbol icon gallery, and copyable snippets. Public component classes use the `w8-` prefix.
+The [interactive catalog](index.html) includes live previews, a 78-icon gallery drawn from Font Awesome 4.7.0, and copyable snippets. Public component classes use the `w8-` prefix.
 
 ## CSS modules
 - `gui/base.css`: design tokens, scoped typography, and focus styles.
@@ -11,7 +11,7 @@ The [interactive catalog](index.html) includes live previews, a 50-symbol icon g
 - `gui/window.css`: desktop window and title bar.
 - `gui/app-bar.css`: action bar.
 - `gui/dialog.css`: native dialog styling.
-- `gui/icons.css`: SVG sizing utilities, square icon buttons, and visually-hidden labels.
+- `gui/icons.css`: Font Awesome sizing hooks, square icon buttons, and visually-hidden labels.
 - `gui/responsive.css`: narrow viewport and reduced-motion rules.
 
 ## Public classes
@@ -26,70 +26,29 @@ The [interactive catalog](index.html) includes live previews, a 50-symbol icon g
 - Actions and dialogs: `w8-app-bar`, `w8-app-bar__item`, `w8-dialog`, `w8-dialog__body`, `w8-dialog__footer`.
 - Icons: `w8-icon`, `w8-icon--small`, `w8-icon--large`, `w8-icon--xl`, `w8-icon-button`, `w8-icon-button--accent`, `w8-icon-button__label`, `w8-sr-only`.
 
-## SVG icon sprite
+## Font Awesome 4.7.0 icons
 
-The source sprite is `icons/icons.svg`; the distributed file is `dist/icons.svg`. Symbol IDs follow the format `w8-icon-{name}`:
-
-- `home`
-- `mail`
-- `calendar`
-- `photos`
-- `desktop`
-- `weather`
-- `search`
-- `settings`
-- `share`
-- `user`
-- `people`
-- `phone`
-- `chat`
-- `globe`
-- `wifi`
-- `bluetooth`
-- `battery`
-- `power`
-- `lock`
-- `folder`
-- `file`
-- `download`
-- `upload`
-- `refresh`
-- `edit`
-- `delete`
-- `check`
-- `close`
-- `back`
-- `forward`
-- `play`
-- `pause`
-- `stop`
-- `volume`
-- `menu`
-- `camera`
-- `music`
-- `video`
-- `info`
-- `help`
-- `heart`
-- `pin`
-- `map`
-- `print`
-- `copy`
-- `save`
-- `star`
-- `clock`
-- `notifications`
-- `cloud`
-
-Example:
+`dist/8.css` bundles the Font Awesome 4.7.0 stylesheet, so the classic classes work from one import. The font files are published separately in `dist/font-awesome/fonts/`, and the unmodified upstream stylesheet is published in `dist/font-awesome/css/`.
 
 ```html
-<svg class="w8-icon w8-icon--large" role="img" aria-label="Mail">
-  <use href="https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg#w8-icon-mail"></use>
-</svg>
+<i class="fa fa-envelope" aria-hidden="true"></i>
+<i class="fa fa-star fa-2x" aria-hidden="true"></i>
+<i class="fa fa-search w8-icon--large" aria-hidden="true"></i>
+
+<button class="w8-icon-button" type="button" aria-label="Search">
+  <i class="fa fa-search w8-icon--large" aria-hidden="true"></i>
+  <span class="w8-icon-button__label">Search</span>
+</button>
 ```
 
-For an icon-only action, label the button and mark its nested SVG as decorative with `aria-hidden="true"`. The SVG sprite is a separate asset, so the `href` must point to the deployed file.
+- `fa` is the Font Awesome base class; `fa-{name}` selects a glyph.
+- `fa-lg`, `fa-2x`, `fa-3x`, `fa-4x`, `fa-5x`, `fa-fw`, `fa-ul`, `fa-li`, `fa-stack`, `fa-spin`, and `fa-rotate-*` behave exactly as in Font Awesome 4.7.0.
+- `w8-icon` is an alias for the `fa` base class, kept for the existing 8.css API.
+- `w8-icon--small` (1rem), `w8-icon--large` (2rem), and `w8-icon--xl` (3rem) provide the 8.css size steps and work with `.fa` or `.w8-icon`.
+- Icons inherit `currentColor`. Use `aria-hidden="true"` for decorative glyphs and `aria-label` or visible text for meaningful ones.
+- Window controls use `fa-window-minimize`, `fa-window-maximize`, and `fa-window-close`.
+
+The SVG sprite (`icons.svg` and the `w8-icon-{name}` IDs) was removed in favour of Font Awesome 4.7.0. See [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md) for licensing.
 
 ## Modular package imports
-Load `dist/gui/base.css` first, then the modules required by your markup. Load `dist/gui/icons.css` when using icon utility classes. The complete `dist/8.css` bundle combines every CSS module, but the SVG sprite stays separate.
+Load `dist/gui/base.css` first, then the modules required by your markup. Load `dist/gui/icons.css` for the 8.css icon helpers, and load `dist/font-awesome/css/font-awesome.min.css` for the glyphs themselves. The complete `dist/8.css` bundle combines the Font Awesome stylesheet and every CSS module, but the font files stay separate so they can be cached independently.

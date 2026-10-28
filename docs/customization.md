@@ -17,13 +17,24 @@ Use solid colors and crisp edges to preserve the Windows 8 visual language. Icon
 
 ```html
 <button class="w8-icon-button w8-icon-button--accent" type="button" aria-label="Home">
-  <svg class="w8-icon w8-icon--large" aria-hidden="true">
-    <use href="./icons.svg#w8-icon-home"></use>
-  </svg>
+  <i class="fa fa-home w8-icon--large" aria-hidden="true"></i>
   <span class="w8-icon-button__label">Home</span>
 </button>
 ```
 
-Load `base.css` before modular component styles. Load `icons.css` when using icon utilities, and make sure the SVG `use` URL points to the deployed `icons.svg` asset.
+## Icon sizes
+
+Font Awesome 4.7.0 utilities are available unchanged, and 8.css adds three size hooks so icons match its component scale:
+
+```html
+<i class="fa fa-check fa-lg" aria-hidden="true"></i>
+<i class="fa fa-check w8-icon--small" aria-hidden="true"></i>
+<i class="fa fa-check w8-icon--large" aria-hidden="true"></i>
+<i class="fa fa-check w8-icon--xl" aria-hidden="true"></i>
+```
+
+Change the icon color by setting `color` on the icon or on a parent element; no separate icon color property is required. To swap the whole palette, override the `--w8-` custom properties instead of individual component rules.
+
+Load `base.css` before modular component styles. Load `icons.css` when using the 8.css icon hooks, and load `dist/font-awesome/css/font-awesome.min.css` when you are not using the complete bundle.
 
 See [Accessibility](accessibility.md) for focus, semantic HTML, and reduced-motion guidance.

@@ -1,26 +1,27 @@
 # 8.css
 
-> A CSS-only Windows 8 Modern UI library, with a custom Metro-style SVG icon set.
+> A CSS-only Windows 8 Modern UI library with the complete Font Awesome 4.7.0 icon set, bundled and self-hosted.
 
 ## Source layout
 - `gui/*.css`: maintained CSS modules.
-- `icons/icons.svg`: source vector sprite.
-- `src/8.css`: generated combined stylesheet.
+- `vendor/font-awesome/`: unmodified Font Awesome 4.7.0 stylesheet, fonts, and license text.
+- `src/8.css`: generated combined stylesheet (Font Awesome + modules).
 - `dist/8.css`: complete distribution bundle.
 - `dist/gui/*.css`: modular stylesheet distribution.
-- `dist/icons.svg`: separate vector sprite with 50 symbols.
+- `dist/font-awesome/`: self-hosted icon font, stylesheets, and license.
 - `docs/index.html`: component catalog, previews, and icon gallery.
+- `examples/legacy-start-screen.html`: historical Start Screen prototype.
 - `AGENTS.md` and `llms-full.txt`: maintainer and agent guidance.
 
 ## Principles
 - Keep Windows 8 Start Screen and desktop UI recognizable, using flat surfaces and solid color.
-- Use `w8-` class names to reduce collisions.
-- Keep runtime CSS-only; SVG icons are loaded as a static sprite, without JavaScript.
+- Use `w8-` class names to reduce collisions, and classic Font Awesome 4.7.0 icon classes (`fa fa-home`).
+- Keep runtime CSS-only; icons come from the self-hosted icon font, without JavaScript.
 - Use semantic HTML, visible focus, accessible labels, and reduced-motion support.
 - Do not claim CSS implements application state, keyboard navigation, or window behavior.
 
 ## Package
-Install with `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`. The SVG icon sprite is available separately at `https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg`.
+Install with `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`. The standalone Font Awesome stylesheet is at `https://unpkg.com/@flessan/8.css@0.2.0/dist/font-awesome/css/font-awesome.min.css`.
 
 ## Read next
 - [README](README.md)
@@ -28,4 +29,5 @@ Install with `npm install @flessan/8.css`, then import `@flessan/8.css`. For pla
 - [Component and icon reference](docs/components.md)
 - [Accessibility](docs/accessibility.md)
 - [AI agent guide](docs/ai-agents.md)
+- [Third-party notices](THIRD-PARTY-NOTICES.md)
 - [Full reference](llms-full.txt)

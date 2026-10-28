@@ -6,8 +6,30 @@
 - Use a logical heading order.
 - Label every input with a visible label or accessible name.
 - Give icon-only buttons an aria-label.
+- Mark decorative icons with `aria-hidden="true"` so screen readers skip the glyph.
 - Make interactive tiles links or buttons, not non-interactive div elements.
 - Use ARIA roles only when the markup follows the corresponding interaction pattern.
+
+## Icons
+Font Awesome glyphs are decorative when they sit next to text:
+
+```html
+<button class="w8-button w8-button--primary" type="button">
+  <i class="fa fa-check" aria-hidden="true"></i>
+  Save changes
+</button>
+```
+
+When the glyph carries the meaning, label the control and hide the glyph:
+
+```html
+<button class="w8-icon-button" type="button" aria-label="Search">
+  <i class="fa fa-search w8-icon--large" aria-hidden="true"></i>
+  <span class="w8-icon-button__label">Search</span>
+</button>
+```
+
+The private-use-area codepoints that Font Awesome uses are not meaningful text, so never place an icon inside a control without an accessible name. Icon color must meet contrast requirements against its background, especially on colored tiles and the dark app bar.
 
 ## Keyboard focus
 The library includes :focus-visible styling. Do not remove focus indicators without a visible replacement. Test the UI using only a keyboard.

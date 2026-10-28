@@ -1,7 +1,7 @@
 {
   "name": "@flessan/8.css",
   "version": "0.2.0",
-  "description": "A CSS-only Windows 8 Modern UI library with flat components and a Metro-style SVG icon set.",
+  "description": "A CSS-only Windows 8 Modern UI library with flat components and locally bundled Font Awesome 4.7.0 icons.",
   "license": "MIT",
   "author": "Flessan",
   "type": "module",
@@ -10,8 +10,8 @@
   "exports": {
     ".": "./dist/8.css",
     "./dist/8.css": "./dist/8.css",
-    "./icons.svg": "./dist/icons.svg",
-    "./dist/icons.svg": "./dist/icons.svg",
+    "./dist/font-awesome/*": "./dist/font-awesome/*",
+    "./font-awesome/*": "./dist/font-awesome/*",
     "./dist/gui/*": "./dist/gui/*"
   },
   "sideEffects": [
@@ -19,8 +19,9 @@
   ],
   "files": [
     "dist/8.css",
-    "dist/icons.svg",
     "dist/gui/",
+    "dist/font-awesome/",
+    "THIRD-PARTY-NOTICES.md",
     "README.md",
     "LICENSE"
   ],
@@ -49,8 +50,8 @@
     "css-framework",
     "design-system",
     "ui-library",
-    "svg-icons",
-    "metro-icons",
-    "windows-8-icons"
+    "windows-8-icons",
+    "font-awesome",
+    "font-icons"
   ]
 }

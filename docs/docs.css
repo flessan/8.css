@@ -17,8 +17,8 @@
 .icon-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); margin: 18px 0 28px; }
 .icon-card { align-items: center; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; justify-content: center; min-height: 104px; padding: 14px 8px; text-align: center; }
 .icon-card:hover { border-color: var(--blue); }
-.icon-card .w8-icon { color: #222; }
-.icon-card span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.icon-card .fa, .icon-card .w8-icon { color: #222; }
+.icon-card span { color: var(--muted); font-family: Consolas, "Cascadia Mono", monospace; font-size: 12px; overflow-wrap: anywhere; }
 .icon-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
 .icon-demo-row .w8-icon-button { color: #222; }
 .icon-demo-row .w8-icon-button--accent { color: #fff; }

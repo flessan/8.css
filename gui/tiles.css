@@ -7,7 +7,8 @@
 .w8-tile:hover { color: #fff; filter: brightness(1.08); }
 .w8-tile:active { transform: scale(.985); }
 .w8-tile:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
-.w8-tile__symbol { font-size: 2rem; font-weight: 300; line-height: 1; margin-bottom: auto; }
+.w8-tile__symbol { color: inherit; display: inline-block; font-size: 2rem; font-weight: 400; line-height: 1; margin-bottom: auto; }
+.w8-tile--tall .w8-tile__symbol, .w8-tile--large .w8-tile__symbol { font-size: 2.75rem; }
 .w8-tile__label { display: block; font-size: .95rem; font-weight: 400; line-height: 1.2; overflow-wrap: anywhere; }
 .w8-tile__meta { display: block; font-size: .78rem; margin-top: .35rem; opacity: .88; }
 .w8-tile__count { font-size: 2rem; font-weight: 200; line-height: 1; margin-bottom: auto; }
