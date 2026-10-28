@@ -268,6 +268,20 @@ for (const page of pages) {
   }
 }
 
+// docs/index.html is the GitHub Pages root, so its navigation must stay
+// in-page or absolute; relative paths would 404 once published.
+for (const tag of (await read("docs/index.html")).matchAll(/<a\b[^>]*class="[^"]*tree-link[^"]*"[^>]*>/g)) {
+  const href = tag[0].match(/href="([^"]+)"/)?.[1] ?? "";
+  assert.ok(
+    href.startsWith("#") || /^https?:/.test(href),
+    `docs/index.html navigation link must be in-page or absolute: ${href}`,
+  );
+}
+assert.ok(
+  (await read("docs/script.js")).includes('href.startsWith("#")'),
+  "docs/script.js must ignore non-anchor navigation links when tracking the active section.",
+);
+
 /* ------------------------------------------------------------------ *
  * Package metadata
  * ------------------------------------------------------------------ */
