@@ -71,7 +71,7 @@ To use the icon font with the modular stylesheets, load `dist/font-awesome/css/f
 <link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/font-awesome/css/font-awesome.min.css">
 ```
 
-Icons inherit `currentColor`, so they adapt to the foreground color of a tile, toolbar, or button. The full glyph list is documented at [fontawesome.io](https://fontawesome.com/v4.7.0/icons/) and in the [icon catalog](docs/index.html#icons).
+Icons inherit `currentColor`, so they adapt to the foreground color of a tile, toolbar, or button. The full glyph list is documented at [fontawesome.io](https://fontawesome.com/v4.7.0/icons/) and in the [icon catalog](docs/index.html#icons). The [interactive documentation](docs/index.html) shows every component with rendered previews, copyable markup, and the icon gallery.
 
 ### Migrating from the 0.2.0 SVG sprite
 

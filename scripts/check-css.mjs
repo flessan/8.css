@@ -304,6 +304,19 @@ for (const [key, value] of Object.entries(pkg.exports)) {
 }
 assert.equal(await read("THIRD-PARTY-NOTICES.md"), await read("dist/font-awesome/LICENSE.txt"), "The bundled license notice must match THIRD-PARTY-NOTICES.md.");
 
+// Relative links in the Markdown documentation must resolve in the repo.
+for (const markdown of ["README.md", "AGENTS.md", "docs/README.md", "docs/components.md", "docs/installation.md", "docs/customization.md", "docs/accessibility.md", "docs/ai-agents.md"]) {
+  const text = await read(markdown);
+  for (const match of text.matchAll(/\]\(([^)\s]+)\)/g)) {
+    const target = match[1];
+    if (/^(?:https?:|mailto:|#)/.test(target)) continue;
+    const [path] = target.split("#");
+    if (!path) continue;
+    const resolved = relative(fileURLToPath(root), fileURLToPath(new URL(path, new URL(markdown, root))));
+    assert.ok(await exists(resolved), `${markdown} links to a missing file: ${target}`);
+  }
+}
+
 /* ------------------------------------------------------------------ *
  * Documentation consistency
  * ------------------------------------------------------------------ */
