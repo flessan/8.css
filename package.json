@@ -33,9 +33,6 @@
   "engines": {
     "node": ">=20"
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/flessan/8.css.git"
