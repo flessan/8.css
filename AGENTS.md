@@ -24,7 +24,7 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - `gui/tiles.css`: Start Screen tiles.
 - `gui/buttons.css` and `gui/forms.css`: common controls.
 - `gui/feedback.css`: progress, tabs, badges, notices, separators.
-- `gui/window.css`, `gui/app-bar.css`, and `gui/dialog.css`: desktop components.
+- `gui/window.css`, `gui/app-bar.css`, `gui/charms.css`, and `gui/dialog.css`: desktop components.
 - `gui/icons.css`: Font Awesome sizing hooks and icon-button helpers.
 - `gui/responsive.css`: responsive and reduced-motion adjustments.
 - `vendor/font-awesome/`: upstream icon font, stylesheets, and license.

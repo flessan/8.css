@@ -31,3 +31,9 @@
 .icon-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
 .icon-demo-row .w8-icon-button { color: #222; }
 .icon-demo-row .w8-icon-button--accent { color: #fff; }
+
+/* Charms bar demo stage */
+.charm-stage { background: #1f1f1f; display: flex; justify-content: flex-end; min-height: 19rem; overflow: hidden; position: relative; }
+.charm-stage .w8-charms { padding-block: 1rem; }
+.charm-stage .w8-charm-pane { background: #f2f2f2; position: static; box-shadow: none; border-left: 1px solid #b8b8b8; width: auto; flex: 1; }
+.charm-stage .w8-charm-pane[hidden] { display: none; }

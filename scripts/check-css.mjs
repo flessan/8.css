@@ -44,6 +44,8 @@ for (const selector of [
   ".w8-tabs",
   ".w8-window",
   ".w8-app-bar",
+  ".w8-charms",
+  ".w8-charm-pane",
   ".w8-dialog",
   ".w8-icon-button",
   ".w8-icon--large",
@@ -387,6 +389,25 @@ assert.equal(
 assert.match(wallpaperPage, /name="wallpaper"/, "The wallpaper page needs a radio group.");
 assert.match(await read("index.html"), /examples\/wallpapers\.html/, "The landing page must link to the wallpaper pack.");
 assert.match(await read("docs/index.html"), /id="personalize"/, "The documentation must document the wallpaper API.");
+
+// The Charms bar must be documented and demoed with a working flyout pane.
+const charmsDocs = await read("docs/index.html");
+const charmsGallery = await read("examples/components.html");
+assert.match(charmsDocs, /id="charms"/, "The documentation must document the Charms bar.");
+assert.ok(
+  (charmsDocs.match(/class="w8-charm"/g) || []).length >= 5,
+  "docs/index.html must show the full five-charm bar.",
+);
+assert.ok(
+  (charmsGallery.match(/class="w8-charm"/g) || []).length >= 5,
+  "examples/components.html must show the full five-charm bar.",
+);
+assert.match(
+  charmsGallery,
+  /data-charm-pane="gallery-charm-pane"/,
+  "The gallery charm must declare which pane it toggles.",
+);
+assert.match(await read("docs/script.js"), /data-charm-pane/, "The docs must wire the Charms bar flyout.");
 
 /* ------------------------------------------------------------------ *
  * Package metadata

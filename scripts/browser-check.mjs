@@ -476,6 +476,40 @@ check(
   JSON.stringify(accent),
 );
 
+// Charms bar: the settings charm toggles its pane and keeps ARIA in sync.
+await visit("/docs/index.html", 1280, 900);
+const charms = await (async () => {
+  await evaluate("document.querySelector('#charms .preview').scrollIntoView({ block: 'center' }); true");
+  const selector = "#charms [data-charm-pane]";
+  const before = await evaluate(`(() => { const charm = document.querySelector('${selector}'); const pane = document.getElementById(charm.getAttribute('data-charm-pane')); return { hidden: pane.hidden, expanded: charm.getAttribute('aria-expanded') }; })()`);
+  await realClick(selector);
+  const closed = await evaluate(`(() => { const charm = document.querySelector('${selector}'); const pane = document.getElementById(charm.getAttribute('data-charm-pane')); return { hidden: pane.hidden, expanded: charm.getAttribute('aria-expanded') }; })()`);
+  await realClick(selector);
+  const reopened = await evaluate(`(() => { const charm = document.querySelector('${selector}'); const pane = document.getElementById(charm.getAttribute('data-charm-pane')); return { hidden: pane.hidden, expanded: charm.getAttribute('aria-expanded') }; })()`);
+  const geometry = await evaluate(`(() => {
+    const bar = document.querySelector('#charms .w8-charms');
+    const charms = [...bar.querySelectorAll('.w8-charm')];
+    return {
+      count: charms.length,
+      labels: charms.map((charm) => charm.textContent.trim()),
+      activeBackground: getComputedStyle(bar.querySelector('[aria-expanded="true"]')).backgroundColor,
+      icons: charms.map((charm) => getComputedStyle(charm.querySelector('.w8-charm__icon'), '::before').content).filter(Boolean).length,
+    };
+  })()`);
+  return { before, closed, reopened, geometry };
+})();
+check(
+  "charms bar renders five charms with glyphs and a filled active state",
+  charms.geometry.count === 5 && charms.geometry.icons === 5 && charms.geometry.activeBackground === "rgb(0, 120, 215)",
+  JSON.stringify(charms.geometry),
+);
+check(
+  "settings charm toggles its flyout pane and aria-expanded",
+  charms.before.hidden === false && charms.closed.hidden === true && charms.closed.expanded === "false" && charms.reopened.hidden === false && charms.reopened.expanded === "true",
+  JSON.stringify({ before: charms.before, closed: charms.closed, reopened: charms.reopened }),
+);
+await shoot("docs-charms");
+
 const reduced = await (async () => {
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   const value = await evaluate("getComputedStyle(document.querySelector('.w8-tile')).transitionDuration");

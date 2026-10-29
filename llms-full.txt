@@ -11,7 +11,7 @@
 - Runtime must remain CSS-only; icons are a static webfont.
 
 ## CSS module order
-base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, icons.css, responsive.css. The complete `dist/8.css` bundle prepends the Font Awesome 4.7.0 stylesheet to these modules and patches its font URLs to `./font-awesome/fonts/`. For modular use, load `dist/font-awesome/css/font-awesome.min.css` first, then `dist/gui/base.css`, then the required modules. Load `dist/gui/icons.css` for the 8.css icon helpers.
+base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, charms.css, dialog.css, icons.css, responsive.css. The complete `dist/8.css` bundle prepends the Font Awesome 4.7.0 stylesheet to these modules and patches its font URLs to `./font-awesome/fonts/`. For modular use, load `dist/font-awesome/css/font-awesome.min.css` first, then `dist/gui/base.css`, then the required modules. Load `dist/gui/icons.css` for the 8.css icon helpers.
 
 ## Package usage
 Install from npm using `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`.
@@ -51,7 +51,7 @@ Choices: `.w8-check`, `.w8-radio`, `.w8-choice`, `.w8-toggle`, `.w8-toggle__inpu
 Feedback: `.w8-progress`, `.w8-badge`, `.w8-notice` variants, `.w8-divider`.
 Tabs: `.w8-tabs`, `.w8-tab`.
 Desktop: `.w8-window`, `.w8-title-bar`, `.w8-title-bar__text`, `.w8-title-bar__controls`, `.w8-window-control`, `.w8-window-control--close`, `.w8-window-body`, `.w8-window-footer`.
-App bar and dialog: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
+App bar, Charms bar and dialogs: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-charms`, `.w8-charm`, `.w8-charm__icon`, `.w8-charm__label`, `.w8-charm-pane`, `.w8-charm-pane__title`, `.w8-charm-pane__group`, `.w8-charm-pane__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
 Icons: `.fa`, `.fa-{name}`, `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
 
 ## Wallpapers

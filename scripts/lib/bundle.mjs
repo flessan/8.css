@@ -13,6 +13,7 @@ export const moduleOrder = [
   "feedback.css",
   "window.css",
   "app-bar.css",
+  "charms.css",
   "dialog.css",
   "icons.css",
   "responsive.css",

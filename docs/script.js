@@ -4,6 +4,9 @@
  const navLinks=Array.from(document.querySelectorAll(".docs-nav a"));
  if(menuButton&&sidebar)menuButton.addEventListener("click",()=>{const open=sidebar.classList.toggle("open");menuButton.setAttribute("aria-expanded",String(open));});
  navLinks.forEach(link=>link.addEventListener("click",()=>{if(sidebar)sidebar.classList.remove("open");if(menuButton)menuButton.setAttribute("aria-expanded","false");}));
+ // Charms bar demo: a charm with data-charm-pane toggles the referenced pane.
+ const charms=Array.from(document.querySelectorAll("[data-charm-pane]"));
+ charms.forEach(charm=>{const pane=document.getElementById(charm.getAttribute("data-charm-pane"));if(!pane)return;const set=open=>{pane.hidden=!open;charm.setAttribute("aria-expanded",String(open));};set(charm.getAttribute("aria-expanded")==="true");charm.addEventListener("click",()=>set(pane.hidden));pane.addEventListener("keydown",event=>{if(event.key==="Escape"){set(false);charm.focus();}});});
  // Selection-based copy fallback. Used when the async clipboard API is
  // unavailable *or* rejects the write (iframe, denied permission, old browser).
  const selectionCopy=value=>new Promise((resolve,reject)=>{const field=document.createElement("textarea");field.value=value;field.setAttribute("readonly","");field.style.position="fixed";field.style.top="0";field.style.left="0";field.style.opacity="0";document.body.appendChild(field);field.select();field.setSelectionRange(0,value.length);let ok=false;try{ok=document.execCommand("copy");}catch{}field.remove();ok?resolve():reject(new Error("Copy failed"));});

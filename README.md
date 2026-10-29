@@ -7,7 +7,7 @@
 ## What is included
 
 - Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers.
-- Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, windows, and dialog styling.
+- Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, the Charms bar, windows, and dialog styling.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
 - Icon helpers with sizing hooks, square app-bar buttons, and accessible visually-hidden labels.
@@ -136,9 +136,34 @@ Regenerate everything with `npm run build` (which runs `scripts/wallpapers.mjs`)
 
 **Licensing:** the wallpaper artwork is © Microsoft and is included for demonstration only. It is **not** covered by the MIT license and the full resolution files are **not** published to npm — only the thumbnails in `dist/wallpapers/` are. See [the wallpaper notice](styles/images/wallpapers/NOTICE.md).
 
+## Charms bar
+
+The Windows 8 edge menu is available as a vertical bar of icon-and-label buttons plus a flyout pane:
+
+```html
+<nav class="w8-charms w8-charms--right" aria-label="Charms">
+  <button class="w8-charm" type="button">
+    <i class="fa fa-search w8-charm__icon" aria-hidden="true"></i>
+    <span class="w8-charm__label">Search</span>
+  </button>
+  <button class="w8-charm" type="button" aria-expanded="false" aria-controls="settings-pane">
+    <i class="fa fa-cog w8-charm__icon" aria-hidden="true"></i>
+    <span class="w8-charm__label">Settings</span>
+  </button>
+</nav>
+<div class="w8-charm-pane" id="settings-pane" hidden>
+  <h3 class="w8-charm-pane__title">Settings</h3>
+  <div class="w8-charm-pane__group">
+    <button class="w8-charm-pane__item" type="button"><i class="fa fa-wifi" aria-hidden="true"></i>Network</button>
+  </div>
+</div>
+```
+
+`aria-expanded="true"` (or `aria-pressed="true"`) fills the active charm with `--w8-accent`. `w8-charms--right` pins the bar to the right edge of a positioned parent and `w8-charms--fixed` keeps it on screen; opening and closing the pane stays your call, as the library ships no JavaScript.
+
 ## Modules and customization
 
-The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons.
+The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `app-bar.css`, `charms.css`, and `dialog.css`.
 
 ```js
 import "@flessan/8.css/dist/font-awesome/css/font-awesome.min.css";

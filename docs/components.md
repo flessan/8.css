@@ -10,6 +10,7 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - `gui/feedback.css`: progress, tabs, badges, notices, and dividers.
 - `gui/window.css`: desktop window and title bar.
 - `gui/app-bar.css`: action bar.
+- `gui/charms.css`: Charms bar and its flyout pane.
 - `gui/dialog.css`: native dialog styling.
 - `gui/icons.css`: Font Awesome sizing hooks, square icon buttons, and visually-hidden labels.
 - `gui/responsive.css`: narrow viewport and reduced-motion rules.
@@ -24,6 +25,7 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - Tabs: `w8-tabs`, `w8-tab`.
 - Desktop: `w8-window`, `w8-title-bar`, `w8-title-bar__text`, `w8-title-bar__controls`, `w8-window-control`, `w8-window-control--close`, `w8-window-body`, `w8-window-footer`.
 - Actions and dialogs: `w8-app-bar`, `w8-app-bar__item`, `w8-dialog`, `w8-dialog__body`, `w8-dialog__footer`.
+- Charms: `w8-charms`, `w8-charm`, `w8-charm__icon`, `w8-charm__label`, `w8-charm-pane`, `w8-charm-pane__title`, `w8-charm-pane__group`, `w8-charm-pane__item`; modifiers `w8-charms--right`, `w8-charms--fixed`.
 - Icons: `w8-icon`, `w8-icon--small`, `w8-icon--large`, `w8-icon--xl`, `w8-icon-button`, `w8-icon-button--accent`, `w8-icon-button__label`, `w8-sr-only`.
 
 ## Font Awesome 4.7.0 icons
