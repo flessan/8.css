@@ -54,8 +54,17 @@ Desktop: `.w8-window`, `.w8-title-bar`, `.w8-title-bar__text`, `.w8-title-bar__c
 App bar and dialog: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
 Icons: `.fa`, `.fa-{name}`, `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
 
+## Wallpapers
+`styles/images/` holds the Windows 8 (19) and Windows 8.1 (9) RTM wallpapers used by the demo. The Start Screen accepts artwork through custom properties:
+
+```html
+<section class="w8-start-screen" style="--w8-start-image:url('styles/images/Windows8RTM/img3.jpg');--w8-start-background:#4d96b0;--w8-accent:#0078d7">
+```
+
+Optional generated classes: `.w8-wallpaper-<id>` sets `--w8-start-image`, `--w8-start-background` and `--w8-accent`; `.w8-wallpaper-cover` applies them as a cover background to any element. `styles/images/wallpapers/manifest.json` lists every wallpaper with id, title, window, file, dimensions, byte size, aspect ratio, monitor span, dominant and accent colour. `dist/wallpapers/` republishes 480x300 thumbnails with root-relative URLs for consumers. Artwork is Microsoft copyright, demonstration use only, excluded from the full resolution npm files.
+
 ## Custom properties
-`--w8-font-family`, `--w8-text`, `--w8-muted`, `--w8-surface`, `--w8-surface-subtle`, `--w8-border`, `--w8-accent`, `--w8-accent-hover`, `--w8-focus`, `--w8-tile-blue`, `--w8-tile-cyan`, `--w8-tile-purple`, `--w8-tile-magenta`, `--w8-tile-green`, `--w8-tile-orange`, `--w8-tile-red`, `--w8-tile-dark`, plus `--w8-start-background` and `--w8-tile-color` for the Start Screen canvas and individual tiles.
+`--w8-font-family`, `--w8-text`, `--w8-muted`, `--w8-surface`, `--w8-surface-subtle`, `--w8-border`, `--w8-accent`, `--w8-accent-hover`, `--w8-focus`, `--w8-tile-blue`, `--w8-tile-cyan`, `--w8-tile-purple`, `--w8-tile-magenta`, `--w8-tile-green`, `--w8-tile-orange`, `--w8-tile-red`, `--w8-tile-dark`, plus `--w8-start-background` and `--w8-tile-color` for the Start Screen canvas and individual tiles, and `--w8-start-image` for optional wallpaper artwork.
 
 ## Accessibility boundary
 Use semantic controls and accessible names. Hide decorative icons with `aria-hidden="true"` and label icon-only controls. Keep focus visible, check contrast with custom colors, and respect reduced-motion settings. CSS styles controls but does not manage state, tab keyboard navigation, window controls, announcements, or focus management.

@@ -8,8 +8,10 @@
 
 html,
 body{
-	background: #0d6098;
+	background-color: #0d6098;
 	background-image: url('../styles/images/start-screen.jpg');
+	background-position: center;
+	background-size: cover;
 /*	 background-repeat: no-repeat;
   -moz-transform: scale(0.75, 0.75);
     zoom: 0.75; 

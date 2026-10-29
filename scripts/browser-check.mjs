@@ -241,7 +241,11 @@ socket.addEventListener("message", (message) => {
     recordFailure(currentPath, `${payload.params.response.status} ${payload.params.response.url}`);
   }
   if (payload.method === "Network.loadingFailed") {
-    recordFailure(currentPath, `failed ${payload.params.errorText}`);
+    // Aborted loads happen when a navigation supersedes in-flight requests; they
+    // are not failures the page can act on.
+    if (!payload.params.errorText.includes("ERR_ABORTED")) {
+      recordFailure(currentPath, `failed ${payload.params.errorText}`);
+    }
   }
   if (payload.method === "Runtime.exceptionThrown") {
     recordFailure(currentPath, payload.params.exceptionDetails.exception?.description ?? "script error");
@@ -288,6 +292,7 @@ const pages = [
   { path: "/index.html", name: "home", icons: true },
   { path: "/docs/index.html", name: "docs", icons: true },
   { path: "/examples/components.html", name: "gallery", icons: true },
+  { path: "/examples/wallpapers.html", name: "wallpapers", icons: true },
   { path: "/examples/legacy-start-screen.html", name: "legacy", icons: true, allowOverflow: true },
 ];
 
@@ -405,6 +410,71 @@ check(
   JSON.stringify(showcase),
 );
 await shoot("gallery-showcase");
+
+// Wallpaper pack: every thumbnail loads, picking a wallpaper repaints the
+// preview, the fit mode is applied and the CSS snippet follows the selection.
+await visit("/examples/wallpapers.html", 1440, 1000);
+const pack = await evaluate(`(async () => {
+  const radios = [...document.querySelectorAll('.wp-radio')];
+  const preview = document.getElementById('preview');
+  const initial = getComputedStyle(preview).backgroundImage;
+  const sixth = radios[5];
+  sixth.checked = true;
+  sixth.dispatchEvent(new Event('change'));
+  await new Promise((done) => setTimeout(done, 120));
+  const afterPick = getComputedStyle(preview).backgroundImage;
+  document.getElementById('fit').value = 'contain';
+  document.getElementById('fit').dispatchEvent(new Event('change'));
+  await new Promise((done) => setTimeout(done, 80));
+  const images = [...document.images];
+  return {
+    options: radios.length,
+    initial,
+    afterPick,
+    expected: 'url("' + new URL(sixth.dataset.file, location.href).href + '")',
+    backgroundSize: getComputedStyle(preview).backgroundSize,
+    snippet: document.getElementById('snippet').textContent,
+    note: document.getElementById('preview-note').textContent,
+    images: images.length,
+    broken: images.filter((image) => image.complete && image.naturalWidth === 0).map((image) => image.src).slice(0, 3),
+    thumbLoaded: images.every((image) => !image.complete || image.naturalWidth > 0),
+  };
+})()`);
+check(
+  "wallpaper pack lists every wallpaper with a loading thumbnail",
+  pack.options >= 20 && pack.broken.length === 0 && pack.images >= 20,
+  JSON.stringify({ options: pack.options, images: pack.images, broken: pack.broken }),
+);
+check(
+  "picking a wallpaper repaints the preview and updates the snippet",
+  pack.afterPick === pack.expected && pack.afterPick !== pack.initial && pack.snippet.includes("--w8-start-image"),
+  JSON.stringify({ initial: pack.initial.slice(0, 60), afterPick: pack.afterPick.slice(0, 60), note: pack.note }),
+);
+check("fit mode is applied to the preview", pack.backgroundSize === "contain", pack.backgroundSize);
+await shoot("wallpapers-picked");
+
+await realClick(".wp-option:nth-of-type(3)");
+await new Promise((done) => setTimeout(done, 150));
+
+// Picking an accent radio recolours controls through --w8-accent.
+const accent = await evaluate(`(async () => {
+  const radios = [...document.querySelectorAll('input[name="accent"]')];
+  radios[2].checked = true;
+  radios[2].dispatchEvent(new Event('change'));
+  await new Promise((done) => setTimeout(done, 100));
+  const preview = document.getElementById('preview');
+  return {
+    accentVariable: getComputedStyle(preview).getPropertyValue('--w8-accent').trim(),
+    picked: radios[2].value,
+    button: getComputedStyle(document.querySelector('#preview ~ .sample-row .w8-button--primary, .sample-row .w8-button--primary')).backgroundColor,
+    snippet: document.getElementById('snippet').textContent,
+  };
+})()`);
+check(
+  "accent selection drives --w8-accent and the snippet",
+  accent.accentVariable === accent.picked && accent.snippet.includes(accent.picked),
+  JSON.stringify(accent),
+);
 
 const reduced = await (async () => {
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });

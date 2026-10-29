@@ -321,6 +321,74 @@ assert.match(docsCss, /grid-auto-flow:row dense/, "The documentation tile previe
 assert.match(docsCss, /#tiles \.preview \.w8-tiles\{grid-template-columns:repeat\(3/, "The tile demo should read as a complete Start Screen group.");
 
 /* ------------------------------------------------------------------ *
+ * Wallpaper pack
+ * ------------------------------------------------------------------ */
+const packDirectory = "styles/images/wallpapers";
+const packManifest = JSON.parse(await read(`${packDirectory}/manifest.json`));
+assert.ok(Array.isArray(packManifest.wallpapers) && packManifest.wallpapers.length >= 20, "The wallpaper manifest must list the pack.");
+assert.equal(packManifest.counts.total, packManifest.wallpapers.length, "Manifest counts must match the wallpaper list.");
+assert.equal(
+  packManifest.counts["windows-8"] + packManifest.counts["windows-8.1"],
+  packManifest.wallpapers.length,
+  "Manifest window counts must add up.",
+);
+for (const wallpaper of packManifest.wallpapers) {
+  assert.match(wallpaper.id, /^win8(1)?-img\d+$/, `Unexpected wallpaper id: ${wallpaper.id}`);
+  assert.ok(wallpaper.title && wallpaper.title.length > 2, `Wallpaper ${wallpaper.id} needs a title.`);
+  assert.ok(["Windows 8", "Windows 8.1"].includes(wallpaper.window), `Wallpaper ${wallpaper.id} has an unknown window.`);
+  assert.ok(wallpaper.width >= 1920 && wallpaper.height >= 1200, `Wallpaper ${wallpaper.id} should be at least 1920x1200.`);
+  assert.match(wallpaper.dominant, /^#[0-9a-f]{6}$/, `Wallpaper ${wallpaper.id} needs a dominant colour.`);
+  assert.match(wallpaper.accent, /^#[0-9a-f]{6}$/, `Wallpaper ${wallpaper.id} needs an accent colour.`);
+  assert.equal(wallpaper.span, wallpaper.width >= 3840 ? "triple" : "single", `Wallpaper ${wallpaper.id} has an unexpected span.`);
+  assert.ok(await exists(`styles/images/${wallpaper.file}`), `Missing wallpaper file: ${wallpaper.file}`);
+  assert.ok(await exists(`styles/images/${wallpaper.thumb}`), `Missing wallpaper thumbnail: ${wallpaper.thumb}`);
+  assert.ok(await exists(`dist/wallpapers/${wallpaper.id}.jpg`), `Missing published thumbnail: ${wallpaper.id}`);
+  const sourceBytes = await readFile(new URL(`styles/images/${wallpaper.file}`, root));
+  assert.equal(sourceBytes.length, wallpaper.bytes, `Manifest byte size is stale for ${wallpaper.id}.`);
+}
+
+const wallpaperCss = await read(`${packDirectory}/wallpapers.css`);
+const distWallpaperCss = await read("dist/wallpapers/wallpapers.css");
+for (const wallpaper of packManifest.wallpapers) {
+  assert.ok(wallpaperCss.includes(`.w8-wallpaper-${wallpaper.id} {`), `wallpapers.css is missing ${wallpaper.id}.`);
+  assert.ok(wallpaperCss.includes(`url("../${wallpaper.file}")`), `wallpapers.css has the wrong path for ${wallpaper.id}.`);
+  assert.ok(distWallpaperCss.includes(`url("/wallpapers/${wallpaper.id}.jpg")`), `dist wallpapers.css is missing ${wallpaper.id}.`);
+}
+const distManifest = JSON.parse(await read("dist/wallpapers/manifest.json"));
+assert.equal(distManifest.wallpapers.length, packManifest.wallpapers.length, "The published manifest must stay in sync.");
+assert.equal(distManifest.base, "/wallpapers/", "The published manifest must use root relative paths.");
+
+// The library API for wallpapers.
+assert.ok(bundle.includes("--w8-start-image"), "The bundle must document --w8-start-image.");
+assert.match(await read("gui/tiles.css"), /\.w8-start-screen \{[^}]*background-image: var\(--w8-start-image, none\)/, "The Start Screen must paint --w8-start-image.");
+assert.ok(await exists(`${packDirectory}/NOTICE.md`), "The wallpaper licensing notice must exist.");
+assert.match(
+  await read(`${packDirectory}/NOTICE.md`),
+  /\*\*not\*\* covered by 8\.css's MIT license/i,
+  "The notice must state that the artwork is not MIT licensed.",
+);
+assert.match(await read(`${packDirectory}/NOTICE.md`), /Microsoft/, "The notice must name the rights holder.");
+const pkgForWallpapers = JSON.parse(await read("package.json"));
+assert.ok(
+  !pkgForWallpapers.files.some((entry) => entry.includes("Windows8") || entry.includes("styles/")),
+  "Full resolution wallpapers must not be published to npm.",
+);
+assert.ok(pkgForWallpapers.files.includes("dist/wallpapers/"), "The thumbnail pack must be published.");
+assert.ok(pkgForWallpapers.exports["./dist/wallpapers/*"], "Package exports must expose the wallpaper thumbnails.");
+
+// The demo pages that present the pack must load their assets.
+const wallpaperPage = await read("examples/wallpapers.html");
+assert.match(wallpaperPage, /wallpapers\/wallpapers\.css/, "The wallpaper page must load the generated classes.");
+assert.equal(
+  (wallpaperPage.match(/class="wp-radio/g) || []).length,
+  packManifest.wallpapers.length,
+  "The wallpaper page must offer every wallpaper.",
+);
+assert.match(wallpaperPage, /name="wallpaper"/, "The wallpaper page needs a radio group.");
+assert.match(await read("index.html"), /examples\/wallpapers\.html/, "The landing page must link to the wallpaper pack.");
+assert.match(await read("docs/index.html"), /id="personalize"/, "The documentation must document the wallpaper API.");
+
+/* ------------------------------------------------------------------ *
  * Package metadata
  * ------------------------------------------------------------------ */
 const pkg = JSON.parse(await read("package.json"));

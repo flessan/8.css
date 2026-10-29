@@ -34,6 +34,9 @@ for (const target of [distDirectory, docsDirectory]) {
   );
 }
 
+// Regenerate the wallpaper manifest, thumbnail pack and generated classes.
+await import("./wallpapers.mjs");
+
 // One canonical third-party notice, generated from the vendored license.
 await copyFile(
   new URL(`vendor/font-awesome/${fontAwesomeAssets.license}`, root),

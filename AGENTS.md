@@ -9,6 +9,7 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - Run `npm run build` to regenerate `src/8.css`, `dist/8.css`, `dist/gui/*.css`, `dist/font-awesome/`, `docs/8.css`, `docs/font-awesome/`, and `THIRD-PARTY-NOTICES.md`.
 - Keep README.md, docs/index.html, docs/components.md, llms.txt, and llms-full.txt aligned with public APIs.
 - Keep the legacy demo in `examples/legacy-start-screen.html` as a historical reference; it uses `styles/main.css` and the published Font Awesome assets.
+- Wallpaper artwork is demonstration material: never add the full resolution files to `package.json` `files`, and keep `styles/images/wallpapers/NOTICE.md` accurate.
 
 ## Constraints
 - Runtime must remain CSS-only; do not add required JavaScript dependencies.
@@ -27,6 +28,8 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - `gui/icons.css`: Font Awesome sizing hooks and icon-button helpers.
 - `gui/responsive.css`: responsive and reduced-motion adjustments.
 - `vendor/font-awesome/`: upstream icon font, stylesheets, and license.
+- `styles/images/`: demo wallpaper artwork (`Windows8RTM/`, `Windows8.1RTMWallpapers/`) and the generated `wallpapers/` pack (manifest, thumbnails, palette, optional classes).
+- `scripts/wallpapers.mjs`: builds the wallpaper index; `npm run build` runs it. Thumbnails and colours are committed and documented in `styles/images/wallpapers/NOTICE.md`.
 - `dist/8.css`: full CSS bundle (Font Awesome + modules); `dist/gui/`: modules; `dist/font-awesome/`: icon font.
 - `scripts/lib/bundle.mjs`: shared bundle generation used by build and tests.
 
@@ -34,5 +37,7 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 Run `npm run build`, `npm test`, and `npm run build:site`. Confirm generated CSS matches its modules, that `dist/font-awesome/` and `docs/font-awesome/` match `vendor/font-awesome/`, that every `fa-*` class in the HTML pages exists as a glyph in the shipped font, and that icon markup stays accessible.
 
 `npm run test:browser` adds an optional real-browser pass (no npm dependencies): it renders every page at 1280px and 390px, checks that icons paint, that no request fails, that nothing overflows horizontally, and that the mobile menu, code copy, code snippets, skip link and reduced-motion rules work. Run it before shipping visual changes; it skips when Chromium is unavailable.
+
+Wallpaper coverage is checked too: every entry needs a source file, a thumbnail, a palette pair, a published copy in `dist/wallpapers/`, and matching generated classes.
 
 The Start Screen previews use `grid-auto-flow: row dense` so a wide tile is followed by the next fitting tile instead of a hole. Keep that behaviour in mind when adding tiles to the demos.

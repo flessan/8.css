@@ -2,13 +2,14 @@
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>8.css component gallery</title><link rel="stylesheet" href="../dist/8.css"/><style>body{background:#f2f2f2;color:#1a1a1a;font:14px/1.5 "Segoe UI",Arial,sans-serif;margin:0;padding:2rem}main{margin:0 auto;max-width:62rem}.gallery{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))}.panel{background:#fff;border:1px solid #d1d1d1;padding:1.25rem}.panel h2{font-weight:300;margin-top:0}.stack{display:flex;flex-wrap:wrap;gap:.6rem}.field{margin-bottom:.8rem}.note{color:#606060}
 .showcase{grid-column:1/-1}
 .showcase .w8-start-screen{padding:1.25rem}
-.showcase .w8-start-heading{font-size:2rem;margin-bottom:.2rem}
+.showcase .w8-start-heading{font-size:2rem;margin-bottom:.2rem;text-shadow:0 1px 3px rgb(0 0 0 / .55)}
+.showcase .w8-start-subtitle{color:#fff;text-shadow:0 1px 3px rgb(0 0 0 / .6)}
 .showcase .w8-start-subtitle{margin-bottom:1rem}
 .start-tiles{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row dense;grid-auto-rows:minmax(5.5rem,auto)}
 @media(max-width:640px){.start-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}</style></head>
-<body><main class="w8"><p><a href="../index.html">← Back to 8.css</a></p><h1>Component gallery</h1><p class="w8-muted">A showcase of the currently implemented classes. Tiles, controls, windows and icon buttons are interactive where the markup calls for it; the styling itself stays CSS-only. Icons use the bundled Font Awesome 4.7.0 icon font.</p><div class="gallery">
+<body><main class="w8"><p><a href="../index.html">← Back to 8.css</a></p><h1>Component gallery</h1><p class="w8-muted">A showcase of the currently implemented classes. The Start Screen below sits on a wallpaper from the <a href="./wallpapers.html">wallpaper pack</a>. Tiles, controls, windows and icon buttons are interactive where the markup calls for it; the styling itself stays CSS-only. Icons use the bundled Font Awesome 4.7.0 icon font.</p><div class="gallery">
 <section class="panel showcase" id="showcase"><h2>Start Screen</h2><p class="note">A complete tile group built with the public classes. Only colour and size modifiers are used; the icons come from the bundled Font Awesome 4.7.0 font.</p>
-<div class="w8-start-screen"><h3 class="w8-start-heading">Start</h3><p class="w8-start-subtitle">Tiles, apps, and live counts.</p><div class="w8-tiles start-tiles">
+<div class="w8-start-screen" style="--w8-start-image:url('../styles/images/Windows8RTM/img12.jpg');--w8-start-background:#bbd444"><h3 class="w8-start-heading">Start</h3><p class="w8-start-subtitle">Tiles, apps, and live counts.</p><div class="w8-tiles start-tiles">
 <a class="w8-tile w8-tile--wide w8-tile--blue" href="#showcase"><i class="fa fa-envelope w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">2 new messages</span></a>
 <a class="w8-tile w8-tile--purple" href="#showcase"><i class="fa fa-file-photo-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></a>
 <a class="w8-tile w8-tile--green" href="#showcase"><i class="fa fa-windows w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span></a>

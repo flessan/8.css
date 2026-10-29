@@ -46,6 +46,7 @@
 .w8-icon-button:focus-visible { outline: 2px solid var(--w8-focus, #005a9e); outline-offset: 2px; }
 .w8-icon-button:disabled, .w8-icon-button[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
 .w8-icon-button--accent { background: var(--w8-accent, #0078d7); color: #fff; }
+.w8-icon-button:hover, .w8-icon-button:focus-visible { color: var(--w8-accent); }
 .w8-icon-button--accent:hover { background: var(--w8-accent-hover, #006cc1); color: #fff; }
 .w8-icon-button__label { display: block; font-size: .68rem; line-height: 1.1; max-width: 5.5rem; overflow-wrap: anywhere; }
 

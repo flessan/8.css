@@ -49,6 +49,15 @@ With the modular stylesheets, load the icon font stylesheet yourself and keep th
 
 Load `gui/base.css` before modular component styles and load `gui/icons.css` when using the 8.css icon hooks. The full `dist/8.css` bundle already includes the Font Awesome stylesheet and the helper styles.
 
+### Wallpapers
+
+The wallpaper pack is demo material and is not installed with the package except for thumbnails in `dist/wallpapers/`. Copy the full resolution artwork from `styles/images/` if you want it locally, and read the license notice first:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/wallpapers/wallpapers.css">
+<section class="w8-start-screen w8-wallpaper-win8-img3">…</section>
+```
+
 ### Fonts
 
 The library asks for `"Segoe UI"`, then `"Segoe UI Variable"`, `"Helvetica Neue"`, and `Arial`. Browsers without Segoe UI fall back to a neutral grotesk, so capture reference screenshots on Windows if the exact Segoe UI metrics matter. To ship your own text font, override the custom property:

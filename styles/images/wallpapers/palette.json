@@ -1,0 +1,114 @@
+{
+  "win8-img0": {
+    "accent": "#3a96fe",
+    "dominant": "#60b0f5"
+  },
+  "win8-img1": {
+    "accent": "#72a9d6",
+    "dominant": "#7eaeda"
+  },
+  "win8-img10": {
+    "accent": "#4f3109",
+    "dominant": "#543618"
+  },
+  "win8-img100": {
+    "accent": "#1871ab",
+    "dominant": "#57938d"
+  },
+  "win8-img101": {
+    "accent": "#ecb10b",
+    "dominant": "#c77c08"
+  },
+  "win8-img102": {
+    "accent": "#16054a",
+    "dominant": "#512265"
+  },
+  "win8-img103": {
+    "accent": "#8da9d1",
+    "dominant": "#67717c"
+  },
+  "win8-img104": {
+    "accent": "#080c0d",
+    "dominant": "#4e4c32"
+  },
+  "win8-img105": {
+    "accent": "#020305",
+    "dominant": "#61666f"
+  },
+  "win8-img11": {
+    "accent": "#ccedb0",
+    "dominant": "#d3dfaa"
+  },
+  "win8-img12": {
+    "accent": "#8ecc09",
+    "dominant": "#bbd444"
+  },
+  "win8-img2": {
+    "accent": "#f0b251",
+    "dominant": "#c6aa79"
+  },
+  "win8-img3": {
+    "accent": "#0586ad",
+    "dominant": "#4d96b0"
+  },
+  "win8-img4": {
+    "accent": "#162830",
+    "dominant": "#828686"
+  },
+  "win8-img5": {
+    "accent": "#4f8f12",
+    "dominant": "#588418"
+  },
+  "win8-img6": {
+    "accent": "#b78768",
+    "dominant": "#ad9780"
+  },
+  "win8-img7": {
+    "accent": "#007687",
+    "dominant": "#488694"
+  },
+  "win8-img8": {
+    "accent": "#f9eaf4",
+    "dominant": "#f7dbdb"
+  },
+  "win8-img9": {
+    "accent": "#8fcdaf",
+    "dominant": "#b7cec2"
+  },
+  "win81-img0": {
+    "accent": "#fab602",
+    "dominant": "#f4b017"
+  },
+  "win81-img1": {
+    "accent": "#01adfd",
+    "dominant": "#0297e9"
+  },
+  "win81-img100": {
+    "accent": "#6c5400",
+    "dominant": "#8a6e49"
+  },
+  "win81-img13": {
+    "accent": "#f88d07",
+    "dominant": "#835533"
+  },
+  "win81-img2": {
+    "accent": "#01f0f8",
+    "dominant": "#2d91ed"
+  },
+  "win81-img3": {
+    "accent": "#009048",
+    "dominant": "#129c59"
+  },
+  "win81-img4": {
+    "accent": "#e93400",
+    "dominant": "#e63000"
+  },
+  "win81-img5": {
+    "accent": "#720caf",
+    "dominant": "#8137c2"
+  },
+  "win81-img6": {
+    "accent": "#67b3d8",
+    "dominant": "#7ebad8"
+  }
+}

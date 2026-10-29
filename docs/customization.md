@@ -22,6 +22,20 @@ Use solid colors and crisp edges to preserve the Windows 8 visual language. Icon
 </button>
 ```
 
+## Wallpapers and accent
+
+The Start Screen paints an optional background image behind the tiles:
+
+```css
+.my-start {
+  --w8-start-image: url("../styles/images/Windows8RTM/img3.jpg");
+  --w8-start-background: #4d96b0; /* fallback colour while the image loads */
+  --w8-accent: #0078d7;
+}
+```
+
+`styles/images/wallpapers/wallpapers.css` provides one `.w8-wallpaper-<id>` class per wallpaper in the [pack](../examples/wallpapers.html); each sets the image, its dominant colour and a matching accent. Add `.w8-wallpaper-cover` to apply the same artwork as a cover background on any element. Because the artwork is decorative, keep text contrast in mind and prefer the dominant colour for any surface that must stay readable.
+
 ## Icon sizes
 
 Font Awesome 4.7.0 utilities are available unchanged, and 8.css adds three size hooks so icons match its component scale:

@@ -2370,7 +2370,7 @@
 .w8-muted { color: var(--w8-muted); }
 
 /* Start Screen and tiles */
-.w8-start-screen { background: var(--w8-start-background, #1f1f1f); color: #fff; min-width: 0; padding: clamp(1.25rem, 4vw, 3rem); }
+.w8-start-screen { background-color: var(--w8-start-background, #1f1f1f); background-image: var(--w8-start-image, none); background-position: center; background-repeat: no-repeat; background-size: cover; color: #fff; min-width: 0; padding: clamp(1.25rem, 4vw, 3rem); }
 .w8-start-heading { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 200; letter-spacing: -.045em; line-height: 1.05; margin: 0 0 .6rem; }
 .w8-start-subtitle { color: rgb(255 255 255 / .78); margin: 0 0 1.6rem; }
 .w8-tiles { display: grid; grid-auto-rows: minmax(7rem, auto); grid-template-columns: repeat(auto-fill, minmax(min(100%, 7rem), 1fr)); gap: .35rem; max-width: 76rem; }
@@ -2509,6 +2509,7 @@
 .w8-icon-button:focus-visible { outline: 2px solid var(--w8-focus, #005a9e); outline-offset: 2px; }
 .w8-icon-button:disabled, .w8-icon-button[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
 .w8-icon-button--accent { background: var(--w8-accent, #0078d7); color: #fff; }
+.w8-icon-button:hover, .w8-icon-button:focus-visible { color: var(--w8-accent); }
 .w8-icon-button--accent:hover { background: var(--w8-accent-hover, #006cc1); color: #fff; }
 .w8-icon-button__label { display: block; font-size: .68rem; line-height: 1.1; max-width: 5.5rem; overflow-wrap: anywhere; }
 

@@ -1,5 +1,5 @@
 /* Start Screen and tiles */
-.w8-start-screen { background: var(--w8-start-background, #1f1f1f); color: #fff; min-width: 0; padding: clamp(1.25rem, 4vw, 3rem); }
+.w8-start-screen { background-color: var(--w8-start-background, #1f1f1f); background-image: var(--w8-start-image, none); background-position: center; background-repeat: no-repeat; background-size: cover; color: #fff; min-width: 0; padding: clamp(1.25rem, 4vw, 3rem); }
 .w8-start-heading { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 200; letter-spacing: -.045em; line-height: 1.05; margin: 0 0 .6rem; }
 .w8-start-subtitle { color: rgb(255 255 255 / .78); margin: 0 0 1.6rem; }
 .w8-tiles { display: grid; grid-auto-rows: minmax(7rem, auto); grid-template-columns: repeat(auto-fill, minmax(min(100%, 7rem), 1fr)); gap: .35rem; max-width: 76rem; }

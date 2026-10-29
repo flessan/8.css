@@ -9,6 +9,7 @@
 - Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers.
 - Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, windows, and dialog styling.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
+- A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
 - Icon helpers with sizing hooks, square app-bar buttons, and accessible visually-hidden labels.
 - Interactive documentation, copyable HTML snippets, a one-page component gallery, and modular stylesheets.
 
@@ -101,6 +102,40 @@ GitHub Packages requires authentication for npm clients. Use a GitHub Personal A
 
 A package's first GitHub Packages publication is private by default. After the first successful publication, open the package's settings on GitHub and change its visibility to **Public** if you intend it to be publicly reusable. Until then, access is restricted.
 
+## Wallpaper pack
+
+`styles/images/` ships the Windows 8 and Windows 8.1 RTM wallpapers used by the demo site. A generated manifest describes each one, and the Start Screen reads the artwork through two custom properties:
+
+```html
+<section class="w8-start-screen" style="
+  --w8-start-image: url('styles/images/Windows8RTM/img3.jpg');
+  --w8-start-background: #4d96b0;
+  --w8-accent: #0078d7;
+">
+  <div class="w8-tiles">…</div>
+</section>
+```
+
+`styles/images/wallpapers/wallpapers.css` is optional and adds one `.w8-wallpaper-<id>` class per wallpaper that sets all three properties, plus `.w8-wallpaper-cover` for a plain cover-fitted background on any element:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@flessan/8.css@0.2.0/dist/wallpapers/wallpapers.css">
+<section class="w8-start-screen w8-wallpaper-win8-img3">…</section>
+```
+
+| Path | Contents |
+| --- | --- |
+| `styles/images/Windows8RTM/` | 19 Windows 8 RTM wallpapers (1920×1200, two 3840×1200 panoramas) |
+| `styles/images/Windows8.1RTMWallpapers/` | 9 Windows 8.1 RTM wallpapers |
+| `styles/images/wallpapers/manifest.json` | Titles, dimensions, byte sizes, aspect ratios, monitor span, dominant and accent colours |
+| `styles/images/wallpapers/thumbs/` | 480×300 thumbnails used by the gallery |
+| `styles/images/wallpapers/wallpapers.css` | Optional per-wallpaper classes for the demo paths |
+| `dist/wallpapers/` | Published thumbnail pack with root-relative classes and a consumer manifest |
+
+Regenerate everything with `npm run build` (which runs `scripts/wallpapers.mjs`), or just the dependency-free index with `node scripts/wallpapers.mjs`.
+
+**Licensing:** the wallpaper artwork is © Microsoft and is included for demonstration only. It is **not** covered by the MIT license and the full resolution files are **not** published to npm — only the thumbnails in `dist/wallpapers/` are. See [the wallpaper notice](styles/images/wallpapers/NOTICE.md).
+
 ## Modules and customization
 
 The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons.
@@ -130,11 +165,12 @@ Browsers without a `Segoe UI` installation fall back to `Segoe UI Variable`, `He
 Source of truth:
 - `gui/`: maintained CSS modules.
 - `vendor/font-awesome/`: unmodified Font Awesome 4.7.0 package files plus its license text.
+- `styles/images/wallpapers/`: generated wallpaper manifest, thumbnails, palette and optional classes.
 - `src/8.css`: generated combined stylesheet (font stylesheet + modules).
 - `dist/8.css`, `dist/gui/`, `dist/font-awesome/`: consumer distribution.
 - `docs/index.html`, `docs/8.css`, `docs/font-awesome/`: documentation site.
 
-Do not hand-edit generated CSS or font copies; update the source and rebuild. The checks validate module parity, CSS structure, distribution files, font and license asset parity, glyph coverage for every icon used in the docs and examples, accessible icon markup, and package contents.
+Do not hand-edit generated CSS, font copies or the wallpaper manifest; update the source and rebuild. The checks validate module parity, CSS structure, distribution files, font and license asset parity, glyph coverage for every icon used in the docs and examples, accessible icon markup, and package contents.
 
 ## Accessibility boundary
 
@@ -145,3 +181,5 @@ This package supplies styling and an icon font only. It does not implement tab n
 MIT for 8.css itself. See [LICENSE](LICENSE). The license and attribution for the original Windows-8-Metro-UI prototype remain preserved.
 
 Font Awesome 4.7.0 is bundled unmodified: the font files are licensed under the SIL OFL 1.1 and the stylesheets under the MIT License. See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for the full text and attribution.
+
+The Windows 8 and 8.1 wallpapers are Microsoft artwork, included with the demo site for demonstration only and excluded from the published package. See [styles/images/wallpapers/NOTICE.md](styles/images/wallpapers/NOTICE.md).
