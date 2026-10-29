@@ -49,4 +49,14 @@ With the modular stylesheets, load the icon font stylesheet yourself and keep th
 
 Load `gui/base.css` before modular component styles and load `gui/icons.css` when using the 8.css icon hooks. The full `dist/8.css` bundle already includes the Font Awesome stylesheet and the helper styles.
 
+### Fonts
+
+The library asks for `"Segoe UI"`, then `"Segoe UI Variable"`, `"Helvetica Neue"`, and `Arial`. Browsers without Segoe UI fall back to a neutral grotesk, so capture reference screenshots on Windows if the exact Segoe UI metrics matter. To ship your own text font, override the custom property:
+
+```css
+:root {
+  --w8-font-family: "Segoe UI", "Selawik", "Helvetica Neue", Arial, sans-serif;
+}
+```
+
 The bundled icon font keeps its upstream license. See [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md).

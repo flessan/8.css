@@ -29,6 +29,7 @@
     "build": "node scripts/build.mjs",
     "build:site": "node scripts/build-site.mjs",
     "test": "node scripts/check-css.mjs",
+    "test:browser": "node scripts/browser-check.mjs",
     "prepublishOnly": "npm run build && npm test"
   },
   "engines": {

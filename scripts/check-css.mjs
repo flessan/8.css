@@ -283,6 +283,44 @@ assert.ok(
 );
 
 /* ------------------------------------------------------------------ *
+ * Accessible page scaffolding and demo quality
+ * ------------------------------------------------------------------ */
+const home = await read("index.html");
+const docsPage = await read("docs/index.html");
+for (const [page, html] of [
+  ["index.html", home],
+  ["docs/index.html", docsPage],
+]) {
+  assert.match(html, /<a class="skip-link" href="#main">/, `${page} must start with a skip link.`);
+  assert.match(
+    html,
+    /<main\b[^>]*\bid="main"[^>]*\btabindex="-1"[^>]*>/,
+    `${page} must expose a focusable main region for the skip link.`,
+  );
+  assert.ok(
+    html.indexOf('class="skip-link"') < html.indexOf("<main"),
+    `${page} skip link must come before the main region in DOM order.`,
+  );
+}
+
+const docsCss = await read("docs/docs.css");
+assert.match(docsCss, /\.skip-link:focus\{top:8px\}/, "The skip link must become visible on focus.");
+assert.match(docsCss, /\.tree-link:focus-visible\{outline:2px solid/, "Sidebar links need a visible focus ring.");
+
+const docsScript = await read("docs/script.js");
+assert.match(
+  docsScript,
+  /catch\{\}[\s\S]*selectionCopy/,
+  "docs/script.js must fall back to a selection copy when the clipboard API rejects.",
+);
+assert.match(docsScript, /document\.execCommand\("copy"\)/, "docs/script.js must keep an execCommand copy fallback.");
+
+// The dense tile flow keeps the Start Screen previews from developing holes.
+assert.match(home, /grid-auto-flow:row dense/, "The landing page preview must fill tile rows densely.");
+assert.match(docsCss, /grid-auto-flow:row dense/, "The documentation tile preview must fill rows densely.");
+assert.match(docsCss, /#tiles \.preview \.w8-tiles\{grid-template-columns:repeat\(3/, "The tile demo should read as a complete Start Screen group.");
+
+/* ------------------------------------------------------------------ *
  * Package metadata
  * ------------------------------------------------------------------ */
 const pkg = JSON.parse(await read("package.json"));

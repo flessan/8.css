@@ -1,6 +1,6 @@
 # Component and icon reference
 
-The [interactive catalog](index.html) includes live previews, a 78-icon gallery drawn from Font Awesome 4.7.0, and copyable snippets. Public component classes use the `w8-` prefix.
+The [interactive catalog](index.html) includes live previews, a 78-icon gallery drawn from Font Awesome 4.7.0, and copyable snippets. The [component gallery](../examples/components.html) shows every component on one page, including a complete 12-tile Start Screen group. Public component classes use the `w8-` prefix.
 
 ## CSS modules
 - `gui/base.css`: design tokens, scoped typography, and focus styles.

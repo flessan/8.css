@@ -31,4 +31,8 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - `scripts/lib/bundle.mjs`: shared bundle generation used by build and tests.
 
 ## Validation
-Run `npm run build`, `npm test`, and `npm run build:site`. Confirm generated CSS matches its modules, that `dist/font-awesome/` and `docs/font-awesome/` match `vendor/font-awesome/`, that every `fa-*` class in the HTML pages exists as a glyph in the shipped font, and that icon markup stays accessible. Tests are contract checks, not a browser rendering suite.
+Run `npm run build`, `npm test`, and `npm run build:site`. Confirm generated CSS matches its modules, that `dist/font-awesome/` and `docs/font-awesome/` match `vendor/font-awesome/`, that every `fa-*` class in the HTML pages exists as a glyph in the shipped font, and that icon markup stays accessible.
+
+`npm run test:browser` adds an optional real-browser pass (no npm dependencies): it renders every page at 1280px and 390px, checks that icons paint, that no request fails, that nothing overflows horizontally, and that the mobile menu, code copy, code snippets, skip link and reduced-motion rules work. Run it before shipping visual changes; it skips when Chromium is unavailable.
+
+The Start Screen previews use `grid-auto-flow: row dense` so a wide tile is followed by the next fitting tile instead of a hole. Keep that behaviour in mind when adding tiles to the demos.

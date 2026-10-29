@@ -10,7 +10,7 @@
 - Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, windows, and dialog styling.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - Icon helpers with sizing hooks, square app-bar buttons, and accessible visually-hidden labels.
-- Interactive documentation, copyable HTML snippets, and modular stylesheets.
+- Interactive documentation, copyable HTML snippets, a one-page component gallery, and modular stylesheets.
 
 The icon font is Font Awesome 4.7.0 by Dave Gandy. 8.css is an independent community project and is not an official Microsoft product.
 
@@ -120,7 +120,12 @@ Requires Node.js 20 or newer.
 npm run build
 npm test
 npm run build:site
+npm run test:browser   # optional, needs a local Chromium
 ```
+
+`npm test` is a dependency-free contract suite over the CSS, asset and package layout. `npm run test:browser` is an optional smoke test that drives a real Chromium over the DevTools protocol using only Node built-ins: it verifies that the icon font actually paints, that pages load with no failed requests, that the layout has no horizontal overflow at 1280px and 390px, and that the mobile menu, copy buttons, code snippets, skip link and reduced-motion rules behave. Point it at a browser with `CHROMIUM_PATH=/path/to/chrome` and add `SCREENSHOT_DIR=./screenshots` to keep captures. It skips cleanly when no browser is available.
+
+Browsers without a `Segoe UI` installation fall back to `Segoe UI Variable`, `Helvetica Neue`, then `Arial`. Set the `--w8-font-family` custom property if you ship a Segoe UI-compatible webfont.
 
 Source of truth:
 - `gui/`: maintained CSS modules.
