@@ -22,6 +22,7 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - `gui/split-view.css`: snapped and filled split layouts.
 - `gui/dialog.css`: native dialog styling.
 - `gui/icons.css`: Font Awesome sizing hooks, square icon buttons, and visually-hidden labels.
+- `gui/motion.css`: opt-in entrance animations, the tile stagger, the Charms entrance, the wallpaper crossfade, press ripples and the motion tokens.
 - `gui/responsive.css`: narrow viewport and reduced-motion rules.
 
 ## Public classes
@@ -45,6 +46,7 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - Hub and split view: `w8-hub`, `w8-hub__header`, `w8-hub__title`, `w8-hub__lead`, `w8-hub__section`, `w8-hub__section-title`, `w8-hub__list`, `w8-hub__item`, `w8-hub__item-icon`, `w8-hub__item-text`, `w8-hub__item-title`, `w8-hub__item-meta`, `w8-hub__card`; `w8-split`, `w8-split__pane`, `w8-split__main`, `w8-split__title`; modifiers `w8-hub--dark`, `w8-split--snap-right`, `w8-split--divider`.
 - Progress ring and app bar variants: `w8-progress-ring` (`--small`), `w8-app-bar--top`, `w8-app-bar--contextual`, `w8-app-bar--circular`, `w8-app-bar__separator`.
 - Touch and gestures: `w8-edge-panel` (`--left`, `--right`, `--top`, `--bottom`, `is-open`), `w8-switcher` (`__header`, `__title`, `__list`, `__item`, `__thumb`, `__name`, `__meta`, `__close`, `__footer`), `w8-snap-preview` (`__label`), `w8-gesture-hint` (`__text`), `w8-touch-tutorial` (`__panel`, `__art`, `__step`, `__title`, `__text`, `__dots`, `__dot`, `__actions`), `w8-edge` with `w8-edge__grip`, `w8-start-hotspot` with `w8-start-hotspot__preview`, and the utilities `w8-touch-target`, `w8-pan-x`, `w8-pan-y`, `w8-pan-none`, `w8-no-select`, `w8-grab`, `w8-touch`, `w8-touch-hints`.
+- Motion: `w8-anim-rise`, `w8-anim-fade`, `w8-anim-zoom`, `w8-anim-slide-right`, `w8-anim-slide-left`, `w8-anim-slide-bottom`, `w8-stagger`, `w8-charms--enter`, `w8-wallpaper` with `w8-wallpaper__layer` and `is-visible`, `w8-ripple-host` with `w8-ripple`, `w8-bob`, `w8-badge-pop`, `w8-swap`; tokens `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow`, `--w8-stagger`.
 - Icons: `w8-icon`, `w8-icon--small`, `w8-icon--large`, `w8-icon--xl`, `w8-icon-button`, `w8-icon-button--accent`, `w8-icon-button__label`, `w8-sr-only`.
 
 ## Font Awesome 4.7.0 icons
@@ -70,6 +72,26 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - Window controls use `fa-window-minimize`, `fa-window-maximize`, and `fa-window-close`.
 
 The SVG sprite (`icons.svg` and the `w8-icon-{name}` IDs) was removed in favour of Font Awesome 4.7.0. See [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md) for licensing.
+
+## Motion and transitions
+
+`gui/motion.css` adds opt-in, one-shot motion. Nothing in it changes layout, and every animation is disabled under `prefers-reduced-motion: reduce`.
+
+```html
+<!-- a Start screen that rises in, with tiles that settle in reading order -->
+<section class="w8-start-screen w8-anim-rise">
+  <div class="w8-tiles w8-stagger">
+    <a class="w8-tile w8-tile--blue" href="#">...</a>
+    <a class="w8-tile w8-tile--purple" href="#">...</a>
+  </div>
+</section>
+```
+
+- Entrance classes: `w8-anim-rise`, `w8-anim-fade`, `w8-anim-zoom`, `w8-anim-slide-right`, `w8-anim-slide-left`, `w8-anim-slide-bottom`. Add the class when a surface opens, remove it when it closes, and the animation replays.
+- Groups: `w8-stagger` delays each child by `--w8-stagger` (32ms by default); `w8-charms--enter` brings the Charms bar in one charm at a time.
+- Wallpaper crossfade: `w8-wallpaper` stacks two `w8-wallpaper__layer` children; painting the idle layer and moving `is-visible` to it fades the new artwork in over the old one.
+- Press feedback: `w8-ripple-host` plus an appended `w8-ripple` span, driven by `--w8-ripple-x`, `--w8-ripple-y` and `--w8-ripple-size`. Accents: `w8-bob`, `w8-badge-pop`, `w8-swap`.
+- Tokens on the `.w8` root: `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow`, `--w8-stagger`.
 
 ## Wallpaper pack
 

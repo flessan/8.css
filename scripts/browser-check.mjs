@@ -1230,6 +1230,195 @@ for (const scene of ["start", "desktop"]) {
   await shoot(`shell-${scene}-mobile`);
 }
 
+// Landing page: the Start screen preview cross-fades bundled wallpapers.
+await visit("/index.html", 1440, 900);
+const landingFirst = await evaluate(`(() => {
+  const screen = document.getElementById("preview-screen");
+  const layers = [...document.querySelectorAll("[data-preview-layer]")];
+  return {
+    tiles: document.querySelectorAll(".preview-tiles .w8-tile").length,
+    charms: document.querySelectorAll(".preview-charm").length,
+    picker: document.querySelectorAll("[data-preview-wall]").length,
+    heading: document.querySelector(".preview-title")?.textContent,
+    visibleLayers: layers.filter((layer) => layer.classList.contains("is-visible")).length,
+    background: screen.style.getPropertyValue("--w8-start-background").trim(),
+    layerImage: getComputedStyle(layers[0]).backgroundImage,
+    name: document.getElementById("wallpaper-name")?.textContent,
+    overflow: document.documentElement.scrollWidth - innerWidth,
+  };
+})()`);
+check(
+  "landing page preview shows a Start screen with tiles, charms and a background picker",
+  landingFirst.tiles >= 8 &&
+    landingFirst.charms === 5 &&
+    landingFirst.picker === 6 &&
+    landingFirst.visibleLayers === 1 &&
+    landingFirst.layerImage.includes("Windows8RTM/img0.jpg") &&
+    landingFirst.name === "Daisy" &&
+    landingFirst.overflow <= 1,
+  JSON.stringify(landingFirst),
+);
+await realClick('[data-preview-wall][data-preview-title="Prism"]');
+await evaluate("new Promise((done) => setTimeout(done, 800))");
+const landingSwapped = await evaluate(`(() => {
+  const screen = document.getElementById("preview-screen");
+  const layers = [...document.querySelectorAll("[data-preview-layer]")];
+  const visible = layers.find((layer) => layer.classList.contains("is-visible"));
+  const pressed = document.querySelector('[data-preview-wall][aria-pressed="true"]');
+  return {
+    visibleLayers: layers.filter((layer) => layer.classList.contains("is-visible")).length,
+    image: getComputedStyle(visible).backgroundImage,
+    name: document.getElementById("wallpaper-name").textContent,
+    pressed: pressed?.dataset.previewTitle,
+    background: screen.style.getPropertyValue("--w8-start-background").trim(),
+    accent: screen.style.getPropertyValue("--w8-accent").trim(),
+  };
+})()`);
+check(
+  "choosing a wallpaper on the landing page cross-fades the Start background",
+  landingSwapped.visibleLayers === 1 &&
+    landingSwapped.image.includes("Windows8RTM/img102.jpg") &&
+    landingSwapped.name === "Prism" &&
+    landingSwapped.pressed === "Prism" &&
+    landingSwapped.background === "#132a4a" &&
+    landingSwapped.accent === "#3d6fb0",
+  JSON.stringify(landingSwapped),
+);
+
+// Shell: the Personalize pane retints the Start screen from the bundled pack.
+await visit("/examples/shell.html", 1440, 900);
+await realClick('[data-scene="start"]');
+await evaluate("new Promise((done) => setTimeout(done, 400))");
+await realClick("#personalize-button");
+await evaluate("new Promise((done) => setTimeout(done, 400))");
+const personalizeOpen = await evaluate(`(() => {
+  const panel = document.getElementById("personalize");
+  const rect = panel.getBoundingClientRect();
+  return {
+    open: panel.classList.contains("is-open"),
+    hidden: panel.getAttribute("aria-hidden"),
+    wallpapers: panel.querySelectorAll("[data-wallpaper]").length,
+    accents: panel.querySelectorAll("[data-accent-hex]").length,
+    insideViewport: rect.right <= innerWidth + 1 && rect.left >= 0,
+  };
+})()`);
+check(
+  "Personalize opens an edge panel with every wallpaper and accent swatch",
+  personalizeOpen.open === true &&
+    personalizeOpen.hidden === "false" &&
+    personalizeOpen.wallpapers === 28 &&
+    personalizeOpen.accents === 16 &&
+    personalizeOpen.insideViewport === true,
+  JSON.stringify(personalizeOpen),
+);
+await realClick('[data-wallpaper][data-title="Shallows"]');
+await evaluate("new Promise((done) => setTimeout(done, 900))");
+const wallpaperPicked = await evaluate(`(() => {
+  const screen = document.getElementById("start-screen");
+  const layers = [...document.querySelectorAll("[data-wallpaper-layer]")];
+  const visible = layers.find((layer) => layer.classList.contains("is-visible"));
+  const pressed = document.querySelector('[data-wallpaper][aria-pressed="true"]');
+  return {
+    background: getComputedStyle(screen).getPropertyValue("--w8-start-background").trim(),
+    accent: getComputedStyle(document.querySelector(".shell")).getPropertyValue("--w8-accent").trim(),
+    image: getComputedStyle(visible).backgroundImage,
+    pressed: pressed?.dataset.title,
+    visibleLayers: layers.filter((layer) => layer.classList.contains("is-visible")).length,
+  };
+})()`);
+check(
+  "picking a wallpaper cross-fades the Start screen and retints it",
+  wallpaperPicked.background === "#4d96b0" &&
+    wallpaperPicked.accent === "#0586ad" &&
+    wallpaperPicked.image.includes("Windows8RTM/img3.jpg") &&
+    wallpaperPicked.pressed === "Shallows" &&
+    wallpaperPicked.visibleLayers === 1,
+  JSON.stringify(wallpaperPicked),
+);
+await realClick("[data-accent-hex]");
+const accentPicked = await evaluate(`(() => {
+  const shell = document.querySelector(".shell");
+  const pressed = document.querySelector("[data-accent-hex][aria-pressed='true']");
+  return { accent: getComputedStyle(shell).getPropertyValue("--w8-accent").trim(), pressed: pressed?.dataset.accentHex };
+})()`);
+check(
+  "an accent swatch sets --w8-accent for the whole shell",
+  /^#[0-9a-f]{6}$/i.test(accentPicked.accent) && accentPicked.accent.toLowerCase() === String(accentPicked.pressed).toLowerCase(),
+  JSON.stringify(accentPicked),
+);
+await realClick("#personalize-close");
+await evaluate("new Promise((done) => setTimeout(done, 300))");
+const personalizeClosed = await evaluate(`(() => {
+  const panel = document.getElementById("personalize");
+  return { open: panel.classList.contains("is-open"), hidden: panel.getAttribute("aria-hidden") };
+})()`);
+check(
+  "Personalize closes again",
+  personalizeClosed.open === false && personalizeClosed.hidden === "true",
+  JSON.stringify(personalizeClosed),
+);
+
+// Shell: the RTM all-apps arrow is the semantic zoom toggle too.
+await realClick("#all-apps");
+await evaluate("new Promise((done) => setTimeout(done, 300))");
+const zoomedOut = await evaluate(`(() => ({
+  overview: document.getElementById("tile-groups").classList.contains("w8-tile-groups--overview"),
+  pressed: document.getElementById("all-apps").getAttribute("aria-pressed"),
+  labels: [...document.querySelectorAll("#tile-groups .w8-tile-group")].filter((group) => getComputedStyle(group.querySelector(".w8-tile-group__label")).fontSize !== "").length,
+  overflow: document.documentElement.scrollWidth - innerWidth,
+}))()`);
+await realClick("#all-apps");
+await evaluate("new Promise((done) => setTimeout(done, 300))");
+const zoomedIn = await evaluate("document.getElementById('tile-groups').classList.contains('w8-tile-groups--overview')");
+check(
+  "the all-apps arrow toggles semantic zoom and back",
+  zoomedOut.overview === true && zoomedOut.pressed === "true" && zoomedOut.overflow <= 1 && zoomedIn === false,
+  JSON.stringify({ ...zoomedOut, zoomedIn }),
+);
+
+// Motion: the documented entrance classes animate, and stand down for reduced motion.
+await visit("/examples/components.html", 1280, 900);
+const motionOn = await evaluate(`(() => {
+  const probe = document.createElement("div");
+  probe.className = "w8 w8-anim-rise";
+  probe.innerHTML = "<span class='x'></span>";
+  document.body.append(probe);
+  const child = probe.firstElementChild;
+  const staggerProbe = document.createElement("div");
+  staggerProbe.className = "w8 w8-stagger";
+  staggerProbe.innerHTML = "<span></span><span></span>";
+  document.body.append(staggerProbe);
+  const value = {
+    rise: getComputedStyle(probe).animationName,
+    duration: parseFloat(getComputedStyle(probe).animationDuration),
+    staggerSecond: getComputedStyle(staggerProbe.lastElementChild).animationDelay,
+    token: getComputedStyle(probe).getPropertyValue("--w8-duration").trim(),
+  };
+  probe.remove();
+  staggerProbe.remove();
+  return value;
+})()`);
+check(
+  "motion classes expose the rise animation and stagger tokens",
+  motionOn.rise === "w8-rise" && motionOn.duration > 0 && parseFloat(motionOn.staggerSecond) > 0 && motionOn.token === "250ms",
+  JSON.stringify(motionOn),
+);
+await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
+const motionOff = await evaluate(`(() => {
+  const probe = document.createElement("div");
+  probe.className = "w8 w8-anim-rise";
+  document.body.append(probe);
+  const value = { name: getComputedStyle(probe).animationName, duration: getComputedStyle(probe).animationDuration };
+  probe.remove();
+  return value;
+})()`);
+await send("Emulation.setEmulatedMedia", { features: [] });
+check(
+  "motion classes stand down under prefers-reduced-motion",
+  motionOff.name === "none" || parseFloat(motionOff.duration) < 0.01,
+  JSON.stringify(motionOff),
+);
+
 const reduced = await (async () => {
   // Measure on a page that uses the documented .w8 root scope.
   await visit("/examples/components.html", 1280, 900);

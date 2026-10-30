@@ -45,9 +45,10 @@ With the modular stylesheets, load the icon font stylesheet yourself and keep th
 <link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/gui/base.css">
 <link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/gui/icons.css">
+<link rel="stylesheet" href="./node_modules/@flessan/8.css/dist/gui/motion.css">
 ```
 
-Load `gui/base.css` before modular component styles and load `gui/icons.css` when using the 8.css icon hooks. The full `dist/8.css` bundle already includes the Font Awesome stylesheet and the helper styles.
+Load `gui/base.css` before modular component styles, `gui/icons.css` when using the 8.css icon hooks, and `gui/motion.css` when you want the entrance animations, tile stagger and wallpaper crossfade. The full `dist/8.css` bundle already includes the Font Awesome stylesheet and the helper styles.
 
 ### Wallpapers
 

@@ -31,6 +31,7 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - `examples/shell.html`: the assembled shell demo (lock screen, Start screen, desktop, taskbar) used to check the surfaces together.
 - `examples/gestures.js`: demo-only Pointer Events wiring for the edge gestures. Keep runtime JavaScript out of `gui/` and `dist/`; this file is never published as package code.
 - `gui/icons.css`: Font Awesome sizing hooks and icon-button helpers.
+- `gui/motion.css`: opt-in entrance animations, tile stagger, Charms entrance, wallpaper crossfade, press ripples and the motion tokens; everything is disabled under `prefers-reduced-motion`.
 - `gui/responsive.css`: responsive and reduced-motion adjustments.
 - `vendor/font-awesome/`: upstream icon font, stylesheets, and license.
 - `styles/images/`: demo wallpaper artwork (`Windows8RTM/`, `Windows8.1RTMWallpapers/`) and the generated `wallpapers/` pack (manifest, thumbnails, palette, optional classes).

@@ -348,8 +348,14 @@ assert.match(
 );
 assert.match(docsScript, /document\.execCommand\("copy"\)/, "docs/script.js must keep an execCommand copy fallback.");
 
-// The dense tile flow keeps the Start Screen previews from developing holes.
-assert.match(home, /grid-auto-flow:row dense/, "The landing page preview must fill tile rows densely.");
+// The landing hero is a real Start screen: wallpaper layers, a tile grid and a
+// picker wired to the bundled pack.
+assert.match(home, /class="w8-wallpaper"/, "The landing preview needs wallpaper layers.");
+assert.match(home, /class="w8 w8-start-screen preview-screen"/, "The landing preview must be a Start screen surface.");
+assert.match(home, /grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/, "The landing preview must lay tiles out in a Start screen grid.");
+assert.match(home, /class="preview-charms"/, "The landing preview needs the Charms bar.");
+assert.match(home, /data-preview-wall=/, "The landing preview needs a wallpaper picker.");
+assert.match(home, /w8-anim-|w8-stagger/, "The landing preview should use the motion module.");
 assert.match(docsCss, /grid-auto-flow:row dense/, "The documentation tile preview must fill rows densely.");
 assert.match(docsCss, /#tiles \.preview \.w8-tiles\{grid-template-columns:repeat\(3/, "The tile demo should read as a complete Start Screen group.");
 

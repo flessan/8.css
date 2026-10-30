@@ -2527,15 +2527,26 @@
 
 /* Semantic zoom overview: groups sit side by side and tiles shrink to blocks. */
 .w8-tile-groups--overview { align-items: start; display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; min-width: 0; width: auto; }
-.w8-tile-groups--overview .w8-tile-group { flex: 0 1 auto; }
+.w8-tile-groups--overview .w8-tile-group { flex: 0 0 auto; }
 .w8-tile-groups--overview .w8-tile-group__label { font-size: 1rem; margin-bottom: .4rem; }
+/* The overview must undo the column Start layout: tiles flow in rows again,
+   and the column row template no longer applies. */
 .w8-tile-groups--overview .w8-tiles {
   gap: .25rem;
+  grid-auto-columns: auto;
+  grid-auto-flow: row;
   grid-auto-rows: 2.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 2.25rem), 1fr));
+  grid-template-columns: repeat(auto-fill, 2.25rem);
+  grid-template-rows: none;
+  justify-content: start;
   max-width: 26rem;
 }
 .w8-tile-groups--overview .w8-tile { min-height: 2.25rem; padding: 0; }
+@media (max-width: 40rem) {
+  .w8-tile-groups--overview { gap: .9rem 1.1rem; }
+  .w8-tile-groups--overview .w8-tiles { grid-auto-rows: 1.75rem; grid-template-columns: repeat(auto-fill, 1.75rem); }
+  .w8-tile-groups--overview .w8-tile { min-height: 1.75rem; }
+}
 .w8-tile-groups--overview .w8-tile__label,
 .w8-tile-groups--overview .w8-tile__meta,
 .w8-tile-groups--overview .w8-tile__symbol,
@@ -3901,6 +3912,167 @@ fieldset.w8-field { border: 0; margin-inline: 0; padding: 0; }
 .w8-app-bar .w8-icon-button:focus-visible { outline-color: #fff; }
 
 .w8-sr-only { clip: rect(0, 0, 0, 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+
+/* Motion and transitions
+ *
+ * Windows 8 motion is quick and direct: a surface slides in from the edge it
+ * belongs to, the Start screen rises into place, tiles settle with a short
+ * stagger and the Charms bar arrives one charm at a time. Nothing here changes
+ * layout, every class is opt-in, and the whole module is switched off under
+ * `prefers-reduced-motion: reduce`.
+ */
+
+.w8 {
+  --w8-ease-standard: cubic-bezier(.1, .9, .2, 1);
+  --w8-ease-decelerate: cubic-bezier(0, 0, .2, 1);
+  --w8-ease-accelerate: cubic-bezier(.4, 0, 1, 1);
+  --w8-duration-fast: 120ms;
+  --w8-duration: 250ms;
+  --w8-duration-slow: 420ms;
+  --w8-duration-xslow: 700ms;
+  --w8-stagger: 32ms;
+}
+
+/* One-shot entrances. Add the class when the surface appears, drop it when the
+   surface is hidden, and the animation can play again next time. */
+.w8-anim-rise { animation: w8-rise var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-anim-fade { animation: w8-fade var(--w8-duration, 250ms) var(--w8-ease-standard, ease) both; }
+.w8-anim-zoom { animation: w8-zoom var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-anim-slide-right { animation: w8-slide-right var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-anim-slide-left { animation: w8-slide-left var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-anim-slide-bottom { animation: w8-slide-bottom var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+
+@keyframes w8-rise {
+  from { opacity: 0; transform: translateY(2.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes w8-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes w8-zoom {
+  from { opacity: 0; transform: scale(.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes w8-slide-right {
+  from { opacity: 0; transform: translateX(3rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes w8-slide-left {
+  from { opacity: 0; transform: translateX(-3rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes w8-slide-bottom {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* A container that settles its children in reading order. */
+.w8-stagger > * { animation: w8-rise var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-stagger > *:nth-child(1) { animation-delay: calc(var(--w8-stagger, 32ms) * 0); }
+.w8-stagger > *:nth-child(2) { animation-delay: calc(var(--w8-stagger, 32ms) * 1); }
+.w8-stagger > *:nth-child(3) { animation-delay: calc(var(--w8-stagger, 32ms) * 2); }
+.w8-stagger > *:nth-child(4) { animation-delay: calc(var(--w8-stagger, 32ms) * 3); }
+.w8-stagger > *:nth-child(5) { animation-delay: calc(var(--w8-stagger, 32ms) * 4); }
+.w8-stagger > *:nth-child(6) { animation-delay: calc(var(--w8-stagger, 32ms) * 5); }
+.w8-stagger > *:nth-child(7) { animation-delay: calc(var(--w8-stagger, 32ms) * 6); }
+.w8-stagger > *:nth-child(8) { animation-delay: calc(var(--w8-stagger, 32ms) * 7); }
+.w8-stagger > *:nth-child(9) { animation-delay: calc(var(--w8-stagger, 32ms) * 8); }
+.w8-stagger > *:nth-child(10) { animation-delay: calc(var(--w8-stagger, 32ms) * 9); }
+.w8-stagger > *:nth-child(11) { animation-delay: calc(var(--w8-stagger, 32ms) * 10); }
+.w8-stagger > *:nth-child(12) { animation-delay: calc(var(--w8-stagger, 32ms) * 11); }
+.w8-stagger > *:nth-child(n+13) { animation-delay: calc(var(--w8-stagger, 32ms) * 12); }
+
+/* The Charms bar arrives one charm at a time, from the right edge. */
+.w8-charms--enter .w8-charm { animation: w8-charm-in var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+.w8-charms--enter .w8-charm:nth-child(1) { animation-delay: calc(var(--w8-stagger, 32ms) * 0); }
+.w8-charms--enter .w8-charm:nth-child(2) { animation-delay: calc(var(--w8-stagger, 32ms) * 1); }
+.w8-charms--enter .w8-charm:nth-child(3) { animation-delay: calc(var(--w8-stagger, 32ms) * 2); }
+.w8-charms--enter .w8-charm:nth-child(4) { animation-delay: calc(var(--w8-stagger, 32ms) * 3); }
+.w8-charms--enter .w8-charm:nth-child(5) { animation-delay: calc(var(--w8-stagger, 32ms) * 4); }
+@keyframes w8-charm-in {
+  from { opacity: 0; transform: translateX(1.5rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Wallpaper: two stacked layers, cross-faded so the Start screen never blinks
+   to white while the next image decodes. */
+.w8-wallpaper {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+.w8-wallpaper__layer {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity var(--w8-duration-xslow, 700ms) var(--w8-ease-standard, ease);
+}
+.w8-wallpaper__layer.is-visible { opacity: 1; }
+
+/* Press feedback: a soft disc that expands from the pointer. Put
+   `.w8-ripple-host` on any positioned surface and append a `.w8-ripple` span. */
+.w8-ripple-host { overflow: hidden; position: relative; }
+.w8-ripple {
+  animation: w8-ripple var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) forwards;
+  background: rgb(255 255 255 / .42);
+  border-radius: 50%;
+  height: var(--w8-ripple-size, 14rem);
+  left: var(--w8-ripple-x, 50%);
+  margin: calc(var(--w8-ripple-size, 14rem) / -2) 0 0 calc(var(--w8-ripple-size, 14rem) / -2);
+  pointer-events: none;
+  position: absolute;
+  top: var(--w8-ripple-y, 50%);
+  width: var(--w8-ripple-size, 14rem);
+}
+@keyframes w8-ripple {
+  from { opacity: .55; transform: scale(.08); }
+  to { opacity: 0; transform: scale(1); }
+}
+
+/* Short attention cues, used by the lock screen hint and fresh badges. */
+.w8-bob { animation: w8-bob 2.4s ease-in-out infinite; }
+@keyframes w8-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-.25rem); }
+}
+.w8-badge-pop { animation: w8-badge-pop var(--w8-duration-slow, 420ms) var(--w8-ease-decelerate, ease-out) both; }
+@keyframes w8-badge-pop {
+  from { opacity: 0; transform: scale(.4); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Layout swaps, such as semantic zoom, fade rather than jump. */
+.w8-swap { animation: w8-swap var(--w8-duration-slow, 420ms) var(--w8-ease-standard, ease) both; }
+@keyframes w8-swap {
+  from { opacity: 0; transform: scale(.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+.w8-tile-groups,
+.w8-tiles { transition: opacity var(--w8-duration, 250ms) var(--w8-ease-standard, ease); }
+
+@media (prefers-reduced-motion: reduce) {
+  .w8-anim-rise,
+  .w8-anim-fade,
+  .w8-anim-zoom,
+  .w8-anim-slide-right,
+  .w8-anim-slide-left,
+  .w8-anim-slide-bottom,
+  .w8-stagger > *,
+  .w8-charms--enter .w8-charm,
+  .w8-ripple,
+  .w8-bob,
+  .w8-badge-pop,
+  .w8-swap { animation: none; }
+  .w8-wallpaper__layer,
+  .w8-tile-groups,
+  .w8-tiles { transition: none; }
+}
 
 /* Responsive and reduced-motion rules */
 @media (max-width: 30rem) {

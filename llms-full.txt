@@ -11,7 +11,7 @@
 - Runtime must remain CSS-only; icons are a static webfont. Gesture detection belongs to the consuming app: `examples/gestures.js` is demo wiring, not package code.
 
 ## CSS module order
-base.css, tiles.css, live-tiles.css, buttons.css, forms.css, navigation.css, feedback.css, window.css, taskbar.css, app-bar.css, charms.css, flyout.css, gestures.css, toast.css, lock-screen.css, hub.css, split-view.css, dialog.css, icons.css, responsive.css. The complete `dist/8.css` bundle prepends the Font Awesome 4.7.0 stylesheet to these modules and patches its font URLs to `./font-awesome/fonts/`. For modular use, load `dist/font-awesome/css/font-awesome.min.css` first, then `dist/gui/base.css`, then the required modules. Load `dist/gui/icons.css` for the 8.css icon helpers.
+base.css, tiles.css, live-tiles.css, buttons.css, forms.css, navigation.css, feedback.css, window.css, taskbar.css, app-bar.css, charms.css, flyout.css, gestures.css, toast.css, lock-screen.css, hub.css, split-view.css, dialog.css, icons.css, motion.css, responsive.css. The complete `dist/8.css` bundle prepends the Font Awesome 4.7.0 stylesheet to these modules and patches its font URLs to `./font-awesome/fonts/`. For modular use, load `dist/font-awesome/css/font-awesome.min.css` first, then `dist/gui/base.css`, then the required modules. Load `dist/gui/icons.css` for the 8.css icon helpers.
 
 ## Package usage
 Install from npm using `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`.
@@ -61,6 +61,7 @@ Taskbar: `.w8-taskbar`, `.w8-taskbar__start`, `.w8-taskbar__apps`, `.w8-taskbar_
 Flyouts and toasts: `.w8-flyout` with `--top`, `--bottom`, `--left`, `--right`, `--menu`, `--dark`; `.w8-flyout__arrow`, `.w8-flyout__title`, `.w8-flyout__text`, `.w8-flyout__actions`, `.w8-flyout__item`, `.w8-flyout__separator`, `.w8-tooltip`; `.w8-toast-region`, `.w8-toast`, `.w8-toast__icon`, `.w8-toast__title`, `.w8-toast__body`, `.w8-toast__close`, `.w8-toast__actions`, `.w8-toast__action`, `.w8-toast--peek`.
 Hub and split view: `.w8-hub`, `.w8-hub__header`, `.w8-hub__title`, `.w8-hub__lead`, `.w8-hub__section`, `.w8-hub__section-title`, `.w8-hub__list`, `.w8-hub__item`, `.w8-hub__item-icon`, `.w8-hub__item-text`, `.w8-hub__item-title`, `.w8-hub__item-meta`, `.w8-hub__card`, `.w8-hub--dark`; `.w8-split`, `.w8-split__pane`, `.w8-split__main`, `.w8-split__title`, `.w8-split--snap-right`, `.w8-split--divider`.
 Progress ring and app bar: `.w8-progress-ring`, `.w8-progress-ring--small`, `.w8-app-bar--top`, `.w8-app-bar--contextual`, `.w8-app-bar--circular`, `.w8-app-bar__separator`.
+Motion: `.w8-anim-rise`, `.w8-anim-fade`, `.w8-anim-zoom`, `.w8-anim-slide-right`, `.w8-anim-slide-left`, `.w8-anim-slide-bottom`, `.w8-stagger`, `.w8-charms--enter`, `.w8-wallpaper`, `.w8-wallpaper__layer`, `.is-visible`, `.w8-ripple-host`, `.w8-ripple`, `.w8-bob`, `.w8-badge-pop`, `.w8-swap`.
 Icons: `.fa`, `.fa-{name}`, `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
 
 ## Windows 8 shell behaviour
@@ -69,6 +70,21 @@ Windows 8, not Windows 10: the Start screen lays tiles out top to bottom inside 
 Edge gestures: right edge brings in the Charms bar, the left edge opens the app switcher and, dragged slowly, snaps an app to the left quarter of the screen, the top and bottom edges raise the app bar, a swipe up on the lock screen reaches sign-in, press and hold selects a tile, and a pinch zooms out to the group overview.
 
 Touch and gestures: `.w8-edge-panel` with `--left`, `--right`, `--top`, `--bottom` and `is-open`, `.w8-switcher` with `__header`, `__title`, `__list`, `__item`, `__thumb`, `__name`, `__meta`, `__close`, `__footer`, `.w8-snap-preview` with `__label`, `.w8-gesture-hint` with `__text`, `.w8-touch-tutorial` with `__panel`, `__art`, `__step`, `__title`, `__text`, `__dots`, `__dot`, `__actions`, `.w8-edge` with `.w8-edge__grip`, `.w8-start-hotspot` with `__preview`, plus the utilities `.w8-touch-target`, `.w8-pan-x`, `.w8-pan-y`, `.w8-pan-none`, `.w8-no-select`, `.w8-grab`, `.w8-touch` and `.w8-touch-hints`. Charms, taskbar apps and icon buttons grow to 44px hit areas on coarse pointers or under a `.w8-touch` ancestor.
+
+## Motion
+`gui/motion.css` holds opt-in, one-shot motion. Entrance classes: `.w8-anim-rise` (Start screen), `.w8-anim-fade` (lock screen), `.w8-anim-zoom` (a window opening), `.w8-anim-slide-right` (toasts and edge panels), `.w8-anim-slide-left`, `.w8-anim-slide-bottom` (taskbar reveal). `.w8-stagger` settles its children in reading order with a 32ms delay each, and `.w8-charms--enter` brings the Charms bar in one charm at a time. `.w8-wallpaper` stacks two `.w8-wallpaper__layer` elements and cross-fades them by toggling `is-visible` on the incoming layer, so changing a Start background never flashes the fallback colour. Press feedback: `.w8-ripple-host` plus an appended `.w8-ripple` span that reads `--w8-ripple-x`, `--w8-ripple-y` and `--w8-ripple-size`. Small accents: `.w8-bob`, `.w8-badge-pop`, `.w8-swap`.
+
+Tokens on the `.w8` root: `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow`, `--w8-stagger`. Every animation is disabled under `prefers-reduced-motion: reduce`; the classes are safe to leave in markup.
+
+```html
+<div class="w8-tiles w8-stagger">
+  <a class="w8-tile w8-tile--blue" href="#">...</a>
+</div>
+<div class="w8-wallpaper" aria-hidden="true">
+  <div class="w8-wallpaper__layer is-visible"></div>
+  <div class="w8-wallpaper__layer"></div>
+</div>
+```
 
 ## Wallpapers
 `styles/images/` holds the Windows 8 (19) and Windows 8.1 (9) RTM wallpapers used by the demo. The Start Screen accepts artwork through custom properties:
@@ -80,10 +96,10 @@ Touch and gestures: `.w8-edge-panel` with `--left`, `--right`, `--top`, `--botto
 Optional generated classes: `.w8-wallpaper-<id>` sets `--w8-start-image`, `--w8-start-background` and `--w8-accent`; `.w8-wallpaper-cover` applies them as a cover background to any element. `styles/images/wallpapers/manifest.json` lists every wallpaper with id, title, window, file, dimensions, byte size, aspect ratio, monitor span, dominant and accent colour. `dist/wallpapers/` republishes 480x300 thumbnails with root-relative URLs for consumers. Artwork is Microsoft copyright, demonstration use only, excluded from the full resolution npm files.
 
 ## Custom properties
-`--w8-font-family`, `--w8-text`, `--w8-muted`, `--w8-surface`, `--w8-surface-subtle`, `--w8-border`, `--w8-accent`, `--w8-accent-hover`, `--w8-focus`, `--w8-tile-blue`, `--w8-tile-cyan`, `--w8-tile-purple`, `--w8-tile-magenta`, `--w8-tile-green`, `--w8-tile-orange`, `--w8-tile-red`, `--w8-tile-dark`, plus `--w8-start-background` and `--w8-tile-color` for the Start Screen canvas and individual tiles, and `--w8-start-image` for optional wallpaper artwork.
+`--w8-font-family`, `--w8-text`, `--w8-muted`, `--w8-surface`, `--w8-surface-subtle`, `--w8-border`, `--w8-accent`, `--w8-accent-hover`, `--w8-focus`, `--w8-tile-blue`, `--w8-tile-cyan`, `--w8-tile-purple`, `--w8-tile-magenta`, `--w8-tile-green`, `--w8-tile-orange`, `--w8-tile-red`, `--w8-tile-dark`, plus `--w8-start-background` and `--w8-tile-color` for the Start Screen canvas and individual tiles, and `--w8-start-image` for optional wallpaper artwork. Motion adds `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow` and `--w8-stagger`.
 
 ## Accessibility boundary
 Use semantic controls and accessible names. Hide decorative icons with `aria-hidden="true"` and label icon-only controls. Keep focus visible, check contrast with custom colors, and respect reduced-motion settings. CSS styles controls but does not manage state, tab keyboard navigation, window controls, announcements, or focus management.
 
 ## Validation
-Run `npm run build`, `npm test`, `npm run build:site`, and optionally `npm run test:browser` (needs a local Chromium; verifies rendered icons, console/network errors, horizontal overflow at 1280px and 390px, mobile menu, code copy, code snippets, skip link and reduced-motion). Checks validate module/bundle parity, CSS brace structure, font and license asset parity between `vendor/`, `dist/`, and `docs/`, glyph coverage in the shipped font for every icon class used by the HTML pages, accessible icon markup, package `files`/`exports` integrity, and documentation consistency.
+Run `npm run build`, `npm test`, `npm run build:site`, and optionally `npm run test:browser` (needs a local Chromium; verifies rendered icons, console/network errors, horizontal overflow at 1280px and 390px, mobile menu, code copy, code snippets, skip link, the landing Start-screen wallpaper picker, the shell Personalize panel, semantic zoom and reduced-motion). Checks validate module/bundle parity, CSS brace structure, font and license asset parity between `vendor/`, `dist/`, and `docs/`, glyph coverage in the shipped font for every icon class used by the HTML pages, accessible icon markup, package `files`/`exports` integrity, and documentation consistency.

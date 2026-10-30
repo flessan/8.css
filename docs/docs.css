@@ -51,6 +51,14 @@
 .tile-demo .w8-tile-groups--overview { margin-top: 14px; }
 .tile-demo .w8-tile-groups--overview .w8-tile-group__label { color: #444; }
 .preview-flush { padding: 0; }
+/* Motion section: entrance classes sit side by side above a staggered group. */
+.motion-row { display: grid; gap: 5px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.motion-row .w8-tile { min-height: 5.5rem; padding: 10px; }
+/* Charms sample: the real bar is a vertical edge strip, so lay it flat here. */
+.motion-charms { background: #1f1f1f; color: #fff; display: flex; gap: 2rem; justify-content: center; padding: 16px 10px; }
+.motion-charms .w8-charm { background: none; border: 0; color: inherit; display: flex; flex-direction: column; gap: 6px; }
+.motion-charms .w8-charm .fa { font-size: 20px; }
+@media (max-width: 760px) { .motion-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .taskbar-demo { min-height: 2.6rem; }
 .flyout-stage { display: flex; flex-wrap: wrap; gap: 24px 96px; padding: 24px; position: relative; }
 .flyout-stage .w8-flyout { max-width: 100%; }

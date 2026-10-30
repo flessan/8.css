@@ -72,6 +72,6 @@ Font Awesome 4.7.0 utilities are available unchanged, and 8.css adds three size 
 
 Change the icon color by setting `color` on the icon or on a parent element; no separate icon color property is required. To swap the whole palette, override the `--w8-` custom properties instead of individual component rules.
 
-Load `base.css` before modular component styles. Load `icons.css` when using the 8.css icon hooks, and load `dist/font-awesome/css/font-awesome.min.css` when you are not using the complete bundle.
+Load `base.css` before modular component styles. Load `icons.css` when using the 8.css icon hooks, `motion.css` for the entrance animations and wallpaper crossfade, and load `dist/font-awesome/css/font-awesome.min.css` when you are not using the complete bundle.
 
 See [Accessibility](accessibility.md) for focus, semantic HTML, and reduced-motion guidance.

@@ -108,15 +108,26 @@
 
 /* Semantic zoom overview: groups sit side by side and tiles shrink to blocks. */
 .w8-tile-groups--overview { align-items: start; display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; min-width: 0; width: auto; }
-.w8-tile-groups--overview .w8-tile-group { flex: 0 1 auto; }
+.w8-tile-groups--overview .w8-tile-group { flex: 0 0 auto; }
 .w8-tile-groups--overview .w8-tile-group__label { font-size: 1rem; margin-bottom: .4rem; }
+/* The overview must undo the column Start layout: tiles flow in rows again,
+   and the column row template no longer applies. */
 .w8-tile-groups--overview .w8-tiles {
   gap: .25rem;
+  grid-auto-columns: auto;
+  grid-auto-flow: row;
   grid-auto-rows: 2.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 2.25rem), 1fr));
+  grid-template-columns: repeat(auto-fill, 2.25rem);
+  grid-template-rows: none;
+  justify-content: start;
   max-width: 26rem;
 }
 .w8-tile-groups--overview .w8-tile { min-height: 2.25rem; padding: 0; }
+@media (max-width: 40rem) {
+  .w8-tile-groups--overview { gap: .9rem 1.1rem; }
+  .w8-tile-groups--overview .w8-tiles { grid-auto-rows: 1.75rem; grid-template-columns: repeat(auto-fill, 1.75rem); }
+  .w8-tile-groups--overview .w8-tile { min-height: 1.75rem; }
+}
 .w8-tile-groups--overview .w8-tile__label,
 .w8-tile-groups--overview .w8-tile__meta,
 .w8-tile-groups--overview .w8-tile__symbol,

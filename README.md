@@ -194,7 +194,7 @@ The library is still CSS-only: CSS cannot detect a swipe. [examples/gestures.js]
 
 ## Modules and customization
 
-The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `taskbar.css`, `app-bar.css`, `charms.css`, `flyout.css`, `toast.css`, and `dialog.css`; the lock screen and app layouts live in `lock-screen.css`, `hub.css`, and `split-view.css`, live tile extras and the horizontal Start layout in `live-tiles.css`, and the touch surfaces in `gestures.css`.
+The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `taskbar.css`, `app-bar.css`, `charms.css`, `flyout.css`, `toast.css`, and `dialog.css`; the lock screen and app layouts live in `lock-screen.css`, `hub.css`, and `split-view.css`, live tile extras and the horizontal Start layout in `live-tiles.css`, the touch surfaces in `gestures.css`, and the entrance animations, wallpaper crossfade and press ripples in `motion.css`.
 
 ```js
 import "@flessan/8.css/dist/font-awesome/css/font-awesome.min.css";

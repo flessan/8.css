@@ -16,13 +16,21 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 
 /* Windows 8 Start: tiles fill a column top to bottom, then the next column
    starts, and the screen pans sideways. */
-.start-canvas { --w8-start-rows: 3; --w8-tile-size: 6.75rem; }
+.start-canvas { --w8-start-rows: 3; --w8-tile-size: 7.5rem; }
 .start-canvas .w8-tiles { gap: .4rem; }
 .start-canvas .w8-tile { min-height: 0; padding: .75rem; }
 .start-canvas .w8-tile__symbol { font-size: 1.8rem; }
 .start-canvas .w8-tile__label { font-size: .9rem; }
 .start-canvas .w8-tile__face { padding: .75rem; }
 .start-canvas .w8-tile--live .w8-tile__badge { bottom: .45rem; right: .45rem; }
+/* Windows 8 hides the Charms bar until you reach for the right edge. The bar
+   keeps its place in the layout, fades in when the pointer rests at that edge,
+   on keyboard focus, or after a right-edge swipe. */
+.start-canvas .w8-charms { opacity: .55; transition: opacity 220ms cubic-bezier(.1, .9, .2, 1); }
+.start-canvas .w8-charms:hover,
+.start-canvas .w8-charms--peek,
+.start-canvas .w8-charms:focus-within { opacity: 1; }
+
 /* The toast column stops short of the Charms bar so neither surface covers the other. */
 .shell .w8-toast-region { right: 5.75rem; }
 
@@ -41,9 +49,19 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 
 /* Start screen */
 .start-canvas { display: flex; flex-direction: column; min-height: 100%; position: relative; }
-.start-top { align-items: flex-end; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding-right: 5.25rem; }
-.start-user { align-items: center; color: #fff; display: flex; font-size: .9rem; gap: .5rem; }
-.start-user .fa { background: rgb(255 255 255 / .22); border: 1px solid rgb(255 255 255 / .55); border-radius: 50%; height: 2.1rem; line-height: 2rem; text-align: center; width: 2.1rem; }
+.start-canvas > :not(.w8-wallpaper, .w8-charms, .w8-charm-pane, .start-allapps) { position: relative; z-index: 1; }
+.start-top { align-items: center; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding-right: 5.25rem; }
+/* Windows 8 puts the account tile in the top-right and nothing else up here,
+   so the heading stays small instead of shouting across the screen. */
+.start-canvas .w8-start-heading { font-size: 1rem; font-weight: 400; letter-spacing: .02em; margin: 0; opacity: .85; text-shadow: 0 1px 6px rgb(0 0 0 / .55); }
+.start-canvas .w8-start-heading:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.start-user { align-items: center; color: #fff; display: flex; font-size: .9rem; gap: .5rem; text-shadow: 0 1px 6px rgb(0 0 0 / .55); }
+.start-user .fa { background: rgb(255 255 255 / .28); border: 1px solid rgb(255 255 255 / .7); height: 2.4rem; line-height: 2.3rem; text-align: center; width: 2.4rem; }
+.start-allapps { align-items: center; background: rgb(0 0 0 / .28); border: 1px solid rgb(255 255 255 / .55); bottom: 1.5rem; color: #fff; cursor: pointer; display: inline-flex; height: 3rem; justify-content: center; position: absolute; right: 6.5rem; width: 3rem; z-index: 2; }
+.start-allapps .fa { font-size: 1.2rem; transition: transform 220ms cubic-bezier(.1, .9, .2, 1); }
+.start-allapps:hover { background: rgb(255 255 255 / .22); }
+.start-allapps[aria-pressed="true"] .fa { transform: rotate(180deg); }
+.start-allapps:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .start-canvas .w8-tile-groups { padding-right: 5.25rem; }
 .start-canvas .w8-tile-groups--overview { padding-right: 5.25rem; }
 .start-canvas .w8-charms { bottom: 0; position: absolute; right: 0; top: 0; }
@@ -58,16 +76,48 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 /* Desktop */
 .desk-scene { display: flex; flex-direction: column; }
 .desk { background-color: #14324f; background-image: url("../styles/images/Windows8RTM/img103.jpg"); background-position: center; background-repeat: no-repeat; background-size: cover; flex: 1; min-height: 0; overflow: hidden; padding: clamp(.75rem, 3vw, 2.5rem); position: relative; }
-.desk .w8-window { margin: 0 auto 0 0; max-width: min(54rem, calc(100% - 5.75rem)); }
+.desk .w8-window { margin: 2.75rem auto 0 0; max-width: min(54rem, calc(100% - 5.75rem)); }
 .desk .w8-window-body { padding: 0; }
 .desk-charms { bottom: 0; position: absolute; right: 0; top: 0; }
 .news-hub { padding: 1rem 1.1rem 0; }
-.news-hub .w8-hub__section { --w8-hub-section: 17rem; }
+.news-hub .w8-hub__section { --w8-hub-section: 14.5rem; }
 .appbar-wrap { position: relative; }
 .appbar-wrap .w8-app-bar--circular { padding-inline: .5rem; }
 .clock-flyout { bottom: calc(100% + .7rem); right: .35rem; width: 14rem; }
 .clock-flyout__time { font-size: 1.6rem; font-weight: 300; margin: 0 0 .1rem; }
 .clock-flyout__date { color: var(--w8-muted); font-size: .82rem; margin: 0; }
+
+/* Personalize: a PC settings style panel over the Start screen. */
+.personalize {
+  background: #1f1f1f;
+  border-left: 1px solid #3d3d3d;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: min(92vw, 23rem);
+  z-index: 46;
+}
+.personalize__header { align-items: center; border-bottom: 1px solid #3d3d3d; display: flex; gap: .5rem; justify-content: space-between; padding: .9rem 1rem; }
+.personalize__title { font-size: 1.35rem; font-weight: 300; margin: 0; }
+.personalize__close { background: transparent; border: 0; color: #fff; cursor: pointer; font-size: .95rem; height: 2rem; width: 2rem; }
+.personalize__close:hover, .personalize__close:focus-visible { background: rgb(255 255 255 / .18); outline: none; }
+.personalize__body { overflow-y: auto; padding: 1rem; }
+.personalize__label { color: rgb(255 255 255 / .72); font-size: .72rem; letter-spacing: .12em; margin: 0 0 .6rem; text-transform: uppercase; }
+.personalize__label + .personalize__wallpapers { margin-bottom: 1.4rem; }
+.personalize__wallpapers { display: grid; gap: .35rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.personalize__wall { background: #111; border: 2px solid transparent; cursor: pointer; display: block; padding: 0; position: relative; }
+.personalize__wall img { aspect-ratio: 16 / 10; display: block; height: auto; object-fit: cover; width: 100%; }
+.personalize__wall-name { background: rgb(0 0 0 / .55); bottom: 0; color: #fff; display: block; font-size: .62rem; left: 0; overflow: hidden; padding: .1rem .2rem; position: absolute; right: 0; text-overflow: ellipsis; white-space: nowrap; }
+.personalize__wall:hover { border-color: rgb(255 255 255 / .5); }
+.personalize__wall[aria-pressed="true"] { border-color: #fff; }
+.personalize__wall:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.personalize__accents { display: flex; flex-wrap: wrap; gap: .4rem; }
+.personalize__accent { background: var(--swatch); border: 2px solid transparent; cursor: pointer; height: 1.9rem; padding: 0; width: 1.9rem; }
+.personalize__accent:hover { border-color: rgb(255 255 255 / .6); }
+.personalize__accent[aria-pressed="true"] { border-color: #fff; box-shadow: inset 0 0 0 2px rgb(0 0 0 / .45); }
+.personalize__accent:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.personalize__note { color: rgb(255 255 255 / .55); font-size: .72rem; line-height: 1.5; margin: 1.4rem 0 0; }
+.news-hub .w8-hub__item { transition: background-color 160ms ease; }
 
 /* Touch and gesture surfaces in the demo shell. */
 .shell .w8-switcher { z-index: 45; }
@@ -88,7 +138,12 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   /* Snapped view: shorter columns of smaller tiles, still panned sideways. */
   .start-canvas .w8-tile__meta { display: none; }
   .start-canvas .w8-tile__label { font-size: .78rem; }
+  .start-canvas .w8-tile-groups,
+  .start-canvas .w8-tile-groups--overview,
+  .start-top { padding-right: 0; }
+  .start-canvas .w8-charms { background: rgb(31 31 31 / .96); }
   .start-top { align-items: center; }
+  .start-allapps { bottom: 1rem; height: 2.6rem; right: 6rem; width: 2.6rem; }
   .desk-taskbar .w8-taskbar__tray-item:not(:nth-of-type(2)) { display: none; }
   .desk-taskbar .w8-taskbar__clock { font-size: .72rem; padding: 0 .45rem; }
   .demo-bar button, .demo-bar a { font-size: .68rem; padding: .3rem .45rem; }
@@ -98,7 +153,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 </head>
 <body class="w8">
 <h1 class="w8-sr-only">Windows 8 shell demo built with 8.css</h1>
-<div class="shell">
+<div class="shell" data-active-scene="lock">
 
   <div class="demo-bar" role="group" aria-label="Demo scenes">
     <button type="button" data-scene="lock" aria-pressed="false">Lock</button>
@@ -107,6 +162,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     <button type="button" id="zoom-toggle" aria-pressed="false">Semantic zoom</button>
     <button type="button" id="touch-toggle" aria-pressed="false">Touch mode</button>
     <button type="button" id="gestures-button">Gestures</button>
+    <button type="button" id="personalize-button" aria-expanded="false" aria-controls="personalize">Personalize</button>
     <a href="../docs/index.html">Docs</a>
   </div>
 
@@ -124,7 +180,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
           <span class="w8-lock__badge"><i class="fa fa-envelope" aria-hidden="true"></i>Mail <span class="w8-lock__badge-count">3</span></span>
           <span class="w8-lock__badge"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Store <span class="w8-lock__badge-count">2</span></span>
         </div>
-        <p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Click or press any key to unlock</p>
+        <p class="w8-lock__hint"><i class="fa fa-chevron-up w8-bob" aria-hidden="true"></i>Click, swipe up or press any key to unlock</p>
       </div>
 
       <div class="w8-lock__panel" id="lock-signin" hidden>
@@ -156,7 +212,13 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 
   <!-- =============================================================== Start -->
   <section class="scene" id="start" aria-label="Start screen" hidden>
-    <div class="w8-start-screen start-canvas" style="--w8-start-background:#14324f">
+    <div class="w8-start-screen start-canvas" id="start-screen" style="--w8-start-background:#0d3a52">
+      <!-- Two wallpaper layers cross-fade, so changing the background never
+           flashes the solid fallback colour. -->
+      <div class="w8-wallpaper" aria-hidden="true">
+        <div class="w8-wallpaper__layer is-visible" data-wallpaper-layer="a"></div>
+        <div class="w8-wallpaper__layer" data-wallpaper-layer="b"></div>
+      </div>
       <header class="start-top">
         <h2 class="w8-start-heading" id="start-heading" tabindex="-1">Start</h2>
         <p class="start-user"><button class="start-customize" type="button" id="customize-toggle" aria-pressed="false"><i class="fa fa-th-large" aria-hidden="true"></i>Customize</button><span>Thio</span><i class="fa fa-user" aria-hidden="true"></i></p>
@@ -237,6 +299,8 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
         </div>
       </div>
 
+      <button class="start-allapps" type="button" id="all-apps" aria-label="Show all apps" aria-pressed="false"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+
       <div class="start-appbar" id="start-appbar" hidden>
         <nav class="w8-app-bar w8-app-bar--contextual w8-app-bar--circular" aria-label="Tile commands">
           <button class="w8-app-bar__item" type="button" id="unpin-command"><i class="fa fa-thumb-tack" aria-hidden="true"></i>Unpin from Start</button>
@@ -248,6 +312,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 
       <div class="w8-charm-pane" id="settings-pane" hidden>
         <h3 class="w8-charm-pane__title">Settings</h3>
+        <button class="w8-charm-pane__item" type="button" data-open-personalize><i class="fa fa-picture-o" aria-hidden="true"></i>Personalize</button>
         <div class="w8-charm-pane__group">
           <button class="w8-charm-pane__item" type="button"><i class="fa fa-wifi" aria-hidden="true"></i>Network</button>
           <button class="w8-charm-pane__item" type="button"><i class="fa fa-volume-up" aria-hidden="true"></i>Volume</button>
@@ -396,6 +461,69 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     </button>
   </section>
 
+  <!-- ======================================================== Personalize -->
+  <!-- PC settings → Personalize, opened from the demo bar or the Settings
+       charm. Every Windows 8 / 8.1 wallpaper in styles/images/ is offered. -->
+  <aside class="w8-edge-panel w8-edge-panel--right personalize" id="personalize" aria-label="Personalize" aria-hidden="true">
+    <header class="personalize__header">
+      <h2 class="personalize__title">Personalize</h2>
+      <button class="personalize__close" type="button" id="personalize-close" aria-label="Close personalization"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </header>
+    <div class="personalize__body">
+      <p class="personalize__label">Start screen background</p>
+      <div class="personalize__wallpapers" id="wallpaper-options" role="group" aria-label="Start screen background">
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img0.jpg" data-dominant="#60b0f5" data-accent="#3a96fe" data-title="Daisy" aria-pressed="true" aria-label="Daisy (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img0.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Daisy</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img1.jpg" data-dominant="#7eaeda" data-accent="#72a9d6" data-title="Blue Ice" aria-pressed="false" aria-label="Blue Ice (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img1.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Blue Ice</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img2.jpg" data-dominant="#c6aa79" data-accent="#f0b251" data-title="Desert Dunes" aria-pressed="false" aria-label="Desert Dunes (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img2.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Desert Dunes</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img3.jpg" data-dominant="#4d96b0" data-accent="#0586ad" data-title="Shallows" aria-pressed="false" aria-label="Shallows (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img3.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Shallows</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img4.jpg" data-dominant="#828686" data-accent="#162830" data-title="Stone River" aria-pressed="false" aria-label="Stone River (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img4.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Stone River</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img5.jpg" data-dominant="#588418" data-accent="#4f8f12" data-title="Green Fields" aria-pressed="false" aria-label="Green Fields (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img5.jpg" alt="" width="480" height="150" loading="lazy"/><span class="personalize__wall-name">Green Fields</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img6.jpg" data-dominant="#ad9780" data-accent="#b78768" data-title="Sand Sea" aria-pressed="false" aria-label="Sand Sea (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img6.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Sand Sea</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img7.jpg" data-dominant="#488694" data-accent="#007687" data-title="Red Bloom" aria-pressed="false" aria-label="Red Bloom (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img7.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Red Bloom</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img8.jpg" data-dominant="#f7dbdb" data-accent="#f9eaf4" data-title="Pink Flower" aria-pressed="false" aria-label="Pink Flower (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img8.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Pink Flower</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img9.jpg" data-dominant="#b7cec2" data-accent="#8fcdaf" data-title="Pink Bloom" aria-pressed="false" aria-label="Pink Bloom (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img9.jpg" alt="" width="480" height="150" loading="lazy"/><span class="personalize__wall-name">Pink Bloom</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img10.jpg" data-dominant="#543618" data-accent="#4f3109" data-title="Tulips" aria-pressed="false" aria-label="Tulips (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img10.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Tulips</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img11.jpg" data-dominant="#d3dfaa" data-accent="#ccedb0" data-title="Blossom" aria-pressed="false" aria-label="Blossom (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img11.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Blossom</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img12.jpg" data-dominant="#bbd444" data-accent="#8ecc09" data-title="Fern" aria-pressed="false" aria-label="Fern (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img12.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Fern</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img100.png" data-dominant="#57938d" data-accent="#1871ab" data-title="Space Needle" aria-pressed="false" aria-label="Space Needle (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img100.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Space Needle</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img101.jpg" data-dominant="#c77c08" data-accent="#ecb10b" data-title="Honeycomb" aria-pressed="false" aria-label="Honeycomb (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img101.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Honeycomb</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img102.png" data-dominant="#512265" data-accent="#16054a" data-title="Prism" aria-pressed="false" aria-label="Prism (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img102.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Prism</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img103.jpg" data-dominant="#67717c" data-accent="#8da9d1" data-title="Transit" aria-pressed="false" aria-label="Transit (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img103.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Transit</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img104.jpg" data-dominant="#4e4c32" data-accent="#080c0d" data-title="Nautilus" aria-pressed="false" aria-label="Nautilus (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img104.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Nautilus</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8RTM/img105.jpg" data-dominant="#61666f" data-accent="#020305" data-title="Piano" aria-pressed="false" aria-label="Piano (Windows 8)"><img src="../styles/images/wallpapers/thumbs/win8-img105.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Piano</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img0.jpg" data-dominant="#f4b017" data-accent="#fab602" data-title="Amber Fold" aria-pressed="false" aria-label="Amber Fold (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img0.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Amber Fold</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img1.jpg" data-dominant="#0297e9" data-accent="#01adfd" data-title="Blue Lines" aria-pressed="false" aria-label="Blue Lines (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img1.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Blue Lines</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img2.jpg" data-dominant="#2d91ed" data-accent="#01f0f8" data-title="Blue Ribbon" aria-pressed="false" aria-label="Blue Ribbon (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img2.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Blue Ribbon</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img3.jpg" data-dominant="#129c59" data-accent="#009048" data-title="Green Ribbon" aria-pressed="false" aria-label="Green Ribbon (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img3.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Green Ribbon</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img4.jpg" data-dominant="#e63000" data-accent="#e93400" data-title="Crimson Fold" aria-pressed="false" aria-label="Crimson Fold (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img4.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Crimson Fold</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img5.jpg" data-dominant="#8137c2" data-accent="#720caf" data-title="Violet Waves" aria-pressed="false" aria-label="Violet Waves (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img5.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Violet Waves</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img6.jpg" data-dominant="#7ebad8" data-accent="#67b3d8" data-title="Steel Curve" aria-pressed="false" aria-label="Steel Curve (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img6.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Steel Curve</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img13.jpg" data-dominant="#835533" data-accent="#f88d07" data-title="Sunset Facade" aria-pressed="false" aria-label="Sunset Facade (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img13.jpg" alt="" width="480" height="150" loading="lazy"/><span class="personalize__wall-name">Sunset Facade</span></button>
+<button class="personalize__wall" type="button" data-wallpaper="../styles/images/Windows8.1RTMWallpapers/img100.jpg" data-dominant="#8a6e49" data-accent="#6c5400" data-title="Ribbon Fan" aria-pressed="false" aria-label="Ribbon Fan (Windows 8.1)"><img src="../styles/images/wallpapers/thumbs/win81-img100.jpg" alt="" width="480" height="300" loading="lazy"/><span class="personalize__wall-name">Ribbon Fan</span></button>
+      </div>
+      <p class="personalize__label">Accent colour</p>
+      <div class="personalize__accents" id="accent-options" role="group" aria-label="Accent colour">
+<button class="personalize__accent" type="button" style="--swatch:#0078d7" data-accent-hex="#0078d7" aria-pressed="true" aria-label="Windows blue"></button>
+<button class="personalize__accent" type="button" style="--swatch:#00a4ef" data-accent-hex="#00a4ef" aria-pressed="false" aria-label="Sky"></button>
+<button class="personalize__accent" type="button" style="--swatch:#00aba9" data-accent-hex="#00aba9" aria-pressed="false" aria-label="Teal"></button>
+<button class="personalize__accent" type="button" style="--swatch:#2b579a" data-accent-hex="#2b579a" aria-pressed="false" aria-label="Office blue"></button>
+<button class="personalize__accent" type="button" style="--swatch:#1e7145" data-accent-hex="#1e7145" aria-pressed="false" aria-label="Green"></button>
+<button class="personalize__accent" type="button" style="--swatch:#498205" data-accent-hex="#498205" aria-pressed="false" aria-label="Lime"></button>
+<button class="personalize__accent" type="button" style="--swatch:#b7472a" data-accent-hex="#b7472a" aria-pressed="false" aria-label="Brick"></button>
+<button class="personalize__accent" type="button" style="--swatch:#e81123" data-accent-hex="#e81123" aria-pressed="false" aria-label="Red"></button>
+<button class="personalize__accent" type="button" style="--swatch:#ea005e" data-accent-hex="#ea005e" aria-pressed="false" aria-label="Pink"></button>
+<button class="personalize__accent" type="button" style="--swatch:#8764b8" data-accent-hex="#8764b8" aria-pressed="false" aria-label="Purple"></button>
+<button class="personalize__accent" type="button" style="--swatch:#744da9" data-accent-hex="#744da9" aria-pressed="false" aria-label="Violet"></button>
+<button class="personalize__accent" type="button" style="--swatch:#6b69d6" data-accent-hex="#6b69d6" aria-pressed="false" aria-label="Indigo"></button>
+<button class="personalize__accent" type="button" style="--swatch:#d13438" data-accent-hex="#d13438" aria-pressed="false" aria-label="Crimson"></button>
+<button class="personalize__accent" type="button" style="--swatch:#ca5010" data-accent-hex="#ca5010" aria-pressed="false" aria-label="Orange"></button>
+<button class="personalize__accent" type="button" style="--swatch:#986f0b" data-accent-hex="#986f0b" aria-pressed="false" aria-label="Gold"></button>
+<button class="personalize__accent" type="button" style="--swatch:#767676" data-accent-hex="#767676" aria-pressed="false" aria-label="Graphite"></button>
+      </div>
+      <p class="personalize__note">Your choice lives in this page only: the library styles the surfaces, the demo wires the switch.</p>
+    </div>
+  </aside>
+
   <!-- ================================================ Edge gestures (touch) -->
   <!-- The edge strips are decorative: the gestures themselves listen for
        pointer events on the window, so they work anywhere near the edge. -->
@@ -466,14 +594,59 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   const toast = document.getElementById("toast");
   let toastTimer = null;
 
+  // ------------------------------------------------------------- Motion
+  // gui/motion.css ships the keyframes; the demo only adds the classes and
+  // takes them away again so an entrance can replay next time.
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const replay = (element, className, duration = 900) => {
+    if (!element || reducedMotion.matches) return;
+    element.classList.remove(className);
+    void element.offsetWidth;
+    element.classList.add(className);
+    window.setTimeout(() => element.classList.remove(className), duration);
+  };
+  const ripple = (host, event) => {
+    if (!host || reducedMotion.matches) return;
+    const box = host.getBoundingClientRect();
+    const disc = document.createElement("span");
+    disc.className = "w8-ripple";
+    disc.setAttribute("aria-hidden", "true");
+    disc.style.setProperty("--w8-ripple-x", `${event.clientX - box.left}px`);
+    disc.style.setProperty("--w8-ripple-y", `${event.clientY - box.top}px`);
+    host.append(disc);
+    disc.addEventListener("animationend", () => disc.remove(), { once: true });
+  };
+
   const showScene = (id) => {
     scenes.forEach((scene) => { scene.hidden = scene.id !== id; });
+    document.querySelector(".shell").dataset.activeScene = id;
+    // Keep the Charms bar out of the way unless a pointer or tap asks for it.
+    document.querySelectorAll(".w8-charms").forEach((bar) => bar.classList.remove("w8-charms--peek"));
     sceneButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.scene === id)));
+
+    // Windows 8 rises the Start screen up, zooms an app in, and slides the
+    // Charms bar in one charm at a time.
+    const scene = document.getElementById(id);
+    if (!scene) return;
+    if (id === "start") {
+      replay(scene.querySelector(".start-canvas"), "w8-anim-rise", 700);
+      scene.querySelectorAll(".w8-tiles").forEach((tiles) => replay(tiles, "w8-stagger", 900));
+      replay(scene.querySelector(".start-top"), "w8-anim-fade", 700);
+    }
+    if (id === "desktop") {
+      replay(scene.querySelector(".w8-window"), "w8-anim-zoom", 700);
+      replay(scene.querySelector(".desk-taskbar"), "w8-anim-slide-bottom", 700);
+    }
+    if (id === "lock") {
+      replay(scene.querySelector(".w8-lock__idle"), "w8-anim-fade", 700);
+    }
+    replay(scene.querySelector(".w8-charms"), "w8-charms--enter", 800);
   };
 
   const showToast = () => {
     window.clearTimeout(toastTimer);
     toast.hidden = false;
+    replay(toast, "w8-anim-slide-right", 500);
     toastTimer = window.setTimeout(() => { toast.hidden = true; }, 9000);
   };
   const hideToast = () => { window.clearTimeout(toastTimer); toast.hidden = true; };
@@ -534,11 +707,9 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   // Semantic zoom: the overview swaps tiles for group names.
   const groups = document.getElementById("tile-groups");
   const zoomToggle = document.getElementById("zoom-toggle");
-  zoomToggle.addEventListener("click", () => {
-    const overview = groups.classList.toggle("w8-tile-groups--overview");
-    zoomToggle.setAttribute("aria-pressed", String(overview));
-    zoomToggle.textContent = overview ? "Zoom in" : "Semantic zoom";
-  });
+  // setZoom is defined with the personalization wiring below; the toggle and
+  // the RTM all-apps arrow both use it so the swap animates the same way.
+  zoomToggle.addEventListener("click", () => setZoom(!groups.classList.contains("w8-tile-groups--overview")));
 
   // Start screen customize mode: select tiles, then act through the app bar.
   const customize = document.getElementById("customize-toggle");
@@ -634,6 +805,14 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   // ---------------------------------------------------------------- Touch
   // Everything below is gesture wiring for the demo. The library only ships
   // CSS; examples/gestures.js turns Pointer Events into these actions.
+  // The Charms bar sits behind the Start screen until it is pressed or the
+  // pointer rests near the right edge, matching the hidden edge menu.
+  document.addEventListener("pointermove", (event) => {
+    const bar = document.querySelector(".shell[data-active-scene='start'] .start-canvas .w8-charms");
+    if (!bar) return;
+    bar.classList.toggle("w8-charms--peek", event.clientX >= window.innerWidth - 44);
+  });
+
   const G = window.W8Gestures;
   const hint = document.getElementById("gesture-hint");
   const hintText = document.getElementById("gesture-hint-text");
@@ -665,6 +844,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
       const charm = scene.querySelector('[data-charm-pane*="search"]');
       const bar = scene.querySelector(".w8-charms");
       if (bar) {
+        bar.classList.add("w8-charms--peek");
         bar.classList.remove("w8-charms--revealed");
         void bar.offsetWidth;
         bar.classList.add("w8-charms--revealed");
@@ -820,6 +1000,91 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     if (event.key === "Escape") closeTutorial();
     if (event.key === "ArrowRight") document.getElementById("tutorial-next").click();
     if (event.key === "ArrowLeft") document.getElementById("tutorial-prev").click();
+  });
+
+  // -------------------------------------------------------- Personalize
+  // The wallpaper switch is a cross-fade between two layers; the accent colour
+  // drives --w8-accent for every control the library draws.
+  const shell = document.querySelector(".shell");
+  const startScreen = document.getElementById("start-screen");
+  const layers = Array.from(document.querySelectorAll("[data-wallpaper-layer]"));
+  const personalize = document.getElementById("personalize");
+  const personalizeButton = document.getElementById("personalize-button");
+  const wallButtons = Array.from(document.querySelectorAll("[data-wallpaper]"));
+  const accentButtons = Array.from(document.querySelectorAll("[data-accent-hex]"));
+  let frontLayer = 0;
+
+  const setWallpaper = (src) => {
+    const next = layers[1 - frontLayer];
+    const current = layers[frontLayer];
+    if (!next || !current) return;
+    next.style.backgroundImage = `url("${src}")`;
+    void next.offsetWidth;
+    next.classList.add("is-visible");
+    current.classList.remove("is-visible");
+    frontLayer = 1 - frontLayer;
+  };
+
+  const chooseWallpaper = (button) => {
+    wallButtons.forEach((other) => other.setAttribute("aria-pressed", String(other === button)));
+    setWallpaper(button.dataset.wallpaper);
+    if (button.dataset.dominant) startScreen.style.setProperty("--w8-start-background", button.dataset.dominant);
+    if (button.dataset.accent) chooseAccent(button.dataset.accent);
+    flashHint(`Background: ${button.dataset.title || "wallpaper"}`);
+  };
+
+  const chooseAccent = (hex) => {
+    shell.style.setProperty("--w8-accent", hex);
+    accentButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.accentHex.toLowerCase() === hex.toLowerCase())));
+  };
+
+  const setPersonalize = (open) => {
+    personalize.classList.toggle("is-open", open);
+    personalize.setAttribute("aria-hidden", String(!open));
+    personalizeButton.setAttribute("aria-expanded", String(open));
+    personalizeButton.setAttribute("aria-pressed", String(open));
+    if (open) {
+      replay(personalize, "w8-anim-slide-right", 600);
+      personalize.querySelector(".personalize__close").focus();
+    } else {
+      personalizeButton.focus();
+    }
+  };
+
+  personalizeButton.addEventListener("click", () => setPersonalize(!personalize.classList.contains("is-open")));
+  document.getElementById("personalize-close").addEventListener("click", () => setPersonalize(false));
+  wallButtons.forEach((button) => button.addEventListener("click", () => chooseWallpaper(button)));
+  accentButtons.forEach((button) => button.addEventListener("click", () => chooseAccent(button.dataset.accentHex)));
+  personalize.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setPersonalize(false);
+  });
+  document.querySelectorAll("[data-open-personalize]").forEach((control) => {
+    control.addEventListener("click", () => setPersonalize(true));
+  });
+
+  // Start with the Windows 8 RTM "Shallows" wallpaper behind the tiles.
+  const initialWallpaper = wallButtons.find((button) => button.getAttribute("aria-pressed") === "true") || wallButtons[0];
+  if (initialWallpaper) {
+    layers[frontLayer].style.backgroundImage = `url("${initialWallpaper.dataset.wallpaper}")`;
+    if (initialWallpaper.dataset.accent) chooseAccent(initialWallpaper.dataset.accent);
+  }
+
+  // The RTM all-apps arrow at the bottom-right drops into the semantic zoom.
+  const allApps = document.getElementById("all-apps");
+  const setZoom = (on) => {
+    const active = groups.classList.toggle("w8-tile-groups--overview", on);
+    zoomToggle.setAttribute("aria-pressed", String(active));
+    zoomToggle.textContent = active ? "Zoom in" : "Semantic zoom";
+    allApps.setAttribute("aria-pressed", String(active));
+    allApps.setAttribute("aria-label", active ? "Show tiles" : "Show all apps");
+    replay(groups, "w8-swap", 500);
+    return active;
+  };
+  allApps.addEventListener("click", () => setZoom(!groups.classList.contains("w8-tile-groups--overview")));
+
+  // Press feedback on every tile and taskbar button.
+  document.querySelectorAll("#tile-groups .w8-tile, .desk-taskbar .w8-taskbar__app").forEach((surface) => {
+    surface.addEventListener("click", (event) => ripple(surface, event));
   });
 
   // Tiles and taskbar buttons acknowledge the click with a toast.

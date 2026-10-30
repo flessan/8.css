@@ -25,6 +25,7 @@ export const moduleOrder = [
   "split-view.css",
   "dialog.css",
   "icons.css",
+  "motion.css",
   "responsive.css",
 ];
 
