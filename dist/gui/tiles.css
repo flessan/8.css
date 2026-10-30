@@ -23,3 +23,23 @@
 .w8-tile--orange { --w8-tile-color: var(--w8-tile-orange); }
 .w8-tile--red { --w8-tile-color: var(--w8-tile-red); }
 .w8-tile--dark { --w8-tile-color: var(--w8-tile-dark); }
+
+/* Tile selection: the Start screen's customize mode. */
+.w8-tile__check {
+  align-items: center;
+  background: #fff;
+  color: #1f1f1f;
+  display: none;
+  font-size: .8rem;
+  height: 1.4rem;
+  justify-content: center;
+  position: absolute;
+  right: .45rem;
+  top: .45rem;
+  width: 1.4rem;
+  z-index: 2;
+}
+.w8-tile--selected { outline: 3px solid var(--w8-accent); outline-offset: -3px; }
+.w8-tile--selected .w8-tile__check { display: flex; }
+.w8-tiles--selecting .w8-tile { cursor: pointer; }
+.w8-tiles--selecting .w8-tile:hover { filter: brightness(1.12); }

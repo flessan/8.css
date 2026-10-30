@@ -44,6 +44,13 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 .start-canvas .w8-tile-groups { padding-right: 5.25rem; }
 .start-canvas .w8-tile-groups--overview { padding-right: 5.25rem; }
 .start-canvas .w8-charms { bottom: 0; position: absolute; right: 0; top: 0; }
+.start-customize { align-items: center; background: rgb(255 255 255 / .16); border: 1px solid rgb(255 255 255 / .5); color: #fff; cursor: pointer; display: inline-flex; font: inherit; font-size: .78rem; gap: .4rem; padding: .35rem .6rem; }
+.start-customize:hover { background: rgb(255 255 255 / .28); }
+.start-customize[aria-pressed="true"] { background: #0078d7; border-color: #0078d7; }
+.start-appbar { bottom: 0; left: 0; position: absolute; right: 5.25rem; }
+.start-appbar[hidden] { display: none; }
+.start-appbar .w8-app-bar { justify-content: center; }
+.start-canvas .w8-tile-groups--customizing { padding-bottom: 5.5rem; }
 
 /* Desktop */
 .desk-scene { display: flex; flex-direction: column; }
@@ -127,7 +134,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     <div class="w8-start-screen start-canvas" style="--w8-start-background:#14324f">
       <header class="start-top">
         <h2 class="w8-start-heading" id="start-heading" tabindex="-1">Start</h2>
-        <p class="start-user"><span>Thio</span><i class="fa fa-user" aria-hidden="true"></i></p>
+        <p class="start-user"><button class="start-customize" type="button" id="customize-toggle" aria-pressed="false"><i class="fa fa-th-large" aria-hidden="true"></i>Customize</button><span>Thio</span><i class="fa fa-user" aria-hidden="true"></i></p>
       </header>
 
       <div class="w8-tile-groups" id="tile-groups">
@@ -140,31 +147,31 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
                 <span class="w8-tile__face w8-tile__face--back"><span class="w8-tile__label">Design review</span><span class="w8-tile__meta">Studio 3 · 9:41</span></span>
               </span>
               <span class="w8-tile__badge w8-tile__badge--solid">3</span>
-            </a>
-            <a class="w8-tile w8-tile--orange" href="#start" data-app="Calendar"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a>
+            <span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--orange" href="#start" data-app="Calendar"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
             <a class="w8-tile w8-tile--purple w8-tile--live" href="#start" data-app="Photos">
               <span class="w8-tile__flipper">
                 <span class="w8-tile__face"><i class="fa fa-file-photo-o" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></span>
                 <span class="w8-tile__face w8-tile__face--back"><span class="w8-tile__label">28 new</span><span class="w8-tile__meta">Windows 8 wallpapers</span></span>
               </span>
-            </a>
-            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Weather"><i class="fa fa-sun-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Weather</span><span class="w8-tile__meta">31° Partly sunny</span></a>
-            <a class="w8-tile w8-tile--green" href="#start" data-app="Store"><i class="fa fa-shopping-bag w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Store</span></a>
-            <a class="w8-tile w8-tile--magenta" href="#start" data-app="Music"><i class="fa fa-music w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Music</span></a>
-            <a class="w8-tile w8-tile--red" href="#start" data-app="People"><i class="fa fa-user w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">People</span></a>
-            <a class="w8-tile w8-tile--dark" href="#" data-scene-tile="desktop"><i class="fa fa-desktop w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span></a>
+            <span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Weather"><i class="fa fa-sun-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Weather</span><span class="w8-tile__meta">31° Partly sunny</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--green" href="#start" data-app="Store"><i class="fa fa-shopping-bag w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Store</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--magenta" href="#start" data-app="Music"><i class="fa fa-music w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Music</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--red" href="#start" data-app="People"><i class="fa fa-user w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">People</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--dark" href="#" data-scene-tile="desktop"><i class="fa fa-desktop w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
           </div>
         </div>
 
         <div class="w8-tile-group">
           <span class="w8-tile-group__label">Windows 8</span>
           <div class="w8-tiles">
-            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Internet Explorer"><i class="fa fa-internet-explorer w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Internet Explorer</span></a>
-            <a class="w8-tile w8-tile--blue" href="#start" data-app="SkyDrive"><i class="fa fa-cloud w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">SkyDrive</span><span class="w8-tile__badge">12</span></a>
-            <a class="w8-tile w8-tile--red" href="#start" data-app="News"><i class="fa fa-newspaper-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">News</span></a>
-            <a class="w8-tile w8-tile--green" href="#start" data-app="Maps"><i class="fa fa-map-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Maps</span></a>
-            <a class="w8-tile w8-tile--large w8-tile--blue" href="#start" data-app="PC settings"><i class="fa fa-cog w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">PC settings</span><span class="w8-tile__meta">Personalize, users, sync</span></a>
-            <a class="w8-tile w8-tile--dark" href="#start" data-app="Help + Tips"><i class="fa fa-question-circle-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Help + Tips</span></a>
+            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Internet Explorer"><i class="fa fa-internet-explorer w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Internet Explorer</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--blue" href="#start" data-app="SkyDrive"><i class="fa fa-cloud w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">SkyDrive</span><span class="w8-tile__badge">12</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--red" href="#start" data-app="News"><i class="fa fa-newspaper-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">News</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--green" href="#start" data-app="Maps"><i class="fa fa-map-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Maps</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--large w8-tile--blue" href="#start" data-app="PC settings"><i class="fa fa-cog w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">PC settings</span><span class="w8-tile__meta">Personalize, users, sync</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--dark" href="#start" data-app="Help + Tips"><i class="fa fa-question-circle-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Help + Tips</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
           </div>
         </div>
       </div>
@@ -190,6 +197,15 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
           <button class="w8-charm-pane__result" type="button"><i class="fa fa-cog" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Change PC settings</span><span class="w8-charm-pane__result-meta">Settings</span></span></button>
           <button class="w8-charm-pane__result" type="button"><i class="fa fa-picture-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Wallpapers</span><span class="w8-charm-pane__result-meta">Pictures</span></span></button>
         </div>
+      </div>
+
+      <div class="start-appbar" id="start-appbar" hidden>
+        <nav class="w8-app-bar w8-app-bar--contextual w8-app-bar--circular" aria-label="Tile commands">
+          <button class="w8-app-bar__item" type="button" id="unpin-command"><i class="fa fa-thumb-tack" aria-hidden="true"></i>Unpin from Start</button>
+          <button class="w8-app-bar__item" type="button" id="clear-command"><i class="fa fa-undo" aria-hidden="true"></i>Clear selection</button>
+          <span class="w8-app-bar__separator" aria-hidden="true"></span>
+          <button class="w8-app-bar__item" type="button" id="done-command"><i class="fa fa-check" aria-hidden="true"></i>Done</button>
+        </nav>
       </div>
 
       <div class="w8-charm-pane" id="settings-pane" hidden>
@@ -425,6 +441,48 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     const overview = groups.classList.toggle("w8-tile-groups--overview");
     zoomToggle.setAttribute("aria-pressed", String(overview));
     zoomToggle.textContent = overview ? "Zoom in" : "Semantic zoom";
+  });
+
+  // Start screen customize mode: select tiles, then act through the app bar.
+  const customize = document.getElementById("customize-toggle");
+  const startAppbar = document.getElementById("start-appbar");
+  const startTiles = Array.from(document.querySelectorAll("#tile-groups .w8-tile"));
+  const selectedTiles = () => startTiles.filter((tile) => tile.classList.contains("w8-tile--selected"));
+  const setCustomizing = (on) => {
+    customize.setAttribute("aria-pressed", String(on));
+    customize.innerHTML = on ? '<i class="fa fa-check" aria-hidden="true"></i>Done' : '<i class="fa fa-th-large" aria-hidden="true"></i>Customize';
+    startAppbar.hidden = !on;
+    groups.classList.toggle("w8-tiles--selecting", on);
+    groups.classList.toggle("w8-tile-groups--customizing", on);
+    startTiles.forEach((tile) => {
+      if (on) {
+        tile.setAttribute("aria-pressed", String(tile.classList.contains("w8-tile--selected")));
+        tile.addEventListener("click", selectTile);
+      } else {
+        tile.removeAttribute("aria-pressed");
+        tile.classList.remove("w8-tile--selected");
+        tile.removeEventListener("click", selectTile);
+      }
+    });
+  };
+  function selectTile(event) {
+    event.preventDefault();
+    const tile = event.currentTarget;
+    const on = tile.classList.toggle("w8-tile--selected");
+    tile.setAttribute("aria-pressed", String(on));
+  }
+  customize.addEventListener("click", () => setCustomizing(customize.getAttribute("aria-pressed") !== "true"));
+  document.getElementById("done-command").addEventListener("click", () => {
+    setCustomizing(false);
+    customize.focus();
+  });
+  document.getElementById("clear-command").addEventListener("click", () => {
+    selectedTiles().forEach((tile) => { tile.classList.remove("w8-tile--selected"); tile.setAttribute("aria-pressed", "false"); });
+  });
+  document.getElementById("unpin-command").addEventListener("click", () => {
+    const picked = selectedTiles();
+    if (!picked.length) return;
+    picked.forEach((tile) => { tile.classList.remove("w8-tile--selected"); tile.classList.add("w8-tile--placeholder"); tile.removeAttribute("href"); tile.setAttribute("aria-pressed", "false"); tile.querySelector(".w8-tile__label").textContent = "Unpinned"; });
   });
 
   // Charm panes, flyouts and the clock.

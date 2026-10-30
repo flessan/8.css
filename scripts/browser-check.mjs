@@ -654,6 +654,59 @@ check(
 );
 await shoot("shell-desktop");
 
+// Start screen customize mode: selecting tiles raises the contextual app bar.
+await visit("/examples/shell.html", 1440, 900);
+await realClick('[data-scene="start"]');
+await realClick("#customize-toggle");
+const customizing = await evaluate(`(() => {
+  const tiles = [...document.querySelectorAll("#tile-groups .w8-tile")];
+  tiles[1].click();
+  tiles[2].click();
+  const selected = document.querySelectorAll(".w8-tile--selected");
+  const check = selected[0] ? selected[0].querySelector(".w8-tile__check") : null;
+  return {
+    pressed: document.getElementById("customize-toggle").getAttribute("aria-pressed"),
+    selecting: document.getElementById("tile-groups").classList.contains("w8-tiles--selecting"),
+    barVisible: !document.getElementById("start-appbar").hidden,
+    selected: selected.length,
+    ariaPressed: selected[0] ? selected[0].getAttribute("aria-pressed") : null,
+    checkVisible: check ? getComputedStyle(check).display !== "none" : false,
+    outline: selected[0] ? getComputedStyle(selected[0]).outlineStyle : null,
+  };
+})()`);
+check(
+  "customize mode selects tiles and raises the contextual app bar",
+  customizing.pressed === "true" &&
+    customizing.selecting === true &&
+    customizing.barVisible === true &&
+    customizing.selected === 2 &&
+    customizing.ariaPressed === "true" &&
+    customizing.checkVisible === true &&
+    customizing.outline === "solid",
+  JSON.stringify(customizing),
+);
+await shoot("shell-customize");
+const unpin = await evaluate(`(async () => {
+  document.getElementById("unpin-command").click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const placeholders = document.querySelectorAll("#tile-groups .w8-tile--placeholder").length;
+  const selectionLeft = document.querySelectorAll(".w8-tile--selected").length;
+  document.getElementById("done-command").click();
+  await new Promise((done) => requestAnimationFrame(done));
+  return {
+    placeholders,
+    selectionLeft,
+    barHidden: document.getElementById("start-appbar").hidden,
+    pressed: document.getElementById("customize-toggle").getAttribute("aria-pressed"),
+    focused: document.activeElement.id,
+  };
+})()`);
+check(
+  "unpinning selected tiles clears them and Done restores the Start screen",
+  unpin.placeholders === 2 && unpin.selectionLeft === 0 && unpin.barHidden === true && unpin.pressed === "false" && unpin.focused === "customize-toggle",
+  JSON.stringify(unpin),
+);
+
 // Charm panes inside the shell open on the Start screen and close on Escape.
 await realClick('[data-scene="start"]');
 await evaluate("new Promise((done) => setTimeout(done, 200))");

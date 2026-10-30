@@ -25,6 +25,7 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 
 ## Public classes
 - Start Screen: `w8-start-screen`, `w8-start-heading`, `w8-start-subtitle`, `w8-tiles`.
+- Tile selection: `w8-tile--selected`, `w8-tile__check`; container modifier `w8-tiles--selecting`.
 - Tiles: `w8-tile`, `w8-tile__symbol`, `w8-tile__label`, `w8-tile__meta`, `w8-tile__count`; size modifiers `w8-tile--wide`, `w8-tile--tall`, `w8-tile--large`; colors `w8-tile--blue`, `w8-tile--cyan`, `w8-tile--purple`, `w8-tile--magenta`, `w8-tile--green`, `w8-tile--orange`, `w8-tile--red`, `w8-tile--dark`.
 - Buttons: `w8-button`, `w8-button--primary`, `w8-button--subtle`.
 - Fields: `w8-input`, `w8-select`, `w8-textarea`, `w8-field`, `w8-label`, `w8-help`.

@@ -416,6 +416,9 @@ assert.match(await read("docs/index.html"), /id="personalize"/, "The documentati
  * Windows shell surfaces: lock screen, live tiles, taskbar, flyouts
  * ------------------------------------------------------------------ */
 for (const [id, marker] of [
+  ["selection", "w8-tile__check"],
+  ["controls", "w8-slider"],
+  ["navigation", "w8-nav-bar"],
   ["lock", "w8-lock"],
   ["livetiles", "w8-tile__badge"],
   ["taskbar", "w8-taskbar"],
@@ -519,6 +522,9 @@ for (const id of ["lock-gallery", "taskbar-gallery"]) {
   assert.ok(galleryPage.includes(`id="${id}"`), `The gallery must include #${id}.`);
 }
 assert.match(galleryPage, /shell\.html/, "The gallery must link to the shell demo.");
+assert.ok((await read("gui/tiles.css")).includes(".w8-tile--selected"), "Selected tiles must be styled.");
+assert.match(shellPage, /w8-tile--selected/, "The shell demo must implement tile selection.");
+assert.match(shellPage, /id="start-appbar"/, "The shell demo needs the contextual tile app bar.");
 
 // Extra controls: the rating is a radio group, the slider a range input.
 const formsCss = await read("gui/forms.css");
