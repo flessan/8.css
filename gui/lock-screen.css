@@ -188,7 +188,7 @@
 /* Older markup that dropped a button under the field still lines up. */
 .w8-lock__panel > .w8-button { margin-top: .5rem; }
 .w8-lock__hint + .w8-lock__hint { margin-top: .5rem; }
-.w8-lock__details .w8-lock__hint { margin-top: .25rem; }
+.w8-lock__details .w8-lock__hint { font-size: .75rem; margin-top: .15rem; opacity: .75; }
 .w8-lock__tools {
   align-items: center;
   display: flex;
