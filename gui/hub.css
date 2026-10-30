@@ -1,0 +1,71 @@
+/* Hub page: horizontally panned sections */
+.w8-hub {
+  display: flex;
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding-bottom: .85rem;
+  scroll-snap-type: x proximity;
+  scrollbar-color: #b8b8b8 transparent;
+  scrollbar-width: thin;
+}
+.w8-hub::-webkit-scrollbar { height: .5rem; }
+.w8-hub::-webkit-scrollbar-track { background: transparent; }
+.w8-hub::-webkit-scrollbar-thumb { background: #b8b8b8; }
+.w8-hub__header { margin-bottom: 1.25rem; }
+.w8-hub__title {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 200;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+  margin: 0 0 .4rem;
+}
+.w8-hub__lead { color: var(--w8-muted); margin: 0; max-width: 42rem; }
+.w8-hub__section {
+  flex: 0 0 var(--w8-hub-section, 20rem);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+.w8-hub__section-title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0 0 .6rem;
+  padding-bottom: .4rem;
+  border-bottom: 2px solid var(--w8-accent);
+  display: inline-block;
+}
+.w8-hub__list { display: grid; gap: .85rem; margin: 0; padding: 0; list-style: none; }
+.w8-hub__item { align-items: flex-start; display: flex; gap: .7rem; }
+.w8-hub__item-icon {
+  align-items: center;
+  background: var(--w8-tile-blue);
+  color: #fff;
+  display: flex;
+  flex: 0 0 2.5rem;
+  font-size: 1.1rem;
+  height: 2.5rem;
+  justify-content: center;
+}
+.w8-hub__item-text { min-width: 0; }
+.w8-hub__item-title { display: block; font-size: .92rem; font-weight: 600; line-height: 1.35; }
+.w8-hub__item-meta { color: var(--w8-muted); display: block; font-size: .8rem; line-height: 1.4; }
+.w8-hub__card {
+  background: var(--w8-surface-subtle);
+  border: 1px solid var(--w8-border);
+  display: block;
+  padding: .85rem;
+  text-decoration: none;
+}
+.w8-hub__card-title { color: var(--w8-text); display: block; font-size: 1.15rem; font-weight: 300; margin-bottom: .35rem; }
+.w8-hub__card-meta { color: var(--w8-muted); display: block; font-size: .8rem; }
+.w8-hub--dark { background: #1f1f1f; color: #fff; }
+.w8-hub--dark .w8-hub__lead,
+.w8-hub--dark .w8-hub__item-meta,
+.w8-hub--dark .w8-hub__card-meta { color: rgb(255 255 255 / .72); }
+.w8-hub--dark .w8-hub__card { background: #2a2a2a; border-color: #4a4a4a; }
+.w8-hub--dark .w8-hub__card-title { color: #fff; }
+
+@media (max-width: 40rem) {
+  .w8-hub { display: grid; gap: 1.25rem; overflow: visible; grid-auto-flow: row; }
+  .w8-hub__section { flex: 1 1 auto; }
+}

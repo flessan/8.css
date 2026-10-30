@@ -1,0 +1,41 @@
+/* Snapped and fill views */
+.w8-split {
+  display: grid;
+  grid-template-columns: var(--w8-split-size, 20rem) minmax(0, 1fr);
+  min-height: 20rem;
+}
+.w8-split__pane {
+  background: var(--w8-surface-subtle);
+  border-right: 1px solid var(--w8-border);
+  min-width: 0;
+  overflow-y: auto;
+  padding: clamp(.85rem, 2vw, 1.25rem);
+}
+.w8-split__main {
+  background: var(--w8-surface);
+  min-width: 0;
+  overflow-y: auto;
+  padding: clamp(.85rem, 2vw, 1.25rem);
+}
+.w8-split__title { font-size: 1.15rem; font-weight: 300; margin: 0 0 .6rem; }
+.w8-split--snap-right { grid-template-columns: minmax(0, 1fr) var(--w8-split-size, 20rem); }
+.w8-split--snap-right .w8-split__pane { border-left: 1px solid var(--w8-border); border-right: 0; grid-column: 2; grid-row: 1; }
+.w8-split--snap-right .w8-split__main { grid-column: 1; grid-row: 1; }
+/* A drag gutter matches the 22px divider Windows 8 draws between the views. */
+.w8-split--divider { background: #1f1f1f; column-gap: 1.375rem; }
+.w8-split--divider .w8-split__pane { border-right: 0; }
+.w8-split--divider.w8-split--snap-right .w8-split__pane { border-left: 0; }
+@media (max-width: 48rem) {
+  .w8-split,
+  .w8-split--snap-right { grid-template-columns: minmax(0, 1fr); }
+  .w8-split__pane,
+  .w8-split--snap-right .w8-split__pane {
+    border: 0;
+    border-bottom: 1px solid var(--w8-border);
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .w8-split__main,
+  .w8-split--snap-right .w8-split__main { grid-column: 1; grid-row: 2; }
+  .w8-split--divider { column-gap: 0; row-gap: 1.375rem; }
+}

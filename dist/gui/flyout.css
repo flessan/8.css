@@ -1,0 +1,81 @@
+/* Flyouts, menu flyouts, and tooltips */
+.w8-flyout {
+  --w8-flyout-border: #949494;
+  background: var(--w8-surface);
+  border: 1px solid var(--w8-flyout-border);
+  color: var(--w8-text);
+  max-width: min(90vw, 22rem);
+  padding: .85rem 1rem;
+  position: absolute;
+  z-index: 30;
+}
+.w8-flyout--dark { --w8-flyout-border: #4a4a4a; background: #1f1f1f; color: #fff; }
+.w8-flyout__title { font-size: .95rem; font-weight: 600; margin: 0 0 .35rem; }
+.w8-flyout__text { color: var(--w8-muted); font-size: .85rem; line-height: 1.45; margin: 0; }
+.w8-flyout--dark .w8-flyout__text { color: rgb(255 255 255 / .78); }
+.w8-flyout__actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: flex-end; margin-top: .8rem; }
+.w8-flyout__arrow {
+  background: inherit;
+  border: 0 solid var(--w8-flyout-border);
+  height: .65rem;
+  position: absolute;
+  transform: rotate(45deg);
+  width: .65rem;
+}
+/* The arrow sits on the side of the flyout that faces its anchor. */
+.w8-flyout--top .w8-flyout__arrow,
+.w8-tooltip--top .w8-flyout__arrow { border-bottom-width: 1px; border-right-width: 1px; bottom: -.38rem; left: 1.1rem; }
+.w8-flyout--bottom .w8-flyout__arrow,
+.w8-tooltip--bottom .w8-flyout__arrow { border-left-width: 1px; border-top-width: 1px; left: 1.1rem; top: -.38rem; }
+.w8-flyout--left .w8-flyout__arrow,
+.w8-tooltip--left .w8-flyout__arrow { border-right-width: 1px; border-top-width: 1px; right: -.38rem; top: 1rem; }
+.w8-flyout--right .w8-flyout__arrow,
+.w8-tooltip--right .w8-flyout__arrow { border-bottom-width: 1px; border-left-width: 1px; left: -.38rem; top: 1rem; }
+.w8-flyout--top .w8-flyout__arrow,
+.w8-flyout--bottom .w8-flyout__arrow { left: 50%; margin-left: -.33rem; }
+
+/* Menu flyout used by drop-down buttons and the Settings charm. */
+.w8-flyout--menu { min-width: 12rem; padding: .3rem 0; }
+.w8-flyout__item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font-size: .85rem;
+  gap: .5rem;
+  justify-content: flex-start;
+  min-height: 2.2rem;
+  padding: .4rem .85rem;
+  text-align: left;
+  text-decoration: none;
+  width: 100%;
+}
+.w8-flyout__item .fa { color: #505050; width: 1.1rem; }
+.w8-flyout--dark .w8-flyout__item .fa { color: #c8c8c8; }
+.w8-flyout__item:hover { background: #e6e6e6; }
+.w8-flyout--dark .w8-flyout__item:hover { background: #333; }
+.w8-flyout__item:focus-visible { outline: 2px solid var(--w8-focus); outline-offset: -2px; }
+.w8-flyout__item[aria-checked="true"],
+.w8-flyout__item--selected { background: #e6e6e6; font-weight: 600; }
+.w8-flyout--dark .w8-flyout__item[aria-checked="true"],
+.w8-flyout--dark .w8-flyout__item--selected { background: #333; }
+.w8-flyout__item[aria-disabled="true"] { cursor: not-allowed; opacity: .5; }
+.w8-flyout__separator { border: 0; border-top: 1px solid #d5d5d5; margin: .3rem 0; }
+.w8-flyout--dark .w8-flyout__separator { border-top-color: #4a4a4a; }
+
+/* Tooltips reuse the flyout arrow; they are dark and compact by default. */
+.w8-tooltip {
+  --w8-flyout-border: #4a4a4a;
+  background: #1f1f1f;
+  border: 1px solid var(--w8-flyout-border);
+  color: #fff;
+  font-size: .78rem;
+  line-height: 1.4;
+  max-width: 16rem;
+  padding: .4rem .6rem;
+  position: absolute;
+  z-index: 31;
+}
+.w8-tooltip__text { margin: 0; }

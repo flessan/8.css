@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Windows 8 shell demo — 8.css</title>
+<meta name="description" content="A lock screen, Start screen and desktop built entirely with 8.css components."/>
+<link rel="stylesheet" href="../dist/8.css"/>
+<style>
+:root { color-scheme: light; }
+body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, sans-serif; margin: 0; }
+.shell { height: 100svh; min-height: 34rem; overflow: hidden; position: relative; }
+.scene { box-sizing: border-box; display: block; height: 100%; inset: 0; overflow: auto; position: absolute; }
+.scene[hidden] { display: none; }
+.w8-sr-only { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+
+.start-canvas .w8-tiles { gap: .4rem; grid-auto-rows: minmax(6.5rem, auto); grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr)); }
+.start-canvas .w8-tile { min-height: 6.5rem; padding: .75rem; }
+.start-canvas .w8-tile__symbol { font-size: 1.8rem; }
+.start-canvas .w8-tile__label { font-size: .9rem; }
+.start-canvas .w8-tile__face { padding: .75rem; }
+.start-canvas .w8-tile--live .w8-tile__badge { bottom: .45rem; right: .45rem; }
+/* The toast column stops short of the Charms bar so neither surface covers the other. */
+.shell .w8-toast-region { right: 5.75rem; }
+
+/* Demo chrome: the only part of this page that is not a Windows surface. */
+.demo-bar { align-items: center; background: rgb(0 0 0 / .62); border: 1px solid rgb(255 255 255 / .3); display: flex; gap: .15rem; left: 50%; padding: .2rem; position: fixed; top: .6rem; transform: translateX(-50%); z-index: 60; }
+.demo-bar button, .demo-bar a { background: transparent; border: 0; color: #fff; cursor: pointer; font: inherit; font-size: .72rem; padding: .35rem .55rem; text-decoration: none; white-space: nowrap; }
+.demo-bar button:hover, .demo-bar a:hover { background: rgb(255 255 255 / .18); }
+.demo-bar button[aria-pressed="true"] { background: #0078d7; }
+.demo-bar button:focus-visible, .demo-bar a:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+/* Lock screen */
+.scene .w8-lock { height: 100%; min-height: 100%; }
+.lock-surface { cursor: pointer; }
+.w8-lock__panel[hidden], .w8-lock__idle[hidden] { display: none; }
+.w8-lock__status-item .w8-battery { margin-top: -.1rem; }
+
+/* Start screen */
+.start-canvas { display: flex; flex-direction: column; min-height: 100%; position: relative; }
+.start-top { align-items: flex-end; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; padding-right: 5.25rem; }
+.start-user { align-items: center; color: #fff; display: flex; font-size: .9rem; gap: .5rem; }
+.start-user .fa { background: rgb(255 255 255 / .22); border: 1px solid rgb(255 255 255 / .55); border-radius: 50%; height: 2.1rem; line-height: 2rem; text-align: center; width: 2.1rem; }
+.start-canvas .w8-tile-groups { padding-right: 5.25rem; }
+.start-canvas .w8-tile-groups--overview { padding-right: 5.25rem; }
+.start-canvas .w8-charms { bottom: 0; position: absolute; right: 0; top: 0; }
+
+/* Desktop */
+.desk-scene { display: flex; flex-direction: column; }
+.desk { background-color: #14324f; background-image: url("../styles/images/Windows8RTM/img103.jpg"); background-position: center; background-repeat: no-repeat; background-size: cover; flex: 1; min-height: 0; overflow: hidden; padding: clamp(.75rem, 3vw, 2.5rem); position: relative; }
+.desk .w8-window { margin: 0 auto 0 0; max-width: min(54rem, calc(100% - 5.75rem)); }
+.desk .w8-window-body { padding: 0; }
+.desk-charms { bottom: 0; position: absolute; right: 0; top: 0; }
+.news-hub { padding: 1rem 1.1rem 0; }
+.news-hub .w8-hub__section { --w8-hub-section: 17rem; }
+.appbar-wrap { position: relative; }
+.appbar-wrap .w8-app-bar--circular { padding-inline: .5rem; }
+.clock-flyout { bottom: calc(100% + .7rem); right: .35rem; width: 14rem; }
+.clock-flyout__time { font-size: 1.6rem; font-weight: 300; margin: 0 0 .1rem; }
+.clock-flyout__date { color: var(--w8-muted); font-size: .82rem; margin: 0; }
+
+@media (max-width: 40rem) {
+  .demo-bar { flex-wrap: wrap; justify-content: center; left: .5rem; max-width: calc(100vw - 1rem); right: .5rem; transform: none; }
+  .scene { padding-top: 5.5rem; }
+  .scene .w8-lock { height: auto; min-height: calc(100svh - 5.5rem); }
+  .desk { padding-top: .75rem; }
+  .start-canvas .w8-start-heading { display: none; }
+  .desk-taskbar .w8-taskbar__tray-item:not(:nth-of-type(2)) { display: none; }
+  .desk-taskbar .w8-taskbar__clock { font-size: .72rem; padding: 0 .45rem; }
+  .demo-bar button, .demo-bar a { font-size: .68rem; padding: .3rem .45rem; }
+  .desk-taskbar .w8-taskbar__app:nth-child(n+4) { display: none; }
+}
+</style>
+</head>
+<body class="w8">
+<h1 class="w8-sr-only">Windows 8 shell demo built with 8.css</h1>
+<div class="shell">
+
+  <div class="demo-bar" role="group" aria-label="Demo scenes">
+    <button type="button" data-scene="lock" aria-pressed="false">Lock</button>
+    <button type="button" data-scene="start" aria-pressed="true">Start</button>
+    <button type="button" data-scene="desktop" aria-pressed="false">Desktop</button>
+    <button type="button" id="zoom-toggle" aria-pressed="false">Semantic zoom</button>
+    <a href="../docs/index.html">Docs</a>
+  </div>
+
+  <!-- ================================================================ Lock -->
+  <section class="scene" id="lock" aria-label="Lock screen">
+    <div class="w8-lock lock-surface" id="lock-surface" style="--w8-lock-image:url('../styles/images/Windows8.1RTMWallpapers/img13.jpg')">
+      <div class="w8-lock__idle" id="lock-idle">
+        <p class="w8-lock__time">9:41</p>
+        <p class="w8-lock__date">Thursday, October 30</p>
+        <div class="w8-lock__detail">
+          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+          <span class="w8-lock__detail-text"><strong>9:41 Design review</strong>Studio 3 · 45 minutes</span>
+        </div>
+        <div class="w8-lock__badges">
+          <span class="w8-lock__badge"><i class="fa fa-envelope" aria-hidden="true"></i>Mail <span class="w8-lock__badge-count">3</span></span>
+          <span class="w8-lock__badge"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Store <span class="w8-lock__badge-count">2</span></span>
+        </div>
+        <div class="w8-lock__status">
+          <span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span>
+          <span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span>
+          <span class="w8-lock__status-item"><i class="fa fa-universal-access" aria-hidden="true"></i>Ease of access</span>
+        </div>
+        <p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Click or press any key to unlock</p>
+      </div>
+
+      <div class="w8-lock__panel" id="lock-signin" hidden>
+        <div class="w8-lock__avatar"><i class="fa fa-user" aria-hidden="true"></i></div>
+        <p class="w8-lock__user">Thio</p>
+        <label class="w8-sr-only" for="lock-password">Password</label>
+        <input class="w8-input" id="lock-password" type="password" placeholder="Password" autocomplete="current-password"/>
+        <button class="w8-button w8-button--primary" type="button" id="lock-signin-button">Sign in</button>
+        <p class="w8-lock__hint">Press Escape to go back to the lock screen</p>
+      </div>
+
+      <div class="w8-lock__tools">
+        <button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button>
+        <button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================== Start -->
+  <section class="scene" id="start" aria-label="Start screen" hidden>
+    <div class="w8-start-screen start-canvas" style="--w8-start-background:#14324f">
+      <header class="start-top">
+        <h2 class="w8-start-heading" id="start-heading" tabindex="-1">Start</h2>
+        <p class="start-user"><span>Thio</span><i class="fa fa-user" aria-hidden="true"></i></p>
+      </header>
+
+      <div class="w8-tile-groups" id="tile-groups">
+        <div class="w8-tile-group">
+          <span class="w8-tile-group__label">Everyday</span>
+          <div class="w8-tiles">
+            <a class="w8-tile w8-tile--wide w8-tile--blue w8-tile--live" href="#start" data-app="Mail">
+              <span class="w8-tile__flipper">
+                <span class="w8-tile__face"><i class="fa fa-envelope" aria-hidden="true"></i><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">3 unread</span></span>
+                <span class="w8-tile__face w8-tile__face--back"><span class="w8-tile__label">Design review</span><span class="w8-tile__meta">Studio 3 · 9:41</span></span>
+              </span>
+              <span class="w8-tile__badge w8-tile__badge--solid">3</span>
+            </a>
+            <a class="w8-tile w8-tile--orange" href="#start" data-app="Calendar"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a>
+            <a class="w8-tile w8-tile--purple w8-tile--live" href="#start" data-app="Photos">
+              <span class="w8-tile__flipper">
+                <span class="w8-tile__face"><i class="fa fa-file-photo-o" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></span>
+                <span class="w8-tile__face w8-tile__face--back"><span class="w8-tile__label">28 new</span><span class="w8-tile__meta">Windows 8 wallpapers</span></span>
+              </span>
+            </a>
+            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Weather"><i class="fa fa-sun-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Weather</span><span class="w8-tile__meta">31° Partly sunny</span></a>
+            <a class="w8-tile w8-tile--green" href="#start" data-app="Store"><i class="fa fa-shopping-bag w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Store</span></a>
+            <a class="w8-tile w8-tile--magenta" href="#start" data-app="Music"><i class="fa fa-music w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Music</span></a>
+            <a class="w8-tile w8-tile--red" href="#start" data-app="People"><i class="fa fa-user w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">People</span></a>
+            <a class="w8-tile w8-tile--dark" href="#" data-scene-tile="desktop"><i class="fa fa-desktop w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span></a>
+          </div>
+        </div>
+
+        <div class="w8-tile-group">
+          <span class="w8-tile-group__label">Windows 8</span>
+          <div class="w8-tiles">
+            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Internet Explorer"><i class="fa fa-internet-explorer w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Internet Explorer</span></a>
+            <a class="w8-tile w8-tile--blue" href="#start" data-app="SkyDrive"><i class="fa fa-cloud w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">SkyDrive</span><span class="w8-tile__badge">12</span></a>
+            <a class="w8-tile w8-tile--red" href="#start" data-app="News"><i class="fa fa-newspaper-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">News</span></a>
+            <a class="w8-tile w8-tile--green" href="#start" data-app="Maps"><i class="fa fa-map-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Maps</span></a>
+            <a class="w8-tile w8-tile--large w8-tile--blue" href="#start" data-app="PC settings"><i class="fa fa-cog w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">PC settings</span><span class="w8-tile__meta">Personalize, users, sync</span></a>
+            <a class="w8-tile w8-tile--dark" href="#start" data-app="Help + Tips"><i class="fa fa-question-circle-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Help + Tips</span></a>
+          </div>
+        </div>
+      </div>
+
+      <nav class="w8-charms" aria-label="Charms">
+        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
+        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
+        <button class="w8-charm" type="button" aria-expanded="false" aria-controls="search-pane" data-charm-pane="search-pane"><i class="fa fa-search w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Search</span></button>
+        <button class="w8-charm" type="button" data-app="Devices"><i class="fa fa-desktop w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Devices</span></button>
+        <button class="w8-charm" type="button" aria-expanded="false" aria-controls="settings-pane" data-charm-pane="settings-pane"><i class="fa fa-cog w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Settings</span></button>
+      </nav>
+
+      <div class="w8-charm-pane" id="search-pane" hidden>
+        <h3 class="w8-charm-pane__title">Search</h3>
+        <input class="w8-input" type="search" placeholder="Search apps, settings and files" aria-label="Search"/>
+        <div class="w8-charm-pane__scopes">
+          <button class="w8-charm-pane__scope" type="button" aria-pressed="true">Apps</button>
+          <button class="w8-charm-pane__scope" type="button" aria-pressed="false">Settings</button>
+          <button class="w8-charm-pane__scope" type="button" aria-pressed="false">Files</button>
+        </div>
+        <div class="w8-charm-pane__results">
+          <button class="w8-charm-pane__result" type="button"><i class="fa fa-newspaper-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">News</span><span class="w8-charm-pane__result-meta">App</span></span></button>
+          <button class="w8-charm-pane__result" type="button"><i class="fa fa-cog" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Change PC settings</span><span class="w8-charm-pane__result-meta">Settings</span></span></button>
+          <button class="w8-charm-pane__result" type="button"><i class="fa fa-picture-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Wallpapers</span><span class="w8-charm-pane__result-meta">Pictures</span></span></button>
+        </div>
+      </div>
+
+      <div class="w8-charm-pane" id="settings-pane" hidden>
+        <h3 class="w8-charm-pane__title">Settings</h3>
+        <div class="w8-charm-pane__group">
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-wifi" aria-hidden="true"></i>Network</button>
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-volume-up" aria-hidden="true"></i>Volume</button>
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-cog" aria-hidden="true"></i>Change PC settings</button>
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-power-off" aria-hidden="true"></i>Power</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================= Desktop -->
+  <section class="scene desk-scene" id="desktop" aria-label="Desktop" hidden>
+    <div class="desk">
+      <div class="w8-window">
+        <header class="w8-title-bar">
+          <span class="w8-title-bar__text">News</span>
+          <div class="w8-title-bar__controls">
+            <button class="w8-window-control" type="button" aria-label="Minimize"><i class="fa fa-window-minimize" aria-hidden="true"></i></button>
+            <button class="w8-window-control" type="button" aria-label="Maximize"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>
+            <button class="w8-window-control w8-window-control--close" type="button" aria-label="Close"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+          </div>
+        </header>
+        <div class="w8-window-body">
+          <div class="news-hub">
+            <div class="w8-hub__header">
+              <p class="w8-hub__title">Today</p>
+              <p class="w8-hub__lead">Windows 8 hubs pan sideways: each section keeps its own column and scrolls with the page.</p>
+            </div>
+            <div class="w8-hub">
+              <section class="w8-hub__section">
+                <h3 class="w8-hub__section-title">Top stories</h3>
+                <ul class="w8-hub__list">
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Windows 8 apps ship in four view states</span><span class="w8-hub__item-meta">Full screen, filled, snapped and portrait</span></span></li>
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-desktop" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">The desktop keeps its taskbar</span><span class="w8-hub__item-meta">Pinned apps, tray and clock</span></span></li>
+                </ul>
+              </section>
+              <section class="w8-hub__section">
+                <h3 class="w8-hub__section-title">Live tiles</h3>
+                <ul class="w8-hub__list">
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-refresh" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Tiles flip on a timer</span><span class="w8-hub__item-meta">Two faces, one CSS animation</span></span></li>
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-circle-o-notch" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Badges count what matters</span><span class="w8-hub__item-meta">Bottom-right, over any tile</span></span></li>
+                </ul>
+              </section>
+              <section class="w8-hub__section">
+                <h3 class="w8-hub__section-title">Charms</h3>
+                <ul class="w8-hub__list">
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-search" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Search is a pane, not a page</span><span class="w8-hub__item-meta">Scopes and suggestions</span></span></li>
+                  <li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-cog" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Settings follows the app</span><span class="w8-hub__item-meta">Permissions and preferences</span></span></li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+        <div class="appbar-wrap">
+          <nav class="w8-app-bar w8-app-bar--circular" aria-label="News commands">
+            <button class="w8-app-bar__item" type="button" aria-pressed="true"><i class="fa fa-star" aria-hidden="true"></i>Favorite</button>
+            <button class="w8-app-bar__item" type="button" id="share-command" aria-expanded="false" aria-controls="share-flyout"><i class="fa fa-share-alt" aria-hidden="true"></i>Share</button>
+            <span class="w8-app-bar__separator" aria-hidden="true"></span>
+            <button class="w8-app-bar__item" type="button"><i class="fa fa-refresh" aria-hidden="true"></i>Refresh</button>
+            <button class="w8-app-bar__item" type="button"><i class="fa fa-cog" aria-hidden="true"></i>Settings</button>
+          </nav>
+          <div class="w8-flyout w8-flyout--top" id="share-flyout" hidden style="bottom:calc(100% + .6rem);left:1rem;">
+            <span class="w8-flyout__arrow" aria-hidden="true"></span>
+            <p class="w8-flyout__title">Share this story</p>
+            <p class="w8-flyout__text">Flyouts point at the control that opened them and dismiss when you click outside.</p>
+            <div class="w8-flyout__actions">
+              <button class="w8-button" type="button" data-dismiss-flyout="share-flyout">Cancel</button>
+              <button class="w8-button w8-button--primary" type="button" data-dismiss-flyout="share-flyout">Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="w8-charms desk-charms" aria-label="Charms">
+        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
+        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
+        <button class="w8-charm" type="button" aria-expanded="false" aria-controls="desk-search-pane" data-charm-pane="desk-search-pane"><i class="fa fa-search w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Search</span></button>
+        <button class="w8-charm" type="button" data-app="Devices"><i class="fa fa-desktop w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Devices</span></button>
+        <button class="w8-charm" type="button" aria-expanded="false" aria-controls="desk-settings-pane" data-charm-pane="desk-settings-pane"><i class="fa fa-cog w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Settings</span></button>
+      </nav>
+      <div class="w8-charm-pane" id="desk-settings-pane" hidden>
+        <h3 class="w8-charm-pane__title">Settings</h3>
+        <div class="w8-charm-pane__group">
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-desktop" aria-hidden="true"></i>Desktop</button>
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-cog" aria-hidden="true"></i>Change PC settings</button>
+          <button class="w8-charm-pane__item" type="button"><i class="fa fa-power-off" aria-hidden="true"></i>Power</button>
+        </div>
+      </div>
+      <div class="w8-charm-pane" id="desk-search-pane" hidden>
+        <h3 class="w8-charm-pane__title">Search</h3>
+        <input class="w8-input" type="search" placeholder="Search files and apps" aria-label="Search files and apps"/>
+        <div class="w8-charm-pane__results">
+          <button class="w8-charm-pane__result" type="button"><i class="fa fa-folder-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Wallpapers</span><span class="w8-charm-pane__result-meta">Library · Pictures</span></span></button>
+          <button class="w8-charm-pane__result" type="button"><i class="fa fa-file-text-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Read me</span><span class="w8-charm-pane__result-meta">Document</span></span></button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="w8-taskbar desk-taskbar">
+      <button class="w8-taskbar__start" type="button" aria-label="Start" data-scene-tile="start"><i class="fa fa-windows" aria-hidden="true"></i></button>
+      <div class="w8-taskbar__apps">
+        <div class="w8-taskbar__item">
+          <button class="w8-taskbar__app" type="button" aria-current="page" aria-label="News"><i class="fa fa-newspaper-o" aria-hidden="true"></i></button>
+          <div class="w8-taskbar__preview">
+            <p class="w8-taskbar__preview-title"><i class="fa fa-newspaper-o" aria-hidden="true"></i>News</p>
+            <span class="w8-taskbar__preview-shot">Live preview</span>
+          </div>
+        </div>
+        <div class="w8-taskbar__item">
+          <button class="w8-taskbar__app" type="button" aria-label="File Explorer"><i class="fa fa-folder-o" aria-hidden="true"></i></button>
+          <div class="w8-taskbar__preview">
+            <p class="w8-taskbar__preview-title"><i class="fa fa-folder-o" aria-hidden="true"></i>File Explorer</p>
+            <span class="w8-taskbar__preview-shot">Pictures</span>
+          </div>
+        </div>
+        <div class="w8-taskbar__item">
+          <button class="w8-taskbar__app" type="button" aria-label="Internet Explorer"><i class="fa fa-internet-explorer" aria-hidden="true"></i></button>
+          <div class="w8-taskbar__preview">
+            <p class="w8-taskbar__preview-title"><i class="fa fa-internet-explorer" aria-hidden="true"></i>Internet Explorer</p>
+            <span class="w8-taskbar__preview-shot">Start page</span>
+          </div>
+        </div>
+        <div class="w8-taskbar__item">
+          <button class="w8-taskbar__app" type="button" aria-label="Store"><i class="fa fa-shopping-bag" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div class="w8-taskbar__spacer"></div>
+      <div class="w8-taskbar__tray">
+        <button class="w8-taskbar__tray-item" type="button" aria-label="Show hidden icons"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
+        <button class="w8-taskbar__tray-item" type="button" aria-label="Network"><i class="fa fa-wifi" aria-hidden="true"></i></button>
+        <button class="w8-taskbar__tray-item" type="button" aria-label="Volume"><i class="fa fa-volume-up" aria-hidden="true"></i></button>
+        <span class="w8-taskbar__tray-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span></span>
+      </div>
+      <button class="w8-taskbar__clock" type="button" id="clock-button" aria-expanded="false" aria-controls="clock-flyout">9:41 AM<span>10/30/2026</span></button>
+      <button class="w8-taskbar__show-desktop" type="button" aria-label="Show desktop"></button>
+      <div class="w8-flyout w8-flyout--top clock-flyout" id="clock-flyout" hidden>
+        <span class="w8-flyout__arrow" aria-hidden="true"></span>
+        <p class="clock-flyout__time">9:41 AM</p>
+        <p class="clock-flyout__date">Thursday, October 30, 2026</p>
+      </div>
+    </footer>
+  </section>
+</div>
+
+<div class="w8-toast-region" aria-live="polite">
+  <div class="w8-toast" id="toast" hidden>
+    <span class="w8-toast__icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+    <p class="w8-toast__title" id="toast-title">Mail</p>
+    <p class="w8-toast__body">Design review starts in 5 minutes in Studio 3.</p>
+    <button class="w8-toast__close" type="button" aria-label="Dismiss notification"><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+</div>
+
+<script>
+(() => {
+  const scenes = Array.from(document.querySelectorAll(".scene"));
+  const sceneButtons = Array.from(document.querySelectorAll("[data-scene]"));
+  const toast = document.getElementById("toast");
+  let toastTimer = null;
+
+  const showScene = (id) => {
+    scenes.forEach((scene) => { scene.hidden = scene.id !== id; });
+    sceneButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.scene === id)));
+  };
+
+  const showToast = () => {
+    window.clearTimeout(toastTimer);
+    toast.hidden = false;
+    toastTimer = window.setTimeout(() => { toast.hidden = true; }, 9000);
+  };
+  const hideToast = () => { window.clearTimeout(toastTimer); toast.hidden = true; };
+  toast.querySelector(".w8-toast__close").addEventListener("click", hideToast);
+
+  sceneButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      showScene(button.dataset.scene);
+      if (button.dataset.scene === "lock") {
+        document.getElementById("lock-idle").hidden = false;
+        document.getElementById("lock-signin").hidden = true;
+        document.getElementById("lock-surface").classList.remove("w8-lock--dimmed");
+      }
+    });
+  });
+  document.querySelectorAll("[data-scene-tile]").forEach((tile) => {
+    tile.addEventListener("click", (event) => {
+      event.preventDefault();
+      showScene(tile.dataset.sceneTile);
+      if (tile.dataset.sceneTile === "start") document.getElementById("start-heading").focus();
+    });
+  });
+
+  // Lock screen: any click or key opens the sign-in panel, Sign in unlocks.
+  const lockSurface = document.getElementById("lock-surface");
+  const lockIdle = document.getElementById("lock-idle");
+  const lockSignin = document.getElementById("lock-signin");
+  const openSignin = () => {
+    if (!lockSignin.hidden) return;
+    lockIdle.hidden = true;
+    lockSignin.hidden = false;
+    lockSurface.classList.add("w8-lock--dimmed");
+    document.getElementById("lock-password").focus();
+  };
+  lockSurface.addEventListener("click", (event) => {
+    if (event.target.closest("button, input, a")) return;
+    openSignin();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (document.getElementById("lock").hidden) return;
+    if (event.key === "Escape" && !lockSignin.hidden) {
+      lockSignin.hidden = true;
+      lockIdle.hidden = false;
+      lockSurface.classList.remove("w8-lock--dimmed");
+      return;
+    }
+    if (!lockSignin.hidden) return;
+    if (event.key === "Tab") return;
+    openSignin();
+  });
+  document.getElementById("lock-signin-button").addEventListener("click", () => {
+    showScene("start");
+    document.getElementById("start-heading").focus();
+    showToast();
+  });
+
+  // Semantic zoom: the overview swaps tiles for group names.
+  const groups = document.getElementById("tile-groups");
+  const zoomToggle = document.getElementById("zoom-toggle");
+  zoomToggle.addEventListener("click", () => {
+    const overview = groups.classList.toggle("w8-tile-groups--overview");
+    zoomToggle.setAttribute("aria-pressed", String(overview));
+    zoomToggle.textContent = overview ? "Zoom in" : "Semantic zoom";
+  });
+
+  // Charm panes, flyouts and the clock.
+  document.querySelectorAll("[data-charm-pane]").forEach((charm) => {
+    const pane = document.getElementById(charm.getAttribute("data-charm-pane"));
+    if (!pane) return;
+    const set = (open) => {
+      pane.hidden = !open;
+      charm.setAttribute("aria-expanded", String(open));
+      if (open) {
+        const field = pane.querySelector("input");
+        if (field) field.focus();
+      }
+    };
+    charm.addEventListener("click", () => set(pane.hidden));
+    pane.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { set(false); charm.focus(); }
+    });
+  });
+
+  const shareCommand = document.getElementById("share-command");
+  const shareFlyout = document.getElementById("share-flyout");
+  shareCommand.addEventListener("click", () => {
+    shareFlyout.hidden = !shareFlyout.hidden;
+    shareCommand.setAttribute("aria-expanded", String(!shareFlyout.hidden));
+  });
+  document.querySelectorAll("[data-dismiss-flyout]").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.getElementById(button.dataset.dismissFlyout).hidden = true;
+      shareCommand.setAttribute("aria-expanded", "false");
+      shareCommand.focus();
+    });
+  });
+
+  const clockButton = document.getElementById("clock-button");
+  const clockFlyout = document.getElementById("clock-flyout");
+  clockButton.addEventListener("click", () => {
+    clockFlyout.hidden = !clockFlyout.hidden;
+    clockButton.setAttribute("aria-expanded", String(!clockFlyout.hidden));
+  });
+  document.addEventListener("click", (event) => {
+    if (!clockFlyout.hidden && !event.target.closest("#clock-button, #clock-flyout")) {
+      clockFlyout.hidden = true;
+      clockButton.setAttribute("aria-expanded", "false");
+    }
+    if (!shareFlyout.hidden && !event.target.closest("#share-command, #share-flyout")) {
+      shareFlyout.hidden = true;
+      shareCommand.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Tiles and taskbar buttons acknowledge the click with a toast.
+  document.querySelectorAll("[data-app]").forEach((control) => {
+    control.addEventListener("click", (event) => {
+      event.preventDefault();
+      document.getElementById("toast-title").textContent = control.dataset.app;
+      showToast();
+    });
+  });
+})();
+</script>
+</body>
+</html>

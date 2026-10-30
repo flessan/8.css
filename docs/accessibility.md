@@ -10,6 +10,13 @@
 - Make interactive tiles links or buttons, not non-interactive div elements.
 - Use ARIA roles only when the markup follows the corresponding interaction pattern.
 
+## Surfaces that appear and disappear
+- A flyout, charm pane or toast is only hidden while it carries the `hidden` attribute; toggle that attribute rather than a CSS class, so assistive technology follows the same state as the eye.
+- Keep the control that opens a flyout in sync with `aria-expanded`, point it at the surface with `aria-controls`, and move focus into the surface when it opens.
+- Announce toasts by placing them in a `role="status"` or `aria-live="polite"` region.
+- Semantic zoom, the lock screen and the taskbar are visual states: provide the behaviour and the keyboard path yourself, and never leave the only copy of an action inside an animated or decorative surface.
+- The live tile flip is decorative information; the same text must be readable without motion, and `prefers-reduced-motion` stops the animation.
+
 ## Icons
 Font Awesome glyphs are decorative when they sit next to text:
 

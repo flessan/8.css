@@ -21,10 +21,12 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 
 ## Build layout
 - `gui/base.css`: tokens and base typography.
-- `gui/tiles.css`: Start Screen tiles.
+- `gui/tiles.css` and `gui/live-tiles.css`: Start Screen tiles, badges, flips and semantic zoom.
 - `gui/buttons.css` and `gui/forms.css`: common controls.
 - `gui/feedback.css`: progress, tabs, badges, notices, separators.
-- `gui/window.css`, `gui/app-bar.css`, `gui/charms.css`, and `gui/dialog.css`: desktop components.
+- `gui/window.css`, `gui/taskbar.css`, `gui/app-bar.css`, `gui/charms.css`, `gui/flyout.css`, `gui/toast.css`, and `gui/dialog.css`: desktop and notification chrome.
+- `gui/lock-screen.css`, `gui/hub.css`, and `gui/split-view.css`: the sign-in surface and the two Windows 8 app layouts.
+- `examples/shell.html`: the assembled shell demo (lock screen, Start screen, desktop, taskbar) used to check the surfaces together.
 - `gui/icons.css`: Font Awesome sizing hooks and icon-button helpers.
 - `gui/responsive.css`: responsive and reduced-motion adjustments.
 - `vendor/font-awesome/`: upstream icon font, stylesheets, and license.

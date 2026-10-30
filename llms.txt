@@ -11,6 +11,7 @@
 - `dist/font-awesome/`: self-hosted icon font, stylesheets, and license.
 - `styles/images/`: Windows 8 / 8.1 RTM wallpapers and the generated `wallpapers/` pack (manifest, thumbnails, optional classes). Demo assets only, not MIT licensed.
 - `examples/wallpapers.html`: Personalize-style wallpaper picker with live Start Screen preview.
+- `examples/shell.html`: the assembled Windows 8 shell (lock screen, Start screen, desktop, taskbar).
 - `docs/index.html`: component catalog, previews, and icon gallery.
 - `examples/legacy-start-screen.html`: historical Start Screen prototype.
 - `AGENTS.md` and `llms-full.txt`: maintainer and agent guidance.

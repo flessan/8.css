@@ -5,12 +5,19 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 ## CSS modules
 - `gui/base.css`: design tokens, scoped typography, and focus styles.
 - `gui/tiles.css`: Start Screen canvas and tiles.
+- `gui/live-tiles.css`: tile badges, flip animations, tile groups and the semantic zoom overview.
 - `gui/buttons.css`: button states and variants.
 - `gui/forms.css`: input, select, textarea, checkbox, radio, and toggle styling.
 - `gui/feedback.css`: progress, tabs, badges, notices, and dividers.
 - `gui/window.css`: desktop window and title bar.
+- `gui/taskbar.css`: desktop taskbar, app buttons, previews, tray and clock.
 - `gui/app-bar.css`: action bar.
-- `gui/charms.css`: Charms bar and its flyout pane.
+- `gui/charms.css`: Charms bar, flyout panes and search results.
+- `gui/flyout.css`: message flyouts, menu flyouts and tooltips.
+- `gui/toast.css`: toast notification region and cards.
+- `gui/lock-screen.css`: lock screen, sign-in panel and battery indicator.
+- `gui/hub.css`: horizontally panned hub pages.
+- `gui/split-view.css`: snapped and filled split layouts.
 - `gui/dialog.css`: native dialog styling.
 - `gui/icons.css`: Font Awesome sizing hooks, square icon buttons, and visually-hidden labels.
 - `gui/responsive.css`: narrow viewport and reduced-motion rules.
@@ -26,6 +33,12 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - Desktop: `w8-window`, `w8-title-bar`, `w8-title-bar__text`, `w8-title-bar__controls`, `w8-window-control`, `w8-window-control--close`, `w8-window-body`, `w8-window-footer`.
 - Actions and dialogs: `w8-app-bar`, `w8-app-bar__item`, `w8-dialog`, `w8-dialog__body`, `w8-dialog__footer`.
 - Charms: `w8-charms`, `w8-charm`, `w8-charm__icon`, `w8-charm__label`, `w8-charm-pane`, `w8-charm-pane__title`, `w8-charm-pane__group`, `w8-charm-pane__item`; modifiers `w8-charms--right`, `w8-charms--fixed`.
+- Lock screen: `w8-lock`, `w8-lock__time`, `w8-lock__date`, `w8-lock__detail`, `w8-lock__detail-text`, `w8-lock__badges`, `w8-lock__badge`, `w8-lock__badge-count`, `w8-lock__status`, `w8-lock__status-item`, `w8-lock__hint`, `w8-lock__panel`, `w8-lock__avatar`, `w8-lock__user`, `w8-lock__tools`, `w8-lock__tool`; modifier `w8-lock--dimmed`; battery `w8-battery` with `w8-battery__level` and `w8-battery--low`.
+- Live tiles: `w8-tile__badge` (`--solid`, `--alert`), `w8-tile--live`, `w8-tile__flipper`, `w8-tile__face` (`--back`), `w8-tile-groups`, `w8-tile-group`, `w8-tile-group__label`, `w8-tile-groups--overview`.
+- Taskbar: `w8-taskbar`, `w8-taskbar__start`, `w8-taskbar__apps`, `w8-taskbar__app`, `w8-taskbar__item`, `w8-taskbar__preview`, `w8-taskbar__preview-title`, `w8-taskbar__preview-shot`, `w8-taskbar__tray`, `w8-taskbar__tray-item`, `w8-taskbar__clock`, `w8-taskbar__spacer`, `w8-taskbar__show-desktop`; modifiers `w8-taskbar--fixed`, `w8-taskbar__app--active`.
+- Flyouts and toasts: `w8-flyout`, `w8-flyout__arrow`, `w8-flyout__title`, `w8-flyout__text`, `w8-flyout__actions`, `w8-flyout__item`, `w8-flyout__separator`, `w8-tooltip`; modifiers `w8-flyout--top`, `--bottom`, `--left`, `--right`, `--menu`, `--dark`; `w8-toast-region`, `w8-toast`, `w8-toast__icon`, `w8-toast__title`, `w8-toast__body`, `w8-toast__close`, `w8-toast__actions`, `w8-toast__action`, `w8-toast--peek`.
+- Hub and split view: `w8-hub`, `w8-hub__header`, `w8-hub__title`, `w8-hub__lead`, `w8-hub__section`, `w8-hub__section-title`, `w8-hub__list`, `w8-hub__item`, `w8-hub__item-icon`, `w8-hub__item-text`, `w8-hub__item-title`, `w8-hub__item-meta`, `w8-hub__card`; `w8-split`, `w8-split__pane`, `w8-split__main`, `w8-split__title`; modifiers `w8-hub--dark`, `w8-split--snap-right`, `w8-split--divider`.
+- Progress ring and app bar variants: `w8-progress-ring` (`--small`), `w8-app-bar--top`, `w8-app-bar--contextual`, `w8-app-bar--circular`, `w8-app-bar__separator`.
 - Icons: `w8-icon`, `w8-icon--small`, `w8-icon--large`, `w8-icon--xl`, `w8-icon-button`, `w8-icon-button--accent`, `w8-icon-button__label`, `w8-sr-only`.
 
 ## Font Awesome 4.7.0 icons

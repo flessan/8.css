@@ -13,15 +13,20 @@
 <div class="sidebar-label">Documentation</div>
 <nav class="tree-view docs-nav">
 <a class="tree-link" href="#intro">Intro</a><a class="tree-link" href="#install">Installation / Usage</a><a class="tree-link tree-sub" href="#npm">npm package</a><a class="tree-link tree-sub" href="#modular">Modular stylesheets</a>
-<div class="tree-group">Components</div><a class="tree-link" href="#tiles">Start Screen and Tiles</a><a class="tree-link" href="#personalize">Personalize / wallpapers</a><a class="tree-link" href="#icons">Font Awesome icons</a><a class="tree-link" href="#buttons">Button</a><a class="tree-link" href="#forms">Text fields</a><a class="tree-link" href="#toggle">Checkbox and Toggle</a><a class="tree-link" href="#feedback">Progress and Feedback</a><a class="tree-link" href="#tabs">Tabs</a><a class="tree-link" href="#window">Window</a><a class="tree-link" href="#appbar">App Bar</a><a class="tree-link" href="#charms">Charms Bar</a><a class="tree-link" href="#dialog">Dialog Box</a>
+<div class="tree-group">Components</div><a class="tree-link" href="#tiles">Start Screen and Tiles</a><a class="tree-link" href="#personalize">Personalize / wallpapers</a><a class="tree-link" href="#icons">Font Awesome icons</a><a class="tree-link" href="#buttons">Button</a><a class="tree-link" href="#forms">Text fields</a><a class="tree-link" href="#toggle">Checkbox and Toggle</a><a class="tree-link" href="#feedback">Progress and Feedback</a><a class="tree-link" href="#tabs">Tabs</a><a class="tree-link" href="#window">Window</a><a class="tree-link" href="#appbar">App Bar</a><a class="tree-link" href="#charms">Charms Bar</a><a class="tree-link" href="#lock">Lock Screen</a>
+<a class="tree-link" href="#livetiles">Live Tiles</a>
+<a class="tree-link" href="#taskbar">Taskbar</a>
+<a class="tree-link" href="#flyout">Flyouts and Toasts</a>
+<a class="tree-link" href="#hub">Hub and Split View</a>
+<a class="tree-link" href="#dialog">Dialog Box</a>
 <div class="tree-group">Project</div><a class="tree-link" href="https://github.com/flessan/8.css/blob/master/examples/legacy-start-screen.html">Legacy Start Screen demo</a><a class="tree-link" href="#history">Origin and Inspiration</a><a class="tree-link" href="#contributing">Issues, Contributing, etc.</a>
 </nav>
 <div class="sidebar-footer"><span class="release-status">FONT AWESOME 4.7.0</span><small>Bundled icon font, no CDN needed</small><small><a href="https://github.com/flessan/8.css">Source code on GitHub</a></small></div>
 </aside>
 <main class="docs-main" id="main" tabindex="-1">
 <section class="docs-section" id="intro"><h1>8.css</h1><hr class="page-rule"/>
-<p class="intro-lead">A CSS-only UI library for building faithful, Windows 8-inspired interfaces.</p><div class="tag-row"><span class="doc-tag doc-tag-blue">WINDOWS 8</span><span class="doc-tag">CSS ONLY</span><span class="doc-tag">FRAMEWORK NEUTRAL</span><span class="doc-tag">FONT AWESOME 4.7</span></div>
-<p>8.css styles semantic HTML with the flat, colorful language of Windows 8. It includes the Start Screen tile system, common controls, app bars, desktop window chrome, and the complete Font Awesome 4.7.0 icon font. It does not ship a JavaScript runtime and works with plain HTML, React, Vue, Svelte, or another framework that can load CSS.</p>
+<p class="intro-lead">A CSS-only UI library for building faithful, Windows 8-inspired interfaces.</p><div class="tag-row"><span class="doc-tag doc-tag-blue">WINDOWS 8</span><span class="doc-tag">CSS ONLY</span><span class="doc-tag">FRAMEWORK NEUTRAL</span><span class="doc-tag">FONT AWESOME 4.7</span><span class="doc-tag">SHELL SURFACES</span></div>
+<p>8.css styles semantic HTML with the flat, colorful language of Windows 8. It includes the Start Screen tile system and its live tiles, common controls, the Charms bar and flyout panes, a lock screen, the desktop taskbar, hubs and snapped split views, desktop window chrome, and the complete Font Awesome 4.7.0 icon font. It does not ship a JavaScript runtime and works with plain HTML, React, Vue, Svelte, or another framework that can load CSS.</p>
 <p>The documentation follows a component-by-component structure: each section introduces a component, shows a rendered preview, and provides source markup that can be copied into a project.</p>
 <div class="example"><div class="example-caption">A small Start Screen preview</div><div class="preview"><section class="w8 w8-start-screen" aria-labelledby="intro-start-title"><h2 class="w8-start-heading" id="intro-start-title">Start</h2><p class="w8-start-subtitle">Everything in one place.</p><div class="w8-tiles">
 <a class="w8-tile w8-tile--wide w8-tile--blue" href="#tiles"><i class="fa fa-envelope w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">2 new messages</span></a><a class="w8-tile w8-tile--purple" href="#tiles"><i class="fa fa-file-photo-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></a><a class="w8-tile w8-tile--green" href="#tiles"><i class="fa fa-windows w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span></a><a class="w8-tile w8-tile--orange" href="#tiles"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a><a class="w8-tile w8-tile--cyan" href="#tiles"><i class="fa fa-sun-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Weather</span></a></div></section></div>
@@ -123,6 +128,123 @@ import &quot;@flessan/8.css/dist/gui/responsive.css&quot;;</code></pre><button c
   &lt;h3 class=&quot;w8-charm-pane__title&quot;&gt;Settings&lt;/h3&gt;
 &lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
 <p>Public classes: <code>w8-charms</code>, <code>w8-charm</code>, <code>w8-charm__icon</code>, <code>w8-charm__label</code>, <code>w8-charm-pane</code>, <code>w8-charm-pane__title</code>, <code>w8-charm-pane__group</code>, <code>w8-charm-pane__item</code>. Modifiers: <code>w8-charms--right</code> pins the bar to the right edge of a positioned container and <code>w8-charms--fixed</code> pins it to the viewport. The active charm uses <code>aria-expanded="true"</code> or <code>aria-pressed="true"</code> and is filled with <code>--w8-accent</code>.</p></section>
+<section class="docs-section" id="lock"><h2>Lock Screen</h2><p>The lock screen is a full-bleed image with the time, date and system status along the bottom edge. It is the first surface a Windows 8 user sees, so the component keeps the same reading order: time, date, an optional detailed status from one app, then network and battery. Point it at any image with <code>--w8-lock-image</code>, or leave it to the solid <code>--w8-lock-background</code>.</p>
+<div class="example"><div class="example-caption">Lock screen with app status, and the sign-in panel in the same surface</div><div class="preview"><div class="w8-lock lock-demo" style="--w8-lock-image:url('../styles/images/Windows8RTM/img3.jpg')"><div><p class="w8-lock__time">9:41</p><p class="w8-lock__date">Thursday, October 30</p><div class="w8-lock__detail"><i class="fa fa-calendar-o" aria-hidden="true"></i><span class="w8-lock__detail-text"><strong>9:41 Design review</strong>Studio 3 &middot; 45 minutes</span></div><div class="w8-lock__status"><span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span><span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span></div><p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Click or press any key to unlock</p></div><div class="w8-lock__tools"><button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button><button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-lock&quot; style=&quot;--w8-lock-image:url('wallpaper.jpg')&quot;&gt;
+  &lt;p class=&quot;w8-lock__time&quot;&gt;9:41&lt;/p&gt;
+  &lt;p class=&quot;w8-lock__date&quot;&gt;Thursday, October 30&lt;/p&gt;
+  &lt;div class=&quot;w8-lock__detail&quot;&gt;
+    &lt;i class=&quot;fa fa-calendar-o&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+    &lt;span class=&quot;w8-lock__detail-text&quot;&gt;
+      &lt;strong&gt;9:41 Design review&lt;/strong&gt;Studio 3
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;w8-lock__status&quot;&gt;
+    &lt;span class=&quot;w8-lock__status-item&quot;&gt;
+      &lt;i class=&quot;fa fa-wifi&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Home
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<div class="example"><div class="example-caption">Sign-in panel: avatar, user name and password field</div><div class="preview"><div class="w8-lock lock-demo" style="--w8-lock-image:url('../styles/images/Windows81RTMWallpapers/img1.jpg');--w8-lock-image:url('../styles/images/Windows8.1RTMWallpapers/img1.jpg')"><div class="w8-lock__panel"><div class="w8-lock__avatar"><i class="fa fa-user" aria-hidden="true"></i></div><p class="w8-lock__user">Thio</p><input class="w8-input" type="password" placeholder="Password" aria-label="Password"/><button class="w8-button w8-button--primary" type="button">Sign in</button></div></div></div></div>
+<p>Public classes: <code>w8-lock</code>, <code>w8-lock__time</code>, <code>w8-lock__date</code>, <code>w8-lock__detail</code>, <code>w8-lock__detail-text</code>, <code>w8-lock__badges</code>, <code>w8-lock__badge</code>, <code>w8-lock__badge-count</code>, <code>w8-lock__status</code>, <code>w8-lock__status-item</code>, <code>w8-lock__hint</code>, <code>w8-lock__panel</code>, <code>w8-lock__avatar</code>, <code>w8-lock__user</code>, <code>w8-lock__tools</code>, <code>w8-lock__tool</code>. Modifier: <code>w8-lock--dimmed</code>. Battery: <code>w8-battery</code> with <code>--w8-battery-level</code>, plus <code>w8-battery--low</code>.</p>
+<p>The lock screen is presentation only: the click-or-key-to-unlock behaviour and the sign-in form belong to your application. The <a href="../examples/shell.html">shell demo</a> wires one up with plain DOM scripting.</p></section>
+
+<section class="docs-section" id="livetiles"><h2>Live Tiles</h2><p>A live tile carries a badge, flips between two faces, or shrinks into the semantic zoom overview. All three are additive: the base <code>w8-tile</code> markup keeps working when you add them.</p>
+<div class="example"><div class="example-caption">Badges and a flipping tile in a labelled tile group</div><div class="preview tile-demo">
+<div class="w8-tile-groups"><div class="w8-tile-group"><span class="w8-tile-group__label">Everyday</span><div class="w8-tiles demo-tiles">
+<a class="w8-tile w8-tile--wide w8-tile--blue w8-tile--live" href="#livetiles"><span class="w8-tile__flipper"><span class="w8-tile__face"><i class="fa fa-envelope" aria-hidden="true"></i><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">3 unread</span></span><span class="w8-tile__face w8-tile__face--back"><span class="w8-tile__label">Design review</span><span class="w8-tile__meta">Studio 3 &middot; 9:41</span></span></span><span class="w8-tile__badge w8-tile__badge--solid">3</span></a>
+<a class="w8-tile w8-tile--purple" href="#livetiles"><i class="fa fa-file-photo-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></a>
+<a class="w8-tile w8-tile--green" href="#livetiles"><i class="fa fa-shopping-bag w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Store</span></a>
+<a class="w8-tile w8-tile--red" href="#livetiles"><i class="fa fa-newspaper-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">News</span><span class="w8-tile__badge w8-tile__badge--solid w8-tile__badge--alert">12</span></a>
+</div></div></div>
+<div class="w8-tile-groups w8-tile-groups--overview zoom-demo"><div class="w8-tile-group"><span class="w8-tile-group__label">Semantic zoom</span><div class="w8-tiles"><span class="w8-tile w8-tile--blue"></span><span class="w8-tile w8-tile--cyan"></span><span class="w8-tile w8-tile--purple"></span><span class="w8-tile w8-tile--magenta"></span><span class="w8-tile w8-tile--green"></span><span class="w8-tile w8-tile--orange"></span></div></div></div>
+</div><details class="code"><summary>Show code</summary><pre><code>&lt;a class=&quot;w8-tile w8-tile--wide w8-tile--blue w8-tile--live&quot; href=&quot;#&quot;&gt;
+  &lt;span class=&quot;w8-tile__flipper&quot;&gt;
+    &lt;span class=&quot;w8-tile__face&quot;&gt;
+      &lt;i class=&quot;fa fa-envelope&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;span class=&quot;w8-tile__label&quot;&gt;Mail&lt;/span&gt;
+      &lt;span class=&quot;w8-tile__meta&quot;&gt;3 unread&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class=&quot;w8-tile__face w8-tile__face--back&quot;&gt;
+      &lt;span class=&quot;w8-tile__label&quot;&gt;Design review&lt;/span&gt;
+      &lt;span class=&quot;w8-tile__meta&quot;&gt;Studio 3 &amp;middot; 9:41&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class=&quot;w8-tile__badge w8-tile__badge--solid&quot;&gt;3&lt;/span&gt;
+&lt;/a&gt;
+
+&lt;div class=&quot;w8-tile-groups w8-tile-groups--overview&quot;&gt;
+  &lt;div class=&quot;w8-tile-group&quot;&gt;
+    &lt;span class=&quot;w8-tile-group__label&quot;&gt;Everyday&lt;/span&gt;
+    &lt;div class=&quot;w8-tiles&quot;&gt;&hellip;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>Public classes: <code>w8-tile__badge</code> with <code>w8-tile__badge--solid</code> and <code>w8-tile__badge--alert</code>; <code>w8-tile--live</code> with <code>w8-tile__flipper</code> and two <code>w8-tile__face</code> children (the second also carries <code>w8-tile__face--back</code>); <code>w8-tile-groups</code>, <code>w8-tile-group</code>, <code>w8-tile-group__label</code>, and the <code>w8-tile-groups--overview</code> modifier for semantic zoom.</p>
+<p>The flip animation pauses with <code>prefers-reduced-motion</code>, and the overview is a pure CSS state: add the modifier to the group container and the tiles collapse to colour blocks while the group names stay visible.</p></section>
+
+<section class="docs-section" id="taskbar"><h2>Taskbar</h2><p>The desktop taskbar pins app buttons, the tray and the clock along the bottom edge. Preview thumbnails appear on hover or keyboard focus, and the clock is a button so it can open the time flyout.</p>
+<div class="example"><div class="example-caption">Taskbar with a pinned app, tray icons and the clock</div><div class="preview preview-flush"><div class="w8-taskbar taskbar-demo"><button class="w8-taskbar__start" type="button" aria-label="Start"><i class="fa fa-windows" aria-hidden="true"></i></button><div class="w8-taskbar__apps"><div class="w8-taskbar__item"><button class="w8-taskbar__app" type="button" aria-current="page" aria-label="News"><i class="fa fa-newspaper-o" aria-hidden="true"></i></button><div class="w8-taskbar__preview"><p class="w8-taskbar__preview-title"><i class="fa fa-newspaper-o" aria-hidden="true"></i>News</p><span class="w8-taskbar__preview-shot">Live preview</span></div></div><div class="w8-taskbar__item"><button class="w8-taskbar__app" type="button" aria-label="File Explorer"><i class="fa fa-folder-o" aria-hidden="true"></i></button></div><div class="w8-taskbar__item"><button class="w8-taskbar__app" type="button" aria-label="Internet Explorer"><i class="fa fa-internet-explorer" aria-hidden="true"></i></button></div></div><div class="w8-taskbar__spacer"></div><div class="w8-taskbar__tray"><button class="w8-taskbar__tray-item" type="button" aria-label="Network"><i class="fa fa-wifi" aria-hidden="true"></i></button><button class="w8-taskbar__tray-item" type="button" aria-label="Volume"><i class="fa fa-volume-up" aria-hidden="true"></i></button><span class="w8-taskbar__tray-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span></span></div><span class="w8-taskbar__clock">9:41 AM<span>10/30/2026</span></span><button class="w8-taskbar__show-desktop" type="button" aria-label="Show desktop"></button></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;nav class=&quot;w8-taskbar&quot;&gt;
+  &lt;button class=&quot;w8-taskbar__start&quot; type=&quot;button&quot; aria-label=&quot;Start&quot;&gt;
+    &lt;i class=&quot;fa fa-windows&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+  &lt;/button&gt;
+  &lt;div class=&quot;w8-taskbar__apps&quot;&gt;
+    &lt;div class=&quot;w8-taskbar__item&quot;&gt;
+      &lt;button class=&quot;w8-taskbar__app&quot; type=&quot;button&quot; aria-label=&quot;News&quot;&gt;
+        &lt;i class=&quot;fa fa-newspaper-o&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+      &lt;div class=&quot;w8-taskbar__preview&quot;&gt;&hellip;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;w8-taskbar__tray&quot;&gt;&hellip;&lt;/div&gt;
+  &lt;button class=&quot;w8-taskbar__clock&quot; type=&quot;button&quot;&gt;9:41 AM&lt;span&gt;10/30/2026&lt;/span&gt;&lt;/button&gt;
+&lt;/nav&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>Public classes: <code>w8-taskbar</code>, <code>w8-taskbar__start</code>, <code>w8-taskbar__apps</code>, <code>w8-taskbar__app</code>, <code>w8-taskbar__item</code>, <code>w8-taskbar__preview</code>, <code>w8-taskbar__preview-title</code>, <code>w8-taskbar__preview-shot</code>, <code>w8-taskbar__tray</code>, <code>w8-taskbar__tray-item</code>, <code>w8-taskbar__clock</code>, <code>w8-taskbar__spacer</code>, <code>w8-taskbar__show-desktop</code>. Modifiers: <code>w8-taskbar--fixed</code> and <code>w8-taskbar__app--active</code>; an app button marked <code>aria-current="page"</code> is highlighted for you.</p></section>
+
+<section class="docs-section" id="flyout"><h2>Flyouts and Toasts</h2><p>A flyout is the temporary surface that points at the control that opened it: confirmations, drop-down menus, more detail. A toast is the notification that arrives when the app is not in front. Both are styled here; when they appear is up to your code.</p>
+<div class="example"><div class="example-caption">Message flyout and menu flyout, with arrows facing their anchors</div><div class="preview flyout-stage"><div class="w8-flyout w8-flyout--top"><span class="w8-flyout__arrow" aria-hidden="true"></span><p class="w8-flyout__title">Share this story</p><p class="w8-flyout__text">Flyouts dismiss when you click outside them.</p><div class="w8-flyout__actions"><button class="w8-button" type="button">Cancel</button><button class="w8-button w8-button--primary" type="button">Share</button></div></div><div class="w8-flyout w8-flyout--menu w8-flyout--left"><span class="w8-flyout__arrow" aria-hidden="true"></span><button class="w8-flyout__item" type="button" role="menuitem"><i class="fa fa-check" aria-hidden="true"></i>Large tiles</button><button class="w8-flyout__item" type="button" role="menuitem"><i class="fa fa-th" aria-hidden="true"></i>Small tiles</button><hr class="w8-flyout__separator"/><button class="w8-flyout__item" type="button" role="menuitem"><i class="fa fa-cog" aria-hidden="true"></i>PC settings</button></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-flyout w8-flyout--top&quot;&gt;
+  &lt;span class=&quot;w8-flyout__arrow&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;p class=&quot;w8-flyout__title&quot;&gt;Share this story&lt;/p&gt;
+  &lt;p class=&quot;w8-flyout__text&quot;&gt;Flyouts dismiss when you click outside.&lt;/p&gt;
+  &lt;div class=&quot;w8-flyout__actions&quot;&gt;&hellip;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;w8-flyout w8-flyout--menu&quot;&gt;
+  &lt;button class=&quot;w8-flyout__item&quot; type=&quot;button&quot; role=&quot;menuitem&quot;&gt;Large tiles&lt;/button&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<div class="example"><div class="example-caption">Toast notification with an app icon and body text</div><div class="preview toast-stage"><div class="w8-toast-region toast-region-demo"><div class="w8-toast"><span class="w8-toast__icon"><i class="fa fa-envelope" aria-hidden="true"></i></span><p class="w8-toast__title">Mail</p><p class="w8-toast__body">Design review starts in 5 minutes in Studio 3.</p><button class="w8-toast__close" type="button" aria-label="Dismiss notification"><i class="fa fa-times" aria-hidden="true"></i></button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-toast-region&quot; aria-live=&quot;polite&quot;&gt;
+  &lt;div class=&quot;w8-toast&quot;&gt;
+    &lt;span class=&quot;w8-toast__icon&quot;&gt;
+      &lt;i class=&quot;fa fa-envelope&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+    &lt;/span&gt;
+    &lt;p class=&quot;w8-toast__title&quot;&gt;Mail&lt;/p&gt;
+    &lt;p class=&quot;w8-toast__body&quot;&gt;Design review starts in 5 minutes.&lt;/p&gt;
+    &lt;button class=&quot;w8-toast__close&quot; type=&quot;button&quot; aria-label=&quot;Dismiss notification&quot;&gt;
+      &lt;i class=&quot;fa fa-times&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>Public classes: <code>w8-flyout</code>, <code>w8-flyout__arrow</code>, <code>w8-flyout__title</code>, <code>w8-flyout__text</code>, <code>w8-flyout__actions</code>, <code>w8-flyout__item</code>, <code>w8-flyout__separator</code>, <code>w8-tooltip</code>, and <code>w8-toast-region</code> with <code>w8-toast</code>, <code>w8-toast__icon</code>, <code>w8-toast__title</code>, <code>w8-toast__body</code>, <code>w8-toast__close</code>, <code>w8-toast__actions</code>, <code>w8-toast__action</code>. Placement modifiers: <code>w8-flyout--top</code>, <code>--bottom</code>, <code>--left</code>, <code>--right</code>, plus <code>w8-flyout--menu</code>, <code>w8-flyout--dark</code> and <code>w8-toast--peek</code>.</p></section>
+
+<section class="docs-section" id="hub"><h2>Hub and Split View</h2><p>Two layout patterns carry most Windows 8 app pages. A hub lays sections out as columns that pan sideways, so content grows horizontally instead of pushing down the page. Split view is the snapped/filled pair: one narrow pane beside the main content, switching to a stack on phones.</p>
+<div class="example"><div class="example-caption">A hub with three sections</div><div class="preview"><div class="w8-hub__header"><p class="w8-hub__title">Today</p><p class="w8-hub__lead">Sections keep their own column and scroll with the page.</p></div><div class="w8-hub hub-demo"><section class="w8-hub__section"><h3 class="w8-hub__section-title">Top stories</h3><ul class="w8-hub__list"><li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Apps ship in four view states</span><span class="w8-hub__item-meta">Full screen, filled, snapped, portrait</span></span></li><li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-desktop" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">The desktop keeps its taskbar</span><span class="w8-hub__item-meta">Pinned apps, tray and clock</span></span></li></ul></section><section class="w8-hub__section"><h3 class="w8-hub__section-title">Live tiles</h3><ul class="w8-hub__list"><li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-refresh" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Tiles flip on a timer</span><span class="w8-hub__item-meta">Two faces, one animation</span></span></li></ul></section><section class="w8-hub__section"><h3 class="w8-hub__section-title">Charms</h3><ul class="w8-hub__list"><li class="w8-hub__item"><span class="w8-hub__item-icon"><i class="fa fa-search" aria-hidden="true"></i></span><span class="w8-hub__item-text"><span class="w8-hub__item-title">Search is a pane</span><span class="w8-hub__item-meta">Scopes and suggestions</span></span></li></ul></section></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-hub&quot;&gt;
+  &lt;section class=&quot;w8-hub__section&quot;&gt;
+    &lt;h3 class=&quot;w8-hub__section-title&quot;&gt;Top stories&lt;/h3&gt;
+    &lt;ul class=&quot;w8-hub__list&quot;&gt;
+      &lt;li class=&quot;w8-hub__item&quot;&gt;
+        &lt;span class=&quot;w8-hub__item-icon&quot;&gt;&lt;i class=&quot;fa fa-line-chart&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;
+        &lt;span class=&quot;w8-hub__item-text&quot;&gt;
+          &lt;span class=&quot;w8-hub__item-title&quot;&gt;Apps ship in four view states&lt;/span&gt;
+          &lt;span class=&quot;w8-hub__item-meta&quot;&gt;Full screen, filled, snapped&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/section&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<div class="example"><div class="example-caption">Split view: a 20rem pane beside the main content</div><div class="preview preview-flush"><div class="w8-split split-demo"><aside class="w8-split__pane"><h3 class="w8-split__title">Scopes</h3><div class="w8-charm-pane__results" style="margin-top:0"><button class="w8-charm-pane__result" type="button"><i class="fa fa-newspaper-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">All news</span><span class="w8-charm-pane__result-meta">1 204 stories</span></span></button><button class="w8-charm-pane__result" type="button"><i class="fa fa-star-o" aria-hidden="true"></i><span><span class="w8-charm-pane__result-title">Saved</span><span class="w8-charm-pane__result-meta">18 stories</span></span></button></div></aside><div class="w8-split__main"><h3 class="w8-split__title">All news</h3><p>Snapped view is 320 pixels wide; the main app keeps the rest of the screen. Below 48rem the pane stacks above the content so nothing is squeezed.</p><button class="w8-button w8-button--primary" type="button">Read more</button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-split&quot;&gt;
+  &lt;aside class=&quot;w8-split__pane&quot;&gt;&hellip;&lt;/aside&gt;
+  &lt;div class=&quot;w8-split__main&quot;&gt;&hellip;&lt;/div&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>Public classes: <code>w8-hub</code>, <code>w8-hub__header</code>, <code>w8-hub__title</code>, <code>w8-hub__lead</code>, <code>w8-hub__section</code>, <code>w8-hub__section-title</code>, <code>w8-hub__list</code>, <code>w8-hub__item</code>, <code>w8-hub__item-icon</code>, <code>w8-hub__item-text</code>, <code>w8-hub__item-title</code>, <code>w8-hub__item-meta</code>, <code>w8-hub__card</code>, and <code>w8-split</code> with <code>w8-split__pane</code>, <code>w8-split__main</code>, <code>w8-split__title</code>. Modifiers: <code>w8-hub--dark</code>, <code>w8-split--snap-right</code>, <code>w8-split--divider</code>; the pane width is set with <code>--w8-split-size</code>.</p></section>
+
 <section class="docs-section" id="dialog"><h2>Dialog Box</h2><p>Dialog styles apply to native HTML dialog elements. This visible preview is a styled container; in an app, use the browser dialog API to open and close a real dialog.</p><div class="example"><div class="preview"><div class="w8-dialog" role="group" aria-labelledby="demo-dialog-title"><div class="w8-dialog__body"><h3 id="demo-dialog-title">Delete this file?</h3><p>This action cannot be undone.</p></div><div class="w8-dialog__footer"><button class="w8-button" type="button">Cancel</button><button class="w8-button w8-button--primary" type="button"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;dialog class=&quot;w8-dialog&quot; aria-labelledby=&quot;confirm-title&quot;&gt;
   &lt;div class=&quot;w8-dialog__body&quot;&gt;
     &lt;h2 id=&quot;confirm-title&quot;&gt;Delete this file?&lt;/h2&gt;

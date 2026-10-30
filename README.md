@@ -10,6 +10,7 @@
 - Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, the Charms bar, windows, and dialog styling.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
+- A lock screen with sign-in panel and battery indicator, live tiles with badges and flips, a taskbar with tray and clock, flyouts, toasts, hubs and snapped split views.
 - Icon helpers with sizing hooks, square app-bar buttons, and accessible visually-hidden labels.
 - Interactive documentation, copyable HTML snippets, a one-page component gallery, and modular stylesheets.
 
@@ -163,7 +164,7 @@ The Windows 8 edge menu is available as a vertical bar of icon-and-label buttons
 
 ## Modules and customization
 
-The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `app-bar.css`, `charms.css`, and `dialog.css`.
+The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `taskbar.css`, `app-bar.css`, `charms.css`, `flyout.css`, `toast.css`, and `dialog.css`; the lock screen and app layouts live in `lock-screen.css`, `hub.css`, and `split-view.css`, and live tile extras in `live-tiles.css`.
 
 ```js
 import "@flessan/8.css/dist/font-awesome/css/font-awesome.min.css";

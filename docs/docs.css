@@ -37,3 +37,33 @@
 .charm-stage .w8-charms { padding-block: 1rem; }
 .charm-stage .w8-charm-pane { background: #f2f2f2; position: static; box-shadow: none; border-left: 1px solid #b8b8b8; width: auto; flex: 1; }
 .charm-stage .w8-charm-pane[hidden] { display: none; }
+
+/* Windows shell demos: lock screen, live tiles, taskbar, flyouts, toasts, hub */
+.lock-demo { min-height: 21rem; }
+.lock-demo .w8-lock__time { font-size: 3.2rem; }
+.lock-demo .w8-lock__date { font-size: 1.2rem; }
+.tile-demo .w8-tile-group__label { color: #444; }
+.tile-demo .w8-tiles.demo-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; grid-auto-rows: minmax(92px, auto); max-width: 34rem; }
+.tile-demo .w8-tile { min-height: 92px; padding: 10px; }
+.tile-demo .w8-tile__face { padding: 10px; }
+.tile-demo .w8-tile__symbol { font-size: 1.5rem; }
+.tile-demo .w8-tile-groups--overview { margin-top: 14px; }
+.tile-demo .w8-tile-groups--overview .w8-tile-group__label { color: #444; }
+.preview-flush { padding: 0; }
+.taskbar-demo { min-height: 2.6rem; }
+.flyout-stage { display: flex; flex-wrap: wrap; gap: 24px 96px; padding: 24px; position: relative; }
+.flyout-stage .w8-flyout { max-width: 100%; }
+.preview code { overflow-wrap: anywhere; }
+.flyout-stage .w8-flyout { position: relative; }
+.flyout-stage .w8-flyout--top { margin-bottom: .75rem; }
+.toast-stage { background: #4a4a4a; display: flex; justify-content: flex-end; padding: 16px; }
+.toast-stage .w8-toast-region { position: static; }
+.toast-stage .w8-toast { max-width: 20rem; }
+.toast-stage .w8-toast-region.toast-region-demo { display: grid; }
+.split-demo { min-height: 0; }
+.hub-demo { --w8-hub-section: 15rem; }
+@media (max-width: 760px) {
+  .tile-demo .w8-tiles.demo-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flyout-stage { gap: 20px; padding: 16px; }
+  .lock-demo { min-height: 18rem; }
+}

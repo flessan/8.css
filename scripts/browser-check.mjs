@@ -260,7 +260,9 @@ const visit = async (path, width, height) => {
   currentPath = path;
   events.length = 0;
   failures.delete(path);
-  await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: width < 600 });
+  // Desktop-mode metrics on purpose: mobile emulation shrink-to-fits the
+// layout, which hides real horizontal overflow from the layout width.
+  await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: false });
   await send("Page.navigate", { url: origin + path });
   await waitForLoad();
   await evaluate("document.fonts.ready.then(() => true)").catch(() => {});
@@ -293,6 +295,7 @@ const pages = [
   { path: "/docs/index.html", name: "docs", icons: true },
   { path: "/examples/components.html", name: "gallery", icons: true },
   { path: "/examples/wallpapers.html", name: "wallpapers", icons: true },
+  { path: "/examples/shell.html", name: "shell", icons: true },
   { path: "/examples/legacy-start-screen.html", name: "legacy", icons: true, allowOverflow: true },
 ];
 
@@ -500,7 +503,7 @@ const charms = await (async () => {
 })();
 check(
   "charms bar renders five charms with glyphs and a filled active state",
-  charms.geometry.count === 5 && charms.geometry.icons === 5 && charms.geometry.activeBackground === "rgb(0, 120, 215)",
+  charms.geometry.count === 5 && charms.geometry.icons === 5 && charms.geometry.activeBackground.replace(/rgba\(0, 120, 215, 1\)/, "rgb(0, 120, 215)") === "rgb(0, 120, 215)",
   JSON.stringify(charms.geometry),
 );
 check(
@@ -510,7 +513,234 @@ check(
 );
 await shoot("docs-charms");
 
+// Shell demo: lock screen unlocks, semantic zoom collapses the tiles, the
+// taskbar clock and app-bar flyouts open and close, and toasts appear.
+await visit("/examples/shell.html", 1440, 900);
+const lockFlow = await evaluate(`(async () => {
+  const surface = document.getElementById("lock-surface");
+  const idleVisible = !document.getElementById("lock-idle").hidden;
+  surface.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const signin = {
+    idleHidden: document.getElementById("lock-idle").hidden,
+    panelVisible: !document.getElementById("lock-signin").hidden,
+    dimmed: surface.classList.contains("w8-lock--dimmed"),
+    focused: document.activeElement.id,
+  };
+  document.getElementById("lock-signin-button").click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const after = {
+    startVisible: !document.getElementById("start").hidden,
+    lockHidden: document.getElementById("lock").hidden,
+    toastVisible: !document.getElementById("toast").hidden,
+    toastText: document.querySelector(".w8-toast__title").textContent.trim(),
+    focused: document.activeElement.id,
+  };
+  const closedToast = (() => {
+    document.querySelector(".w8-toast__close").click();
+    return document.getElementById("toast").hidden;
+  })();
+  return { idleVisible, signin, after, closedToast };
+})()`);
+check(
+  "lock screen opens sign-in, then unlocks to the Start screen",
+  lockFlow.idleVisible === true &&
+    lockFlow.signin.idleHidden === true &&
+    lockFlow.signin.panelVisible === true &&
+    lockFlow.signin.dimmed === true &&
+    lockFlow.signin.focused === "lock-password" &&
+    lockFlow.after.startVisible === true &&
+    lockFlow.after.lockHidden === true &&
+    lockFlow.after.focused === "start-heading",
+  JSON.stringify(lockFlow),
+);
+check(
+  "unlocking raises a dismissible toast",
+  lockFlow.after.toastVisible === true && lockFlow.after.toastText.length > 0 && lockFlow.closedToast === true,
+  JSON.stringify({ visible: lockFlow.after.toastVisible, text: lockFlow.after.toastText, closed: lockFlow.closedToast }),
+);
+await shoot("shell-start");
+
+const zoom = await evaluate(`(async () => {
+  const groups = document.getElementById("tile-groups");
+  const toggle = document.getElementById("zoom-toggle");
+  const before = { tiles: groups.querySelectorAll(".w8-tile").length, label: getComputedStyle(groups.querySelector(".w8-tile-group__label")).display };
+  const normalTile = groups.querySelector(".w8-tile__label");
+  const normalVisible = normalTile && getComputedStyle(normalTile).display !== "none";
+  toggle.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const overviewTile = groups.querySelector(".w8-tile__label");
+  const after = {
+    overview: groups.classList.contains("w8-tile-groups--overview"),
+    pressed: toggle.getAttribute("aria-pressed"),
+    tileLabel: overviewTile ? getComputedStyle(overviewTile).display : "missing",
+    groupLabel: getComputedStyle(groups.querySelector(".w8-tile-group__label")).display,
+    tileWidth: Math.round(groups.querySelector(".w8-tile").getBoundingClientRect().width),
+    overallWidth: Math.round(groups.getBoundingClientRect().width),
+  };
+  toggle.click();
+  return { before, normalVisible, after, restored: !groups.classList.contains("w8-tile-groups--overview") };
+})()`);
+check(
+  "semantic zoom swaps tile labels for group names",
+  zoom.normalVisible === true &&
+    zoom.after.overview === true &&
+    zoom.after.pressed === "true" &&
+    zoom.after.tileLabel === "none" &&
+    zoom.after.groupLabel !== "none" &&
+    zoom.after.tileWidth > 0 &&
+    zoom.after.overallWidth <= 1440 &&
+    zoom.restored === true,
+  JSON.stringify(zoom),
+);
+await shoot("shell-zoom");
+
+await realClick('[data-scene="desktop"]');
+await evaluate("new Promise((done) => setTimeout(done, 250))");
+const desktop = await evaluate(`(async () => {
+  const clock = document.getElementById("clock-button");
+  const flyout = document.getElementById("clock-flyout");
+  clock.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const opened = { visible: !flyout.hidden, expanded: clock.getAttribute("aria-expanded"), time: flyout.querySelector(".clock-flyout__time").textContent.trim() };
+  clock.click();
+  const closed = flyout.hidden;
+  const share = document.getElementById("share-command");
+  const shareFlyout = document.getElementById("share-flyout");
+  share.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const shareOpened = { visible: !shareFlyout.hidden, expanded: share.getAttribute("aria-expanded") };
+  document.querySelector('[data-dismiss-flyout="share-flyout"]').click();
+  const taskbar = document.querySelector(".desk-taskbar");
+  const app = taskbar.querySelector('.w8-taskbar__app[aria-current="page"]');
+  const rect = app.getBoundingClientRect();
+  const barRect = taskbar.getBoundingClientRect();
+  return {
+    opened,
+    closed,
+    shareOpened,
+    shareClosed: shareFlyout.hidden,
+    taskbar: {
+      atBottom: Math.abs(barRect.bottom - innerHeight) <= 1,
+      width: Math.round(barRect.width),
+      activeApp: getComputedStyle(app).backgroundColor,
+      trayItems: taskbar.querySelectorAll(".w8-taskbar__tray-item").length,
+      clockText: taskbar.querySelector(".w8-taskbar__clock").textContent.trim(),
+      appInside: rect.right <= barRect.right + 1 && rect.left >= barRect.left - 1,
+    },
+    deskCharms: getComputedStyle(document.querySelector(".desk-charms")).position,
+  };
+})()`);
+check(
+  "taskbar clock and app-bar flyouts open, report state and close",
+  desktop.opened.visible === true &&
+    desktop.opened.expanded === "true" &&
+    desktop.opened.time.length > 0 &&
+    desktop.closed === true &&
+    desktop.shareOpened.visible === true &&
+    desktop.shareOpened.expanded === "true" &&
+    desktop.shareClosed === true,
+  JSON.stringify({ opened: desktop.opened, closed: desktop.closed, share: desktop.shareOpened, shareClosed: desktop.shareClosed }),
+);
+check(
+  "desktop taskbar pins to the bottom with tray, clock and an active app",
+  desktop.taskbar.atBottom === true &&
+    desktop.taskbar.activeApp !== "rgba(0, 0, 0, 0)" &&
+    desktop.taskbar.trayItems === 4 &&
+    /9:41/.test(desktop.taskbar.clockText) &&
+    desktop.taskbar.appInside === true &&
+    desktop.deskCharms === "absolute",
+  JSON.stringify(desktop.taskbar),
+);
+await shoot("shell-desktop");
+
+// Charm panes inside the shell open on the Start screen and close on Escape.
+await realClick('[data-scene="start"]');
+await evaluate("new Promise((done) => setTimeout(done, 200))");
+await realClick('#start [data-charm-pane="search-pane"]');
+const charmPane = await evaluate(`(() => {
+  const pane = document.getElementById("search-pane");
+  const charm = document.querySelector('#start [data-charm-pane="search-pane"]');
+  const rect = pane.getBoundingClientRect();
+  return {
+    visible: !pane.hidden,
+    expanded: charm.getAttribute("aria-expanded"),
+    results: pane.querySelectorAll(".w8-charm-pane__result").length,
+    insideViewport: rect.right <= innerWidth + 1 && rect.left >= 0,
+    focused: document.activeElement.tagName,
+  };
+})()`);
+await pressKey("Escape", "Escape", 27);
+const charmClosed = await evaluate("document.getElementById('search-pane').hidden");
+check(
+  "shell Charms search pane opens with results, stays on screen and closes on Escape",
+  charmPane.visible === true &&
+    charmPane.expanded === "true" &&
+    charmPane.results === 3 &&
+    charmPane.insideViewport === true &&
+    charmPane.focused === "INPUT" &&
+    charmClosed === true,
+  JSON.stringify({ ...charmPane, closed: charmClosed }),
+);
+await shoot("shell-charms");
+
+// Live tiles actually animate, and the flip stops for reduced motion.
+const flip = await evaluate(`(() => {
+  const flipper = document.querySelector("#start .w8-tile--live .w8-tile__flipper");
+  const style = getComputedStyle(flipper);
+  const faces = flipper.querySelectorAll(".w8-tile__face").length;
+  const badge = document.querySelector("#start .w8-tile__badge");
+  const badgeStyle = badge ? getComputedStyle(badge) : null;
+  return {
+    animation: style.animationName,
+    duration: style.animationDuration,
+    faces,
+    badgePosition: badgeStyle ? badgeStyle.position : "missing",
+    badgeVisible: badge ? badge.getBoundingClientRect().width > 0 : false,
+  };
+})()`);
+check(
+  "live tiles flip between two faces and carry a visible badge",
+  flip.animation === "w8-tile-flip" && parseFloat(flip.duration) > 0 && flip.faces === 2 && flip.badgePosition === "absolute" && flip.badgeVisible === true,
+  JSON.stringify(flip),
+);
+
+// Narrow viewports: each scene stays inside the viewport and the demo bar
+// does not cover the Start screen heading area.
+for (const scene of ["start", "desktop"]) {
+  await visit("/examples/shell.html", 390, 844);
+  await realClick(`[data-scene="${scene}"]`);
+  await evaluate("new Promise((done) => setTimeout(done, 250))");
+  const narrow = await evaluate(`(() => {
+    const bar = document.querySelector(".demo-bar").getBoundingClientRect();
+    const heading = document.getElementById("start-heading");
+    const headingHidden = heading ? getComputedStyle(heading).display === "none" : true;
+    const taskbar = document.querySelector(".desk-taskbar");
+    const problems = [];
+    document.querySelectorAll("#" + ${JSON.stringify(scene)} + " .w8-tile, #" + ${JSON.stringify(scene)} + " .w8-charm, .w8-taskbar__app, .w8-taskbar__tray-item").forEach((node) => {
+      const rect = node.getBoundingClientRect();
+      if (rect.width > 0 && rect.right > innerWidth + 1) problems.push(node.className);
+    });
+    return {
+      overflow: document.documentElement.scrollWidth - innerWidth,
+      barWidth: Math.round(bar.width),
+      barInside: bar.right <= innerWidth + 1 && bar.left >= -1,
+      headingHidden,
+      taskbarVisible: taskbar ? getComputedStyle(taskbar).display !== "none" : false,
+      problems: problems.slice(0, 3),
+    };
+  })()`);
+  check(
+    `shell ${scene} fits a 390px viewport`,
+    narrow.overflow <= 1 && narrow.barInside === true && (scene === "desktop" || narrow.headingHidden === true) && narrow.problems.length === 0,
+    JSON.stringify(narrow),
+  );
+  await shoot(`shell-${scene}-mobile`);
+}
+
 const reduced = await (async () => {
+  // Measure on a page that uses the documented .w8 root scope.
+  await visit("/examples/components.html", 1280, 900);
   await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] });
   const value = await evaluate("getComputedStyle(document.querySelector('.w8-tile')).transitionDuration");
   await send("Emulation.setEmulatedMedia", { features: [] });

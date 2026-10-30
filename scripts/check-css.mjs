@@ -46,6 +46,22 @@ for (const selector of [
   ".w8-app-bar",
   ".w8-charms",
   ".w8-charm-pane",
+  ".w8-lock",
+  ".w8-lock__time",
+  ".w8-battery",
+  ".w8-tile__badge",
+  ".w8-tile--live",
+  ".w8-tile-groups--overview",
+  ".w8-taskbar",
+  ".w8-taskbar__preview",
+  ".w8-flyout",
+  ".w8-flyout__item",
+  ".w8-tooltip",
+  ".w8-toast",
+  ".w8-hub",
+  ".w8-split",
+  ".w8-progress-ring",
+  ".w8-app-bar--circular",
   ".w8-dialog",
   ".w8-icon-button",
   ".w8-icon--large",
@@ -389,6 +405,121 @@ assert.equal(
 assert.match(wallpaperPage, /name="wallpaper"/, "The wallpaper page needs a radio group.");
 assert.match(await read("index.html"), /examples\/wallpapers\.html/, "The landing page must link to the wallpaper pack.");
 assert.match(await read("docs/index.html"), /id="personalize"/, "The documentation must document the wallpaper API.");
+
+/* ------------------------------------------------------------------ *
+ * Windows shell surfaces: lock screen, live tiles, taskbar, flyouts
+ * ------------------------------------------------------------------ */
+for (const [id, marker] of [
+  ["lock", "w8-lock"],
+  ["livetiles", "w8-tile__badge"],
+  ["taskbar", "w8-taskbar"],
+  ["flyout", "w8-toast"],
+  ["hub", "w8-hub"],
+]) {
+  const start = docsPage.indexOf(`id="${id}"`);
+  assert.ok(start > -1, `The documentation must have a #${id} section.`);
+  assert.ok(
+    docsPage.slice(start, start + 20000).includes(marker),
+    `The #${id} documentation section must show ${marker}.`,
+  );
+  assert.ok(
+    (await read("docs/index.html")).includes(`href="#${id}"`),
+    `The sidebar must link to #${id}.`,
+  );
+}
+
+const lockMarkup = docsPage.slice(docsPage.indexOf('id="lock"'), docsPage.indexOf('id="livetiles"'));
+for (const cls of ["w8-lock__time", "w8-lock__date", "w8-lock__status-item", "w8-lock__panel", "w8-battery__level"]) {
+  assert.ok(lockMarkup.includes(cls), `The lock screen example must show ${cls}.`);
+}
+assert.ok(lockMarkup.includes("--w8-lock-image"), "The lock screen docs must mention --w8-lock-image.");
+
+// The lock screen paints its image and dims the surface for sign-in.
+assert.match(
+  await read("gui/lock-screen.css"),
+  /\.w8-lock \{[^}]*background-image: var\(--w8-lock-image, none\)/,
+  "The lock screen must paint --w8-lock-image.",
+);
+assert.match(
+  await read("gui/lock-screen.css"),
+  /\.w8-lock--dimmed::before/,
+  "The lock screen must expose a dimmed state for sign-in.",
+);
+
+// Live tiles: a badge, a two faced flip, and the semantic zoom overview.
+const liveTilesCss = await read("gui/live-tiles.css");
+for (const selector of [".w8-tile__badge", ".w8-tile__flipper", ".w8-tile__face--back", ".w8-tile-groups--overview"]) {
+  assert.ok(liveTilesCss.includes(selector), `gui/live-tiles.css is missing ${selector}.`);
+}
+assert.match(liveTilesCss, /@keyframes w8-tile-flip/, "The flip animation must be defined.");
+assert.match(
+  liveTilesCss,
+  /prefers-reduced-motion[\s\S]*\.w8-tile__flipper \{ animation: none; \}/,
+  "The flip animation must stop for reduced motion.",
+);
+
+// Toast and flyout surfaces must respect the hidden attribute and stay accessible.
+const toastCss = await read("gui/toast.css");
+assert.match(toastCss, /\.w8-toast\[hidden\] \{ display: none; \}/, "Hidden toasts must not render.");
+assert.match(toastCss, /@keyframes w8-toast-in/, "Toasts need an entrance animation.");
+const flyoutCss = await read("gui/flyout.css");
+for (const modifier of ["--top", "--bottom", "--left", "--right"]) {
+  assert.ok(flyoutCss.includes(`w8-flyout${modifier} .w8-flyout__arrow`), `Flyout placement ${modifier} needs an arrow.`);
+}
+assert.match(flyoutCss, /\.w8-flyout__item:focus-visible/, "Menu flyout items need a visible focus ring.");
+
+// Taskbar: preview appears on hover and keyboard focus, clock is a control surface.
+const taskbarCss = await read("gui/taskbar.css");
+assert.match(taskbarCss, /:hover \.w8-taskbar__preview,[\s\S]*:focus-within \.w8-taskbar__preview/, "Taskbar previews must appear for keyboard users too.");
+assert.match(taskbarCss, /\.w8-taskbar__app\[aria-current="page"\]/, "The active taskbar app must be derived from ARIA.");
+
+// Split view collapses to a stack and hubs stop panning on phones.
+assert.match(await read("gui/split-view.css"), /@media \(max-width: 48rem\)/, "Split view needs a narrow screen fallback.");
+assert.match(await read("gui/hub.css"), /@media \(max-width: 40rem\)/, "Hubs need a narrow screen fallback.");
+
+// The shell demo must exist, use the components and load its wallpaper.
+assert.ok(await exists("examples/shell.html"), "The shell demo page must exist.");
+const shellPage = await read("examples/shell.html");
+for (const cls of [
+  "w8-lock",
+  "w8-tile--live",
+  "w8-tile-groups--overview",
+  "w8-taskbar",
+  "w8-charm-pane",
+  "w8-flyout",
+  "w8-toast",
+  "w8-hub",
+  "w8-app-bar--circular",
+]) {
+  assert.ok(shellPage.includes(cls), `The shell demo must use ${cls}.`);
+}
+assert.match(shellPage, /styles\/images\/Windows8\.1RTMWallpapers\/img13\.jpg/, "The shell lock screen must use a packed wallpaper.");
+assert.match(shellPage, /data-charm-pane="/, "The shell demo must wire its charm panes.");
+assert.equal(
+  (shellPage.match(/class="w8-charm"/g) || []).length % 5,
+  0,
+  "Each Charms bar in the shell demo must carry the five charms.",
+);
+assert.ok(
+  (shellPage.match(/class="w8-charm"/g) || []).length >= 10,
+  "The shell demo needs a Charms bar on Start and on the desktop.",
+);
+
+// Landing page and gallery must link the new surfaces.
+assert.match(home, /examples\/shell\.html/, "The landing page must link to the shell demo.");
+assert.match(home, /id="shell"/, "The landing page needs a shell section.");
+const galleryPage = await read("examples/components.html");
+for (const id of ["lock-gallery", "taskbar-gallery"]) {
+  assert.ok(galleryPage.includes(`id="${id}"`), `The gallery must include #${id}.`);
+}
+assert.match(galleryPage, /shell\.html/, "The gallery must link to the shell demo.");
+
+// Every page that uses the new surfaces must load the bundle.
+for (const page of ["docs/index.html", "examples/components.html", "examples/shell.html"]) {
+  const html = await read(page);
+  assert.match(html, /(8\.css|\.\.\/dist\/8\.css)/, `${page} must load the 8.css bundle.`);
+}
+
 
 // The Charms bar must be documented and demoed with a working flyout pane.
 const charmsDocs = await read("docs/index.html");
