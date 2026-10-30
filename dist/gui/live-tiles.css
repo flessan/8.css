@@ -62,6 +62,40 @@
 
 /* Tile groups carry the Start Screen group headings. */
 .w8-tile-groups { display: grid; gap: clamp(1.5rem, 3vw, 2.25rem); }
+
+/* Horizontal Start screen: groups of tile columns that pan sideways.
+   Windows 8 lays tiles out top to bottom inside a column, then starts the
+   next column, and the screen scrolls horizontally (unlike Windows 10). */
+.w8-start-screen__pan {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  padding-bottom: .35rem;
+  scrollbar-color: rgb(255 255 255 / .55) transparent;
+  scrollbar-width: thin;
+  touch-action: pan-x pan-y;
+}
+.w8-start-screen__pan::-webkit-scrollbar { height: .45rem; }
+.w8-start-screen__pan::-webkit-scrollbar-track { background: transparent; }
+.w8-start-screen__pan::-webkit-scrollbar-thumb { background: rgb(255 255 255 / .5); }
+.w8-start-screen__pan:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.w8-tile-groups--columns { align-items: flex-start; display: flex; flex-wrap: nowrap; gap: clamp(1.25rem, 3vw, 2.5rem); max-width: none; min-width: 100%; width: max-content; }
+.w8-tile-groups--columns .w8-tile-group { flex: 0 0 auto; scroll-snap-align: start; }
+.w8-tile-groups--columns .w8-tiles {
+  grid-auto-flow: column;
+  grid-auto-rows: auto;
+  grid-auto-columns: var(--w8-tile-size, 6.5rem);
+  grid-template-columns: none;
+  grid-template-rows: repeat(var(--w8-start-rows, 3), var(--w8-tile-size, 6.5rem));
+  max-width: none;
+}
+.w8-tile-groups--columns .w8-tile { height: 100%; min-height: 0; }
+.w8-tile-groups--columns .w8-tile__face { padding: .85rem; }
+@media (max-width: 40rem) {
+  /* Snapped view keeps a narrow column of tiles, still panned sideways. */
+  .w8-tile-groups--columns .w8-tiles { --w8-start-rows: 4; --w8-tile-size: 5.5rem; }
+}
 .w8-tile-group__label {
   color: rgb(255 255 255 / .86);
   display: block;

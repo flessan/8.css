@@ -14,8 +14,11 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 .scene[hidden] { display: none; }
 .w8-sr-only { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 
-.start-canvas .w8-tiles { gap: .4rem; grid-auto-rows: minmax(6.5rem, auto); grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr)); }
-.start-canvas .w8-tile { min-height: 6.5rem; padding: .75rem; }
+/* Windows 8 Start: tiles fill a column top to bottom, then the next column
+   starts, and the screen pans sideways. */
+.start-canvas { --w8-start-rows: 3; --w8-tile-size: 6.75rem; }
+.start-canvas .w8-tiles { gap: .4rem; }
+.start-canvas .w8-tile { min-height: 0; padding: .75rem; }
 .start-canvas .w8-tile__symbol { font-size: 1.8rem; }
 .start-canvas .w8-tile__label { font-size: .9rem; }
 .start-canvas .w8-tile__face { padding: .75rem; }
@@ -66,17 +69,24 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 .clock-flyout__time { font-size: 1.6rem; font-weight: 300; margin: 0 0 .1rem; }
 .clock-flyout__date { color: var(--w8-muted); font-size: .82rem; margin: 0; }
 
+/* Touch and gesture surfaces in the demo shell. */
+.shell .w8-switcher { z-index: 45; }
+.shell .w8-snap-preview { z-index: 35; }
+.snap-close { align-self: flex-start; background: rgb(0 0 0 / .35); border: 0; color: #fff; cursor: pointer; font-size: .7rem; margin-bottom: .5rem; padding: .2rem .45rem; }
+#desk-appbar[hidden] { display: none; }
+.w8-charms--revealed { animation: w8-charms-reveal 900ms ease-out; }
+@keyframes w8-charms-reveal { from { background: #0078d7; } }
+.shell .w8-gesture-hint { z-index: 58; }
+
 @media (max-width: 40rem) {
   .demo-bar { flex-wrap: wrap; justify-content: center; left: .5rem; max-width: calc(100vw - 1rem); right: .5rem; transform: none; }
   .scene { padding-top: 5.5rem; }
   .scene .w8-lock { height: auto; min-height: calc(100svh - 5.5rem); }
   .desk { padding-top: .75rem; }
   .start-canvas .w8-start-heading { display: none; }
-  /* Compact two-column group, like the snapped Start screen. */
-  .start-canvas .w8-tiles { grid-auto-rows: minmax(5rem, auto); grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .start-canvas .w8-tile--wide { grid-column: span 2; }
-  .start-canvas .w8-tiles .w8-tile { min-height: 5rem; }
+  /* Snapped view: shorter columns of smaller tiles, still panned sideways. */
   .start-canvas .w8-tile__meta { display: none; }
+  .start-canvas .w8-tile__label { font-size: .78rem; }
   .start-top { align-items: center; }
   .desk-taskbar .w8-taskbar__tray-item:not(:nth-of-type(2)) { display: none; }
   .desk-taskbar .w8-taskbar__clock { font-size: .72rem; padding: 0 .45rem; }
@@ -94,6 +104,8 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     <button type="button" data-scene="start" aria-pressed="true">Start</button>
     <button type="button" data-scene="desktop" aria-pressed="false">Desktop</button>
     <button type="button" id="zoom-toggle" aria-pressed="false">Semantic zoom</button>
+    <button type="button" id="touch-toggle" aria-pressed="false">Touch mode</button>
+    <button type="button" id="gestures-button">Gestures</button>
     <a href="../docs/index.html">Docs</a>
   </div>
 
@@ -143,7 +155,8 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
         <p class="start-user"><button class="start-customize" type="button" id="customize-toggle" aria-pressed="false"><i class="fa fa-th-large" aria-hidden="true"></i>Customize</button><span>Thio</span><i class="fa fa-user" aria-hidden="true"></i></p>
       </header>
 
-      <div class="w8-tile-groups" id="tile-groups">
+      <div class="w8-start-screen__pan" tabindex="0" role="group" aria-label="Start screen tile groups, scrolls sideways">
+      <div class="w8-tile-groups w8-tile-groups--columns" id="tile-groups">
         <div class="w8-tile-group">
           <span class="w8-tile-group__label">Everyday</span>
           <div class="w8-tiles">
@@ -180,12 +193,24 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
             <a class="w8-tile w8-tile--dark" href="#start" data-app="Help + Tips"><i class="fa fa-question-circle-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Help + Tips</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
           </div>
         </div>
+
+        <div class="w8-tile-group">
+          <span class="w8-tile-group__label">Work</span>
+          <div class="w8-tiles">
+            <a class="w8-tile w8-tile--purple w8-tile--wide" href="#start" data-app="OneNote"><i class="fa fa-pencil-square-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">OneNote</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--cyan" href="#start" data-app="Skype"><i class="fa fa-skype w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Skype</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--dark" href="#start" data-app="Camera"><i class="fa fa-camera w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Camera</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--green" href="#start" data-app="Xbox games"><i class="fa fa-gamepad w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Xbox games</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+            <a class="w8-tile w8-tile--orange" href="#start" data-app="Bing"><i class="fa fa-search w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Bing</span><span class="w8-tile__check"><i class="fa fa-check" aria-hidden="true"></i></span></a>
+          </div>
+        </div>
+      </div>
       </div>
 
       <nav class="w8-charms" aria-label="Charms">
-        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
-        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
         <button class="w8-charm" type="button" aria-expanded="false" aria-controls="search-pane" data-charm-pane="search-pane"><i class="fa fa-search w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Search</span></button>
+        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
+        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
         <button class="w8-charm" type="button" data-app="Devices"><i class="fa fa-desktop w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Devices</span></button>
         <button class="w8-charm" type="button" aria-expanded="false" aria-controls="settings-pane" data-charm-pane="settings-pane"><i class="fa fa-cog w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Settings</span></button>
       </nav>
@@ -270,7 +295,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
           </div>
         </div>
         <div class="appbar-wrap">
-          <nav class="w8-app-bar w8-app-bar--circular" aria-label="News commands">
+          <nav class="w8-app-bar w8-app-bar--circular" id="desk-appbar" aria-label="News commands">
             <button class="w8-app-bar__item" type="button" aria-pressed="true"><i class="fa fa-star" aria-hidden="true"></i>Favorite</button>
             <button class="w8-app-bar__item" type="button" id="share-command" aria-expanded="false" aria-controls="share-flyout"><i class="fa fa-share-alt" aria-hidden="true"></i>Share</button>
             <span class="w8-app-bar__separator" aria-hidden="true"></span>
@@ -290,9 +315,9 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
       </div>
 
       <nav class="w8-charms desk-charms" aria-label="Charms">
-        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
-        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
         <button class="w8-charm" type="button" aria-expanded="false" aria-controls="desk-search-pane" data-charm-pane="desk-search-pane"><i class="fa fa-search w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Search</span></button>
+        <button class="w8-charm" type="button" data-app="Share"><i class="fa fa-share-alt w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Share</span></button>
+        <button class="w8-charm" type="button" data-scene-tile="start"><i class="fa fa-windows w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Start</span></button>
         <button class="w8-charm" type="button" data-app="Devices"><i class="fa fa-desktop w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Devices</span></button>
         <button class="w8-charm" type="button" aria-expanded="false" aria-controls="desk-settings-pane" data-charm-pane="desk-settings-pane"><i class="fa fa-cog w8-charm__icon" aria-hidden="true"></i><span class="w8-charm__label">Settings</span></button>
       </nav>
@@ -314,7 +339,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
       </div>
     </div>
 
-    <footer class="w8-taskbar desk-taskbar">
+    <footer class="w8-taskbar w8-taskbar--rtm desk-taskbar">
       <button class="w8-taskbar__start" type="button" aria-label="Start" data-scene-tile="start"><i class="fa fa-windows" aria-hidden="true"></i></button>
       <div class="w8-taskbar__apps">
         <div class="w8-taskbar__item">
@@ -357,7 +382,64 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
         <p class="clock-flyout__date">Thursday, October 30, 2026</p>
       </div>
     </footer>
+
+    <!-- Windows 8 RTM had no Start button: the bottom-left corner revealed Start. -->
+    <button class="w8-start-hotspot" type="button" id="start-hotspot" aria-label="Start" data-scene-tile="start">
+      <span class="w8-start-hotspot__preview" aria-hidden="true"><i class="fa fa-windows"></i>Start</span>
+    </button>
   </section>
+
+  <!-- ================================================ Edge gestures (touch) -->
+  <!-- The edge strips are decorative: the gestures themselves listen for
+       pointer events on the window, so they work anywhere near the edge. -->
+  <div class="w8-edge w8-edge--right" aria-hidden="true"><span class="w8-edge__grip"></span></div>
+  <div class="w8-edge w8-edge--left" aria-hidden="true"><span class="w8-edge__grip"></span></div>
+  <div class="w8-edge w8-edge--top" aria-hidden="true"><span class="w8-edge__grip"></span></div>
+  <div class="w8-edge w8-edge--bottom" aria-hidden="true"><span class="w8-edge__grip"></span></div>
+
+  <aside class="w8-edge-panel w8-edge-panel--left w8-switcher" id="switcher" aria-label="App switcher" aria-hidden="true">
+    <div class="w8-switcher__header">
+      <p class="w8-switcher__title">Running apps</p>
+      <button class="w8-switcher__close" type="button" id="switcher-close" aria-label="Close app switcher"><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <ul class="w8-switcher__list">
+      <li><button class="w8-switcher__item" type="button" data-switch-scene="start" aria-current="page"><span class="w8-switcher__thumb"><i class="fa fa-windows" aria-hidden="true"></i></span><span class="w8-switcher__name">Start</span><span class="w8-switcher__meta">Start screen</span></button></li>
+      <li><button class="w8-switcher__item" type="button" data-switch-scene="desktop"><span class="w8-switcher__thumb"><i class="fa fa-newspaper-o" aria-hidden="true"></i></span><span class="w8-switcher__name">News</span><span class="w8-switcher__meta">Desktop</span></button></li>
+      <li><button class="w8-switcher__item" type="button" data-snap="File Explorer"><span class="w8-switcher__thumb"><i class="fa fa-folder-o" aria-hidden="true"></i></span><span class="w8-switcher__name">File Explorer</span><span class="w8-switcher__meta">Snap to the left</span></button></li>
+      <li><button class="w8-switcher__item" type="button" data-snap="Internet Explorer"><span class="w8-switcher__thumb"><i class="fa fa-internet-explorer" aria-hidden="true"></i></span><span class="w8-switcher__name">Internet Explorer</span><span class="w8-switcher__meta">Snap to the left</span></button></li>
+      <li><button class="w8-switcher__item" type="button" data-switch-scene="lock"><span class="w8-switcher__thumb"><i class="fa fa-lock" aria-hidden="true"></i></span><span class="w8-switcher__name">Lock screen</span><span class="w8-switcher__meta">Swipe up to sign in</span></button></li>
+    </ul>
+    <div class="w8-switcher__footer">
+      <button class="w8-switcher__close" type="button" id="switcher-snap" aria-label="Snap the current app to the left"><i class="fa fa-columns" aria-hidden="true"></i></button>
+      <span class="w8-switcher__meta">Slow drag from the left edge snaps at a quarter of the screen.</span>
+    </div>
+  </aside>
+
+  <div class="w8-snap-preview" id="snap-preview" hidden>
+    <button class="snap-close" type="button" id="snap-close">Unsnap</button>
+    <span class="w8-snap-preview__label" id="snap-label">Snapped</span>
+    <span id="snap-meta">Drag the divider to resize</span>
+  </div>
+
+  <div class="w8-gesture-hint" id="gesture-hint" role="status" hidden>
+    <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+    <span class="w8-gesture-hint__text" id="gesture-hint-text"></span>
+  </div>
+
+  <div class="w8-touch-tutorial" id="touch-tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" hidden>
+    <div class="w8-touch-tutorial__panel">
+      <div class="w8-touch-tutorial__art"><i class="fa fa-hand-pointer-o" id="tutorial-icon" aria-hidden="true"></i></div>
+      <p class="w8-touch-tutorial__step" id="tutorial-step">Step 1 of 4</p>
+      <h2 class="w8-touch-tutorial__title" id="tutorial-title">Swipe in from the right edge</h2>
+      <p class="w8-touch-tutorial__text" id="tutorial-text">The Charms bar arrives with search, share, the Start charm, devices and settings.</p>
+      <div class="w8-touch-tutorial__dots" id="tutorial-dots"></div>
+      <div class="w8-touch-tutorial__actions">
+        <button class="w8-button" type="button" id="tutorial-prev">Back</button>
+        <button class="w8-button w8-button--primary" type="button" id="tutorial-next">Next</button>
+        <button class="w8-button" type="button" id="tutorial-close">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="w8-toast-region" aria-live="polite">
@@ -369,6 +451,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   </div>
 </div>
 
+<script src="gestures.js"></script>
 <script>
 (() => {
   const scenes = Array.from(document.querySelectorAll(".scene"));
@@ -538,6 +621,197 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
       shareFlyout.hidden = true;
       shareCommand.setAttribute("aria-expanded", "false");
     }
+  });
+
+  // ---------------------------------------------------------------- Touch
+  // Everything below is gesture wiring for the demo. The library only ships
+  // CSS; examples/gestures.js turns Pointer Events into these actions.
+  const G = window.W8Gestures;
+  const hint = document.getElementById("gesture-hint");
+  const hintText = document.getElementById("gesture-hint-text");
+  let hintTimer = null;
+  const flashHint = (text) => {
+    hintText.textContent = text;
+    hint.hidden = false;
+    window.clearTimeout(hintTimer);
+    hintTimer = window.setTimeout(() => { hint.hidden = true; }, 2800);
+  };
+
+  const currentScene = () => scenes.find((scene) => !scene.hidden) || scenes[0];
+  const setTouchMode = (on) => {
+    document.body.classList.toggle("w8-touch-hints", on);
+    touchToggle.setAttribute("aria-pressed", String(on));
+  };
+  const touchToggle = document.getElementById("touch-toggle");
+  touchToggle.addEventListener("click", () => {
+    const on = touchToggle.getAttribute("aria-pressed") !== "true";
+    setTouchMode(on);
+    if (on) flashHint("Edge strips are on: swipe from any edge.");
+  });
+
+  // Charms: swipe in from the right edge to open Search, the way the charm
+  // bar slides in on Windows 8.
+  G.edgeSwipe("right", {
+    commit: () => {
+      const scene = currentScene();
+      const charm = scene.querySelector('[data-charm-pane*="search"]');
+      const bar = scene.querySelector(".w8-charms");
+      if (bar) {
+        bar.classList.remove("w8-charms--revealed");
+        void bar.offsetWidth;
+        bar.classList.add("w8-charms--revealed");
+      }
+      if (charm) {
+        charm.click();
+        flashHint("Charms: search, share, Start, devices and settings.");
+      }
+    },
+  });
+
+  // Left edge: the app switcher, plus snapping an app to the left quarter.
+  const switcher = document.getElementById("switcher");
+  const setSwitcher = (open) => {
+    switcher.classList.toggle("is-open", open);
+    switcher.setAttribute("aria-hidden", String(!open));
+    if (open) switcher.querySelector(".w8-switcher__item").focus();
+  };
+  G.edgeSwipe("left", { commit: () => setSwitcher(true) });
+  document.getElementById("switcher-close").addEventListener("click", () => setSwitcher(false));
+
+  const snapPreview = document.getElementById("snap-preview");
+  const setSnap = (app) => {
+    if (!app) { snapPreview.hidden = true; return; }
+    snapPreview.hidden = false;
+    snapPreview.style.width = "26%";
+    document.getElementById("snap-label").textContent = app;
+    document.getElementById("snap-meta").textContent = "Snapped · drag the divider to resize";
+  };
+  document.getElementById("snap-close").addEventListener("click", () => { setSnap(null); flashHint("Unsnapped."); });
+  document.getElementById("switcher-snap").addEventListener("click", () => {
+    const app = currentScene().id === "desktop" ? "News" : "Start";
+    setSwitcher(false);
+    setSnap(app);
+    flashHint("Snapped " + app + " to the left quarter of the screen.");
+  });
+  switcher.querySelectorAll("[data-switch-scene]").forEach((item) => {
+    item.addEventListener("click", () => {
+      const target = item.dataset.switchScene;
+      showScene(target);
+      switcher.querySelectorAll("[data-switch-scene]").forEach((other) => {
+        if (other.dataset.switchScene === target) other.setAttribute("aria-current", "page");
+        else other.removeAttribute("aria-current");
+      });
+      setSwitcher(false);
+      if (target === "start") document.getElementById("start-heading").focus();
+    });
+  });
+  switcher.querySelectorAll("[data-snap]").forEach((item) => {
+    item.addEventListener("click", () => {
+      setSwitcher(false);
+      setSnap(item.dataset.snap);
+      flashHint("Snapped " + item.dataset.snap + " to the left quarter of the screen.");
+    });
+  });
+
+  // Top and bottom edges raise the app bar of whatever is on screen.
+  const toggleAppBar = () => {
+    const scene = currentScene();
+    if (scene.id === "start") {
+      const open = customize.getAttribute("aria-pressed") !== "true";
+      setCustomizing(open);
+      flashHint(open ? "App bar: unpin, clear or finish." : "App bar dismissed.");
+      return;
+    }
+    if (scene.id === "desktop") {
+      const bar = document.getElementById("desk-appbar");
+      bar.hidden = !bar.hidden;
+      flashHint(bar.hidden ? "App bar dismissed." : "App bar: favorite, share, refresh, settings.");
+    }
+  };
+  G.edgeSwipe("top", { commit: toggleAppBar, axis: "y" });
+  G.edgeSwipe("bottom", { commit: toggleAppBar, axis: "y" });
+
+  // Swipe up on the lock screen to reach sign-in, as on a Windows 8 tablet.
+  G.swipe(document.getElementById("lock-idle"), "up", openSignin, { distance: 30 });
+
+  // Press and hold a tile: selects it and raises the app bar.
+  startTiles.forEach((tile) => {
+    G.longPress(tile, () => {
+      if (customize.getAttribute("aria-pressed") !== "true") setCustomizing(true);
+      if (!tile.classList.contains("w8-tile--selected")) tile.classList.add("w8-tile--selected");
+      tile.setAttribute("aria-pressed", "true");
+      flashHint("Tile selected. The app bar has the commands for it.");
+    });
+  });
+
+  // Pinch the tile grid in to zoom out to the group overview.
+  G.pinch(document.getElementById("tile-groups"), {
+    onIn: () => {
+      if (!groups.classList.contains("w8-tile-groups--overview")) {
+        zoomToggle.click();
+        flashHint("Semantic zoom: groups instead of tiles.");
+      }
+    },
+    onOut: () => {
+      if (groups.classList.contains("w8-tile-groups--overview")) zoomToggle.click();
+    },
+  });
+
+  // Mouse users can drag the Start screen sideways too; touch pans natively.
+  G.dragPan(document.querySelector(".w8-start-screen__pan"), () => {
+    document.querySelector(".w8-start-screen__pan").classList.remove("w8-grab");
+  });
+
+  // First-run gesture coach.
+  const tutorial = document.getElementById("touch-tutorial");
+  const tutorialSteps = [
+    { icon: "fa-hand-o-right", title: "Swipe in from the right edge", text: "The Charms bar arrives with search, share, the Start charm, devices and settings." },
+    { icon: "fa-hand-o-left", title: "Swipe in from the left edge", text: "The app switcher lists what is running. Drag slowly and an app snaps to the left quarter of the screen." },
+    { icon: "fa-hand-pointer-o", title: "Swipe from the top or bottom edge", text: "Both raise the app bar for the screen you are on: unpin, clear or finish on Start." },
+    { icon: "fa-hand-paper-o", title: "Press and hold a tile", text: "Select it, then move it, unpin it, or run a command from the app bar. Pinch to zoom out to groups." },
+  ];
+  const dots = document.getElementById("tutorial-dots");
+  let tutorialIndex = 0;
+  tutorialSteps.forEach((step, index) => {
+    const dot = document.createElement("span");
+    dot.className = "w8-touch-tutorial__dot";
+    dot.setAttribute("aria-hidden", "true");
+    if (index === 0) dot.setAttribute("aria-current", "step");
+    dots.append(dot);
+  });
+  const renderTutorial = () => {
+    const step = tutorialSteps[tutorialIndex];
+    document.getElementById("tutorial-icon").className = "fa " + step.icon;
+    document.getElementById("tutorial-step").textContent = "Step " + (tutorialIndex + 1) + " of " + tutorialSteps.length;
+    document.getElementById("tutorial-title").textContent = step.title;
+    document.getElementById("tutorial-text").textContent = step.text;
+    [...dots.children].forEach((dot, index) => {
+      if (index === tutorialIndex) dot.setAttribute("aria-current", "step");
+      else dot.removeAttribute("aria-current");
+    });
+    document.getElementById("tutorial-prev").disabled = tutorialIndex === 0;
+    document.getElementById("tutorial-next").textContent = tutorialIndex === tutorialSteps.length - 1 ? "Start" : "Next";
+  };
+  const openTutorial = () => {
+    tutorialIndex = 0;
+    renderTutorial();
+    tutorial.hidden = false;
+    setTouchMode(true);
+    document.getElementById("tutorial-next").focus();
+  };
+  const closeTutorial = () => { tutorial.hidden = true; document.getElementById("gestures-button").focus(); };
+  document.getElementById("gestures-button").addEventListener("click", openTutorial);
+  document.getElementById("tutorial-close").addEventListener("click", closeTutorial);
+  document.getElementById("tutorial-prev").addEventListener("click", () => { tutorialIndex = Math.max(0, tutorialIndex - 1); renderTutorial(); });
+  document.getElementById("tutorial-next").addEventListener("click", () => {
+    if (tutorialIndex === tutorialSteps.length - 1) { closeTutorial(); flashHint("Press and hold a tile to try the app bar."); return; }
+    tutorialIndex += 1;
+    renderTutorial();
+  });
+  tutorial.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeTutorial();
+    if (event.key === "ArrowRight") document.getElementById("tutorial-next").click();
+    if (event.key === "ArrowLeft") document.getElementById("tutorial-prev").click();
   });
 
   // Tiles and taskbar buttons acknowledge the click with a toast.

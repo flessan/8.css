@@ -17,6 +17,7 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - Use Font Awesome 4.7.0 classes (`fa fa-home`), not Font Awesome 5/6/7 syntax. Never substitute text glyphs or emoji for an icon that exists in Font Awesome.
 - Prefer semantic HTML and native controls. CSS styles controls but does not implement application behavior.
 - Use flat shapes and solid colors consistent with Windows 8. Avoid gradients, neon glow, and unrelated OS chrome.
+- Match Windows 8, not Windows 10: the Start screen pans sideways with column-major tiles, the Charms order is Search, Share, Start, Devices, Settings, the RTM taskbar has no Start button, and edge gestures (right = Charms, left = switcher and snap, top/bottom = app bar) stay the primary interaction model.
 - Keep focus visible, provide accessible names, mark decorative icons with `aria-hidden="true"`, and respect reduced-motion preferences.
 
 ## Build layout
@@ -26,7 +27,9 @@ Build 8.css as a lightweight CSS-only library inspired by Windows 8 Modern UI / 
 - `gui/feedback.css`: progress, tabs, badges, notices, separators.
 - `gui/window.css`, `gui/taskbar.css`, `gui/app-bar.css`, `gui/charms.css`, `gui/flyout.css`, `gui/toast.css`, and `gui/dialog.css`: desktop and notification chrome.
 - `gui/lock-screen.css`, `gui/hub.css`, and `gui/split-view.css`: the sign-in surface and the two Windows 8 app layouts.
+- `gui/gestures.css`: the surfaces the Windows 8 edge gestures reveal (edge panels, app switcher, snap preview, gesture coach, RTM Start hotspot) and the touch utilities.
 - `examples/shell.html`: the assembled shell demo (lock screen, Start screen, desktop, taskbar) used to check the surfaces together.
+- `examples/gestures.js`: demo-only Pointer Events wiring for the edge gestures. Keep runtime JavaScript out of `gui/` and `dist/`; this file is never published as package code.
 - `gui/icons.css`: Font Awesome sizing hooks and icon-button helpers.
 - `gui/responsive.css`: responsive and reduced-motion adjustments.
 - `vendor/font-awesome/`: upstream icon font, stylesheets, and license.

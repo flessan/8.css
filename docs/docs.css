@@ -77,3 +77,19 @@
   .nav-demo { display: grid; gap: 18px; }
   .nav-demo .w8-nav-bar { min-width: 0; }
 }
+
+/* Touch and gesture documentation previews. */
+/* The generic preview grid must not unset the column-major Start layout. */
+.preview .w8-start-screen__pan .w8-tile-groups--columns .w8-tiles {
+  grid-auto-flow: column;
+  grid-auto-rows: auto;
+  grid-template-columns: none;
+}
+.preview .w8-start-screen__pan .w8-tile { min-height: 0; }
+.touch-start-demo { --w8-start-rows: 3; --w8-tile-size: 5.5rem; padding: 1rem; }
+.touch-start-demo .w8-tile__label { font-size: .8rem; }
+.touch-preview { min-height: 17rem; overflow: hidden; padding: 0; position: relative; }
+.touch-preview .w8-edge-panel { position: absolute; }
+.touch-preview .w8-snap-preview { max-width: 34%; width: 30%; }
+.touch-coach { align-items: center; display: flex; justify-content: center; padding: 1rem; }
+.touch-coach .w8-touch-tutorial__panel { background: #1f1f1f; }

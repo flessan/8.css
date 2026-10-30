@@ -71,6 +71,15 @@ for (const selector of [
   ".w8-dialog",
   ".w8-icon-button",
   ".w8-icon--large",
+  ".w8-start-screen__pan",
+  ".w8-tile-groups--columns",
+  ".w8-taskbar--rtm",
+  ".w8-edge-panel",
+  ".w8-switcher",
+  ".w8-snap-preview",
+  ".w8-gesture-hint",
+  ".w8-touch-tutorial",
+  ".w8-start-hotspot",
   "@media (prefers-reduced-motion: reduce)",
 ]) {
   assert.ok(bundle.includes(selector), "Missing selector: " + selector);
@@ -424,6 +433,7 @@ for (const [id, marker] of [
   ["taskbar", "w8-taskbar"],
   ["flyout", "w8-toast"],
   ["hub", "w8-hub"],
+  ["touch", "w8-edge-panel"],
 ]) {
   const start = docsPage.indexOf(`id="${id}"`);
   assert.ok(start > -1, `The documentation must have a #${id} section.`);
@@ -518,13 +528,80 @@ assert.ok(
 assert.match(home, /examples\/shell\.html/, "The landing page must link to the shell demo.");
 assert.match(home, /id="shell"/, "The landing page needs a shell section.");
 const galleryPage = await read("examples/components.html");
-for (const id of ["lock-gallery", "taskbar-gallery"]) {
+for (const id of ["lock-gallery", "taskbar-gallery", "touch-gallery", "gestures-gallery"]) {
   assert.ok(galleryPage.includes(`id="${id}"`), `The gallery must include #${id}.`);
 }
 assert.match(galleryPage, /shell\.html/, "The gallery must link to the shell demo.");
 assert.ok((await read("gui/tiles.css")).includes(".w8-tile--selected"), "Selected tiles must be styled.");
 assert.match(shellPage, /w8-tile--selected/, "The shell demo must implement tile selection.");
 assert.match(shellPage, /id="start-appbar"/, "The shell demo needs the contextual tile app bar.");
+
+/* ------------------------------------------------------------------ *
+ * Windows 8 shell behaviour: horizontal Start, RTM taskbar, touch
+ * ------------------------------------------------------------------ */
+// Windows 8 pans the Start screen sideways; Windows 10 scrolls it vertically.
+const liveTilesStyle = await read("gui/live-tiles.css");
+assert.match(
+  liveTilesStyle,
+  /\.w8-tile-groups--columns \.w8-tiles \{[^}]*grid-auto-flow: column/,
+  "The column Start layout must flow tiles down each column.",
+);
+assert.match(
+  liveTilesStyle,
+  /\.w8-tile-groups--columns \.w8-tiles \{[^}]*grid-template-rows: repeat\(var\(--w8-start-rows/,
+  "The column Start layout must size its rows with --w8-start-rows.",
+);
+assert.match(
+  liveTilesStyle,
+  /\.w8-start-screen__pan \{[^}]*overflow-x: auto/,
+  "The Start screen pan wrapper must scroll horizontally.",
+);
+assert.ok(
+  liveTilesStyle.indexOf(".w8-tile-groups--columns") < liveTilesStyle.indexOf(".w8-tile-groups--overview"),
+  "The column rules must precede the semantic zoom rules so the overview still wins.",
+);
+assert.match(shellPage, /w8-start-screen__pan/, "The shell demo must use the pannable Start screen.");
+assert.match(shellPage, /w8-tile-groups w8-tile-groups--columns/, "The shell demo must use the column Start layout.");
+assert.match(shellPage, /w8-taskbar--rtm/, "The shell demo must show the RTM taskbar without a Start button.");
+assert.match(shellPage, /w8-start-hotspot/, "The shell demo must offer the RTM Start corner hotspot.");
+assert.match(shellPage, /src="gestures\.js"/, "The shell demo must load its gesture wiring.");
+assert.ok(await exists("examples/gestures.js"), "The shell demo gesture helper must exist.");
+
+// Gestures: the CSS surfaces, and the touch affordances around them.
+const gesturesStyle = await read("gui/gestures.css");
+for (const selector of [
+  ".w8-edge-panel--right",
+  ".w8-edge-panel--left",
+  ".w8-edge-panel.is-open",
+  ".w8-edge",
+  ".w8-gesture-hint",
+  ".w8-touch-tutorial",
+  ".w8-switcher",
+  ".w8-snap-preview",
+  ".w8-touch-target",
+  ".w8-pan-none",
+  ".w8-start-hotspot",
+]) {
+  assert.ok(gesturesStyle.includes(selector), `gui/gestures.css is missing ${selector}.`);
+}
+assert.match(gesturesStyle, /pointer-events: none;/, "The edge strips must not block clicks.");
+assert.match(
+  gesturesStyle,
+  /@media \(hover: none\) and \(pointer: coarse\)[\s\S]*min-height: 2\.75rem/,
+  "Touch pointers must get 44px hit areas.",
+);
+assert.match(
+  gesturesStyle,
+  /prefers-reduced-motion[\s\S]*\.w8-edge-panel \{ transition-duration/,
+  "Edge panels must stop animating for reduced motion.",
+);
+const gestureHelper = await read("examples/gestures.js");
+for (const name of ["edgeSwipe", "swipe", "longPress", "pinch"]) {
+  assert.match(gestureHelper, new RegExp(`function ${name}\\(`), `examples/gestures.js must implement ${name}().`);
+}
+assert.match(gestureHelper, /PointerEvent|pointerdown/, "The gesture helper must use Pointer Events.");
+assert.match(shellPage, /touch-toggle/, "The shell demo needs its touch mode toggle.");
+assert.match(shellPage, /w8-touch-tutorial/, "The shell demo needs the gesture coach.");
 
 // Extra controls: the rating is a radio group, the slider a range input.
 const formsCss = await read("gui/forms.css");

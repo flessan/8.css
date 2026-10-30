@@ -18,6 +18,7 @@ export const moduleOrder = [
   "app-bar.css",
   "charms.css",
   "flyout.css",
+  "gestures.css",
   "toast.css",
   "lock-screen.css",
   "hub.css",

@@ -211,6 +211,24 @@ const pressKey = async (key, code, windowsVirtualKeyCode) => {
   await new Promise((done) => setTimeout(done, 120));
 };
 
+// Drags the pointer from one viewport point to another. Pointer Events are
+// what the gesture wiring listens to, and a mouse drag produces them too.
+const drag = async (from, to, steps = 10) => {
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: from.x, y: from.y });
+  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: from.x, y: from.y, button: "left", buttons: 1, clickCount: 1 });
+  for (let step = 1; step <= steps; step++) {
+    await send("Input.dispatchMouseEvent", {
+      type: "mouseMoved",
+      x: Math.round(from.x + ((to.x - from.x) * step) / steps),
+      y: Math.round(from.y + ((to.y - from.y) * step) / steps),
+      button: "left",
+      buttons: 1,
+    });
+  }
+  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: to.x, y: to.y, button: "left", buttons: 0, clickCount: 1 });
+  await new Promise((done) => setTimeout(done, 220));
+};
+
 const waitForLoad = () =>
   new Promise((done) => {
     const started = Date.now();
@@ -737,6 +755,245 @@ check(
 );
 await shoot("shell-charms");
 
+// Windows 8 shell behaviour: the Start screen pans sideways, the RTM taskbar
+// has no Start button, and the edge gestures reach the same surfaces.
+await visit("/examples/shell.html", 1024, 768);
+await realClick('[data-scene="start"]');
+await evaluate("new Promise((done) => setTimeout(done, 250))");
+const horizontalStart = await evaluate(`(() => {
+  const pan = document.querySelector(".w8-start-screen__pan");
+  const groups = document.getElementById("tile-groups");
+  const tiles = [...groups.querySelectorAll(".w8-tile")];
+  const first = tiles[0].getBoundingClientRect();
+  const second = tiles[1].getBoundingClientRect();
+  const below = (rect) => [...groups.querySelectorAll(".w8-tile")].some((tile) => {
+    const box = tile.getBoundingClientRect();
+    return Math.round(box.left) === Math.round(rect.left) && Math.round(box.top) > Math.round(rect.top);
+  });
+  return {
+    display: getComputedStyle(groups).display,
+    rows: getComputedStyle(tiles[0].closest(".w8-tiles")).gridTemplateRows.split(" ").length,
+    columns: getComputedStyle(tiles[0].closest(".w8-tiles")).gridAutoFlow,
+    verticalFlow: Math.round(second.left) === Math.round(first.left) && second.top > first.top,
+    nextTileBelow: below(second),
+    scrolls: pan.scrollWidth > pan.clientWidth,
+    scrollable: getComputedStyle(pan).overflowX,
+    scrollableByWheel: pan.scrollWidth - pan.clientWidth,
+    touchAction: getComputedStyle(pan).touchAction,
+    pageOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  };
+})()`);
+check(
+  "Start screen flows tiles down each column and pans sideways",
+  horizontalStart.display === "flex" &&
+    horizontalStart.rows === 3 &&
+    horizontalStart.columns === "column" &&
+    horizontalStart.verticalFlow === true &&
+    horizontalStart.nextTileBelow === true &&
+    horizontalStart.scrolls === true &&
+    horizontalStart.scrollable === "auto" &&
+    /pan-x/.test(horizontalStart.touchAction) &&
+    horizontalStart.pageOverflow === 0,
+  JSON.stringify(horizontalStart),
+);
+
+// The pan container really scrolls.
+const panned = await evaluate(`(async () => {
+  const pan = document.querySelector(".w8-start-screen__pan");
+  const before = pan.scrollLeft;
+  const max = pan.scrollWidth - pan.clientWidth;
+  pan.scrollLeft = max;
+  await new Promise((done) => requestAnimationFrame(done));
+  const after = Math.round(pan.scrollLeft);
+  pan.scrollLeft = 0;
+  return { before, max, after };
+})()`);
+check(
+  "the Start screen pan container scrolls horizontally",
+  panned.before === 0 && panned.max > 0 && panned.after === panned.max,
+  JSON.stringify(panned),
+);
+
+// Right edge: Charms. Left edge: app switcher. Top edge: app bar.
+await drag({ x: 1022, y: 380 }, { x: 620, y: 380 });
+const rightEdge = await evaluate(`(() => ({
+  pane: !document.getElementById("search-pane").hidden,
+  expanded: document.querySelector('#start [data-charm-pane="search-pane"]').getAttribute("aria-expanded"),
+  highlight: document.querySelector("#start .w8-charms").classList.contains("w8-charms--revealed"),
+  hint: document.getElementById("gesture-hint").hidden === false,
+}))()`);
+await pressKey("Escape", "Escape", 27);
+check(
+  "swiping in from the right edge opens the Charms search pane",
+  rightEdge.pane === true && rightEdge.expanded === "true" && rightEdge.highlight === true && rightEdge.hint === true,
+  JSON.stringify(rightEdge),
+);
+
+await drag({ x: 1, y: 300 }, { x: 260, y: 300 });
+await evaluate("new Promise((done) => setTimeout(done, 260))");
+const leftEdge = await evaluate(`(() => {
+  const panel = document.getElementById("switcher");
+  const rect = panel.getBoundingClientRect();
+  const rows = [...panel.querySelectorAll(".w8-switcher__item")];
+  return {
+    open: panel.classList.contains("is-open"),
+    ariaHidden: panel.getAttribute("aria-hidden"),
+    onScreen: rect.left >= -1 && rect.right <= innerWidth,
+    width: Math.round(rect.width),
+    rows: rows.length,
+    snapTargets: panel.querySelectorAll("[data-snap]").length,
+    focused: document.activeElement.className,
+  };
+})()`);
+check(
+  "swiping in from the left edge opens the app switcher",
+  leftEdge.open === true && leftEdge.ariaHidden === "false" && leftEdge.onScreen === true && leftEdge.rows === 5 && leftEdge.snapTargets >= 2 && /w8-switcher__item/.test(leftEdge.focused),
+  JSON.stringify(leftEdge),
+);
+
+const snapped = await evaluate(`(async () => {
+  document.querySelector('#switcher [data-snap="File Explorer"]').click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const preview = document.getElementById("snap-preview");
+  const rect = preview.getBoundingClientRect();
+  const label = document.getElementById("snap-label").textContent.trim();
+  const visible = !preview.hidden;
+  document.getElementById("snap-close").click();
+  return {
+    visible,
+    width: Math.round(rect.width),
+    ratio: rect.width / innerWidth,
+    label,
+    switcherClosed: !document.getElementById("switcher").classList.contains("is-open"),
+    closed: preview.hidden,
+  };
+})()`);
+check(
+  "snapping puts an app in the left quarter and unsnap clears it",
+  snapped.visible === true && snapped.ratio > 0.2 && snapped.ratio < 0.32 && snapped.label === "File Explorer" && snapped.switcherClosed === true && snapped.closed === true,
+  JSON.stringify(snapped),
+);
+
+await drag({ x: 500, y: 1 }, { x: 500, y: 280 });
+const topEdge = await evaluate(`(() => ({
+  customizing: document.getElementById("customize-toggle").getAttribute("aria-pressed"),
+  bar: !document.getElementById("start-appbar").hidden,
+}))()`);
+await drag({ x: 500, y: 766 }, { x: 500, y: 500 });
+const bottomEdge = await evaluate(`(() => document.getElementById("customize-toggle").getAttribute("aria-pressed"))()`);
+check(
+  "the top and bottom edges raise and dismiss the app bar",
+  topEdge.customizing === "true" && topEdge.bar === true && bottomEdge === "false",
+  JSON.stringify({ topEdge, bottomEdge }),
+);
+
+// Press and hold a tile selects it and raises the app bar.
+const held = await evaluate(`(async () => {
+  const tile = document.querySelectorAll("#tile-groups .w8-tile")[1];
+  const rect = tile.getBoundingClientRect();
+  window.__holdPoint = { x: Math.round(rect.x + rect.width / 2), y: Math.round(rect.y + rect.height / 2) };
+  return window.__holdPoint;
+})()`);
+await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: held.x, y: held.y });
+await send("Input.dispatchMouseEvent", { type: "mousePressed", x: held.x, y: held.y, button: "left", buttons: 1, clickCount: 1 });
+await new Promise((done) => setTimeout(done, 750));
+await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: held.x, y: held.y, button: "left", buttons: 0, clickCount: 1 });
+await evaluate("new Promise((done) => setTimeout(done, 120))");
+const longPress = await evaluate(`(() => {
+  const hit = document.elementFromPoint(window.__holdPoint.x, window.__holdPoint.y);
+  return {
+    selected: document.querySelectorAll(".w8-tile--selected").length,
+    customizing: document.getElementById("customize-toggle").getAttribute("aria-pressed"),
+    bar: !document.getElementById("start-appbar").hidden,
+    hint: document.getElementById("gesture-hint-text").textContent,
+    hit: hit ? hit.tagName + "." + hit.className : "none",
+    enabled: typeof window.W8Gestures,
+  };
+})()`);
+await evaluate("document.getElementById('done-command').click(); true");
+check(
+  "press and hold selects a tile without firing the tile link",
+  longPress.selected === 1 && longPress.customizing === "true" && longPress.bar === true && /selected/i.test(longPress.hint),
+  JSON.stringify(longPress),
+);
+
+// Touch mode shows the edge grips and the gesture coach.
+await realClick("#touch-toggle");
+await evaluate("new Promise((done) => setTimeout(done, 240))");
+const touchMode = await evaluate(`(() => ({
+  body: document.body.classList.contains("w8-touch-hints"),
+  pressed: document.getElementById("touch-toggle").getAttribute("aria-pressed"),
+  grip: getComputedStyle(document.querySelector(".w8-edge--right .w8-edge__grip")).opacity,
+  gripEvents: getComputedStyle(document.querySelector(".w8-edge--right")).pointerEvents,
+  edgeCount: document.querySelectorAll(".w8-edge").length,
+}))()`);
+check(
+  "touch mode reveals the four edge grips without blocking clicks",
+  touchMode.body === true && touchMode.pressed === "true" && touchMode.grip === "1" && touchMode.gripEvents === "none" && touchMode.edgeCount === 4,
+  JSON.stringify(touchMode),
+);
+
+await realClick("#gestures-button");
+const coach = await evaluate(`(() => ({
+  open: !document.getElementById("touch-tutorial").hidden,
+  step: document.getElementById("tutorial-step").textContent,
+  title: document.getElementById("tutorial-title").textContent,
+  dots: document.querySelectorAll(".w8-touch-tutorial__dot").length,
+  prevDisabled: document.getElementById("tutorial-prev").disabled,
+  focused: document.activeElement.id,
+}))()`);
+await evaluate("document.getElementById('tutorial-next').click(); true");
+const coachNext = await evaluate("document.getElementById('tutorial-step').textContent");
+await pressKey("Escape", "Escape", 27);
+const coachClosed = await evaluate("document.getElementById('touch-tutorial').hidden");
+check(
+  "the gesture coach steps through four gestures and closes on Escape",
+  coach.open === true && coach.step === "Step 1 of 4" && coach.dots === 4 && coach.prevDisabled === true && coach.focused === "tutorial-next" && coachNext === "Step 2 of 4" && coachClosed === true,
+  JSON.stringify({ ...coach, coachNext, coachClosed }),
+);
+await shoot("shell-touch");
+
+// RTM taskbar: no Start button, and the bottom-left corner opens Start.
+await realClick('[data-scene="desktop"]');
+await evaluate("new Promise((done) => setTimeout(done, 250))");
+const rtm = await evaluate(`(() => {
+  const start = document.querySelector(".desk-taskbar .w8-taskbar__start");
+  const hotspot = document.getElementById("start-hotspot");
+  const rect = hotspot.getBoundingClientRect();
+  const firstApp = document.querySelector(".desk-taskbar .w8-taskbar__app").getBoundingClientRect();
+  return {
+    taskbar: document.querySelector(".desk-taskbar").classList.contains("w8-taskbar--rtm"),
+    startHidden: getComputedStyle(start).display,
+    hot: { w: Math.round(rect.width), h: Math.round(rect.height), left: Math.round(rect.left), bottom: Math.round(rect.bottom) },
+    firstAppLeft: Math.round(firstApp.left),
+    previewOpacity: getComputedStyle(hotspot.querySelector(".w8-start-hotspot__preview")).opacity,
+  };
+})()`);
+await realClick("#start-hotspot");
+const hotStart = await evaluate("!document.getElementById('start').hidden");
+check(
+  "the RTM taskbar hides the Start button and the corner hotspot opens Start",
+  rtm.taskbar === true && rtm.startHidden === "none" && rtm.hot.w >= 44 && rtm.hot.h >= 44 && rtm.hot.left === 0 && rtm.hot.bottom === 768 && hotStart === true,
+  JSON.stringify({ ...rtm, hotStart }),
+);
+
+// Swipe up on the lock screen to reach sign-in.
+await visit("/examples/shell.html", 1024, 768);
+const lockSwipe = await evaluate(`(() => {
+  const idle = document.getElementById("lock-idle").getBoundingClientRect();
+  return { x: Math.round(idle.x + idle.width / 2), y: Math.round(idle.y + idle.height - 40) };
+})()`);
+await drag({ x: lockSwipe.x, y: lockSwipe.y }, { x: lockSwipe.x, y: lockSwipe.y - 160 }, 8);
+const afterLockSwipe = await evaluate(`(() => ({
+  signin: !document.getElementById("lock-signin").hidden,
+  dimmed: document.getElementById("lock-surface").classList.contains("w8-lock--dimmed"),
+}))()`);
+check(
+  "swiping up on the lock screen reaches sign-in",
+  afterLockSwipe.signin === true && afterLockSwipe.dimmed === true,
+  JSON.stringify(afterLockSwipe),
+);
+
 // Controls: the rating fills up to the checked star, the slider tracks its
 // value and the search box paints the magnifier inside the field.
 await visit("/docs/index.html", 1280, 900);
@@ -855,6 +1112,9 @@ for (const scene of ["start", "desktop"]) {
     const taskbar = document.querySelector(".desk-taskbar");
     const problems = [];
     document.querySelectorAll("#" + ${JSON.stringify(scene)} + " .w8-tile, #" + ${JSON.stringify(scene)} + " .w8-charm, .w8-taskbar__app, .w8-taskbar__tray-item").forEach((node) => {
+      // Tiles in the pannable Start screen are allowed past the right edge:
+      // the container scrolls sideways and the page itself does not overflow.
+      if (node.closest(".w8-start-screen__pan")) return;
       const rect = node.getBoundingClientRect();
       if (rect.width > 0 && rect.right > innerWidth + 1) problems.push(node.className);
     });

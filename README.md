@@ -6,8 +6,9 @@
 
 ## What is included
 
-- Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers.
+- Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers, laid out as the horizontally panned Windows 8 grid or as a reflowing Windows 10 grid.
 - Buttons, text fields, choices, toggles, sliders, ratings, search boxes, progress indicators and rings, notices, tabs, navigation bars, list and flip views, app bars, the Charms bar, windows, and dialog styling.
+- Windows 8 touch shell: a horizontally panned Start screen, edge panels, the app switcher, a snap preview, a gesture coach, and 44px touch targets.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
 - Start screen customize mode with tile selection and the contextual app bar.
@@ -163,9 +164,37 @@ The Windows 8 edge menu is available as a vertical bar of icon-and-label buttons
 
 `aria-expanded="true"` (or `aria-pressed="true"`) fills the active charm with `--w8-accent`. `w8-charms--right` pins the bar to the right edge of a positioned parent and `w8-charms--fixed` keeps it on screen; opening and closing the pane stays your call, as the library ships no JavaScript.
 
+## Touch and gestures
+
+Windows 8 was designed for touch, so the library ships the surfaces its edge gestures reveal:
+
+```html
+<div class="w8-start-screen" style="--w8-tile-size: 6.75rem; --w8-start-rows: 3">
+  <div class="w8-start-screen__pan">
+    <div class="w8-tile-groups w8-tile-groups--columns">
+      <div class="w8-tile-group">
+        <span class="w8-tile-group__label">Everyday</span>
+        <div class="w8-tiles"><a class="w8-tile w8-tile--blue" href="#mail">…</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<aside class="w8-edge-panel w8-edge-panel--left w8-switcher is-open">…</aside>
+<div class="w8-snap-preview"><span class="w8-snap-preview__label">News</span></div>
+```
+
+- `w8-start-screen__pan` plus `w8-tile-groups--columns` lay tiles out top to bottom in a column, then start the next column and pan the screen sideways, the way Windows 8 behaves. Tune it with `--w8-tile-size` and `--w8-start-rows`.
+- `w8-edge-panel` (`--left`, `--right`, `--top`, `--bottom`, `is-open`) slides a surface in from an edge; `w8-switcher` is the app switcher, and `w8-snap-preview` is the snapped pane.
+- `w8-gesture-hint` and `w8-touch-tutorial` are the coaching surfaces Windows 8 showed on tablets; `w8-edge` with `w8-edge__grip` marks the edges and never blocks clicks.
+- `w8-taskbar--rtm` hides the Start button because Windows 8 RTM did not have one; `w8-start-hotspot` is the bottom-left corner that revealed Start instead.
+- `w8-touch-target`, `w8-pan-x`/`w8-pan-y`/`w8-pan-none`, `w8-no-select` and `w8-grab` are the touch utilities. Charms, taskbar apps and icon buttons grow to 44px on coarse pointers, or under a `w8-touch` ancestor.
+
+The library is still CSS-only: CSS cannot detect a swipe. [examples/gestures.js](examples/gestures.js) is 200 lines of Pointer Events that wire the right edge to Charms, the left edge to the switcher and snapping, the top and bottom edges to the app bar, and press-and-hold to tile selection.
+
 ## Modules and customization
 
-The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `taskbar.css`, `app-bar.css`, `charms.css`, `flyout.css`, `toast.css`, and `dialog.css`; the lock screen and app layouts live in `lock-screen.css`, `hub.css`, and `split-view.css`, and live tile extras in `live-tiles.css`.
+The full stylesheet is `dist/8.css`. For a smaller bundle, load `base.css` first, then the modules required by your markup, plus the standalone Font Awesome stylesheet when you use icons. Desktop chrome lives in `window.css`, `taskbar.css`, `app-bar.css`, `charms.css`, `flyout.css`, `toast.css`, and `dialog.css`; the lock screen and app layouts live in `lock-screen.css`, `hub.css`, and `split-view.css`, live tile extras and the horizontal Start layout in `live-tiles.css`, and the touch surfaces in `gestures.css`.
 
 ```js
 import "@flessan/8.css/dist/font-awesome/css/font-awesome.min.css";

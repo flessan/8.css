@@ -11,13 +11,14 @@
 - `dist/font-awesome/`: self-hosted icon font, stylesheets, and license.
 - `styles/images/`: Windows 8 / 8.1 RTM wallpapers and the generated `wallpapers/` pack (manifest, thumbnails, optional classes). Demo assets only, not MIT licensed.
 - `examples/wallpapers.html`: Personalize-style wallpaper picker with live Start Screen preview.
-- `examples/shell.html`: the assembled Windows 8 shell (lock screen, Start screen, desktop, taskbar).
+- `examples/shell.html`: the assembled Windows 8 shell (lock screen, Start screen, desktop, taskbar) with the edge gestures wired.
+- `examples/gestures.js`: demo-only Pointer Events helper for the edge gestures; the library itself stays CSS-only.
 - `docs/index.html`: component catalog, previews, and icon gallery.
 - `examples/legacy-start-screen.html`: historical Start Screen prototype.
 - `AGENTS.md` and `llms-full.txt`: maintainer and agent guidance.
 
 ## Principles
-- Keep Windows 8 Start Screen and desktop UI recognizable, using flat surfaces and solid color.
+- Keep Windows 8 Start Screen and desktop UI recognizable, using flat surfaces and solid color: a horizontally panned Start screen with column-major tiles, no Start button on the RTM taskbar, and edge gestures rather than Windows 10 chrome.
 - Use `w8-` class names to reduce collisions, and classic Font Awesome 4.7.0 icon classes (`fa fa-home`).
 - Keep runtime CSS-only; icons come from the self-hosted icon font, without JavaScript.
 - Use semantic HTML, visible focus, accessible labels, and reduced-motion support.

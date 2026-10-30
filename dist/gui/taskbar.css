@@ -15,6 +15,9 @@
 .w8-taskbar__apps { min-width: 0; overflow: hidden; }
 .w8-taskbar__tray { flex: 0 1 auto; min-width: 0; overflow: hidden; }
 .w8-taskbar--fixed { bottom: 0; left: 0; position: fixed; right: 0; }
+/* Windows 8 RTM shipped without a Start button; 8.1 brought it back. */
+.w8-taskbar--rtm .w8-taskbar__start { display: none; }
+.w8-taskbar--rtm .w8-taskbar__app:first-child { margin-left: .4rem; }
 .w8-taskbar__start {
   align-items: center;
   background: transparent;
