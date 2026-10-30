@@ -67,3 +67,12 @@
   .flyout-stage { gap: 20px; padding: 16px; }
   .lock-demo { min-height: 18rem; }
 }
+
+/* Navigation, list and flip view demos */
+.nav-demo { display: flex; flex-wrap: wrap; gap: 24px 40px; }
+.nav-demo > div { min-width: 0; }
+.nav-demo .w8-list-view { flex: 1 1 20rem; }
+@media (max-width: 760px) {
+  .nav-demo { display: grid; gap: 18px; }
+  .nav-demo .w8-nav-bar { min-width: 0; }
+}

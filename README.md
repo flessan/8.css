@@ -7,7 +7,7 @@
 ## What is included
 
 - Start Screen tiles with solid Windows 8-inspired colors and responsive size modifiers.
-- Buttons, text fields, choices, toggles, progress indicators, notices, tabs, app bars, the Charms bar, windows, and dialog styling.
+- Buttons, text fields, choices, toggles, sliders, ratings, search boxes, progress indicators and rings, notices, tabs, navigation bars, list and flip views, app bars, the Charms bar, windows, and dialog styling.
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
 - A lock screen with sign-in panel and battery indicator, live tiles with badges and flips, a taskbar with tray and clock, flyouts, toasts, hubs and snapped split views.

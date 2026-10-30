@@ -684,7 +684,91 @@ check(
 );
 await shoot("shell-charms");
 
+// Controls: the rating fills up to the checked star, the slider tracks its
+// value and the search box paints the magnifier inside the field.
+await visit("/docs/index.html", 1280, 900);
+const controls = await evaluate(`(() => {
+  const stars = [...document.querySelectorAll('#controls .w8-rating__star')];
+  const checked = document.querySelector('#controls .w8-rating__input:checked');
+  const checkedLabel = checked ? document.querySelector('label[for="' + checked.id + '"]') : null;
+  const gold = stars.filter((star) => getComputedStyle(star).color === 'rgb(212, 160, 23)').length;
+  const slider = document.querySelector('#controls .w8-slider');
+  const sliderBox = slider.getBoundingClientRect();
+  const thumbTrack = getComputedStyle(slider).getPropertyValue('height').trim();
+  const search = document.querySelector('#controls .w8-search');
+  const iconBox = search.querySelector('.w8-search__icon').getBoundingClientRect();
+  const inputBox = search.querySelector('.w8-search__input').getBoundingClientRect();
+  return {
+    stars: stars.length,
+    checked: !!checked,
+    checkedIsGold: checkedLabel ? getComputedStyle(checkedLabel).color === 'rgb(212, 160, 23)' : false,
+    gold,
+    sliderValue: slider.value,
+    sliderWidth: Math.round(sliderBox.width),
+    sliderTrack: thumbTrack,
+    iconInsideField: iconBox.left > inputBox.left && iconBox.right < inputBox.right,
+    labels: stars.filter((star) => star.querySelector('.w8-sr-only')).length,
+  };
+})()`);
+check(
+  "rating, slider and search controls render and report state",
+  controls.stars === 5 &&
+    controls.checked === true &&
+    controls.checkedIsGold === true &&
+    controls.gold === 3 &&
+    controls.sliderValue === "62" &&
+    controls.sliderWidth > 100 &&
+    controls.iconInsideField === true &&
+    controls.labels === 5,
+  JSON.stringify(controls),
+);
+
+const ratingKeyboard = await evaluate(`(() => {
+  const radios = [...document.querySelectorAll('#controls .w8-rating__input')];
+  const middle = radios[2];
+  middle.focus();
+  const focused = document.activeElement === middle;
+  const outline = getComputedStyle(document.querySelector('label[for="' + middle.id + '"]')).outlineStyle;
+  return { focused, outline, name: middle.name, total: radios.length };
+})()`);
+check(
+  "rating stars are reachable radios with a labelled focus ring",
+  ratingKeyboard.focused === true && ratingKeyboard.name === "rate" && ratingKeyboard.total === 5 && ratingKeyboard.outline !== "none",
+  JSON.stringify(ratingKeyboard),
+);
+
+await visit("/examples/components.html", 1280, 900);
+const listView = await evaluate(`(() => {
+  const rows = [...document.querySelectorAll('.w8-list-view__item')];
+  const selected = rows.find((row) => row.getAttribute('aria-selected') === 'true');
+  const normal = rows.find((row) => row.getAttribute('aria-selected') === 'false');
+  const flip = document.querySelector('.w8-flip-view');
+  const nav = document.querySelector('.w8-nav-bar');
+  return {
+    rows: rows.length,
+    selectedBackground: selected ? getComputedStyle(selected).backgroundColor : null,
+    normalBackground: normal ? getComputedStyle(normal).backgroundColor : null,
+    flipButtons: flip.querySelectorAll('.w8-flip-view__button').length,
+    flipHeight: Math.round(flip.getBoundingClientRect().height),
+    navCurrent: nav.querySelectorAll('[aria-current="page"]').length,
+    overflow: document.documentElement.scrollWidth - innerWidth,
+  };
+})()`);
+check(
+  "list view, navigation bar and flip view render their states",
+  listView.rows === 2 &&
+    listView.selectedBackground !== listView.normalBackground &&
+    listView.flipButtons === 2 &&
+    listView.flipHeight > 100 &&
+    listView.navCurrent === 1 &&
+    listView.overflow <= 1,
+  JSON.stringify(listView),
+);
+
 // Live tiles actually animate, and the flip stops for reduced motion.
+await visit("/examples/shell.html", 1440, 900);
+await realClick('[data-scene="start"]');
+await evaluate("new Promise((done) => setTimeout(done, 250))");
 const flip = await evaluate(`(() => {
   const flipper = document.querySelector("#start .w8-tile--live .w8-tile__flipper");
   const style = getComputedStyle(flipper);

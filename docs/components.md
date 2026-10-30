@@ -7,7 +7,8 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - `gui/tiles.css`: Start Screen canvas and tiles.
 - `gui/live-tiles.css`: tile badges, flip animations, tile groups and the semantic zoom overview.
 - `gui/buttons.css`: button states and variants.
-- `gui/forms.css`: input, select, textarea, checkbox, radio, and toggle styling.
+- `gui/forms.css`: input, select, textarea, checkbox, radio, toggle, slider, rating, and search styling.
+- `gui/navigation.css`: navigation bar, back button, list view, and flip view.
 - `gui/feedback.css`: progress, tabs, badges, notices, and dividers.
 - `gui/window.css`: desktop window and title bar.
 - `gui/taskbar.css`: desktop taskbar, app buttons, previews, tray and clock.
@@ -28,7 +29,9 @@ The [interactive catalog](index.html) includes live previews, a 78-icon gallery 
 - Buttons: `w8-button`, `w8-button--primary`, `w8-button--subtle`.
 - Fields: `w8-input`, `w8-select`, `w8-textarea`, `w8-field`, `w8-label`, `w8-help`.
 - Choices: `w8-check`, `w8-radio`, `w8-choice`, `w8-toggle`, `w8-toggle__input`.
-- Feedback: `w8-progress`, `w8-badge`, `w8-notice` variants, `w8-divider`.
+- Feedback: `w8-progress`, `w8-progress-ring` (`w8-progress-ring--small`), `w8-badge`, `w8-notice` variants, `w8-divider`.
+- Extra controls: `w8-slider`, `w8-slider__value`, `w8-rating`, `w8-rating__input`, `w8-rating__star`, `w8-search`, `w8-search__input`, `w8-search__icon`, `w8-search--dark`.
+- Navigation and lists: `w8-back`, `w8-nav-bar`, `w8-nav-bar__item`, `w8-nav-bar__title`, `w8-nav-bar--dark`, `w8-list-view`, `w8-list-view__item`, `w8-list-view__icon`, `w8-list-view__title`, `w8-list-view__meta`, `w8-list-view__trailing`, `w8-list-view--dark`, `w8-flip-view`, `w8-flip-view__frame`, `w8-flip-view__slide`, `w8-flip-view__title`, `w8-flip-view__meta`, `w8-flip-view__text`, `w8-flip-view__nav`, `w8-flip-view__button`, `w8-flip-view__count`.
 - Tabs: `w8-tabs`, `w8-tab`.
 - Desktop: `w8-window`, `w8-title-bar`, `w8-title-bar__text`, `w8-title-bar__controls`, `w8-window-control`, `w8-window-control--close`, `w8-window-body`, `w8-window-footer`.
 - Actions and dialogs: `w8-app-bar`, `w8-app-bar__item`, `w8-dialog`, `w8-dialog__body`, `w8-dialog__footer`.

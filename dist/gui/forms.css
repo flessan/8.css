@@ -4,6 +4,7 @@
 .w8-input:hover, .w8-select:hover, .w8-textarea:hover { border-color: #555; }
 .w8-input:disabled, .w8-select:disabled, .w8-textarea:disabled { background: #eee; color: #777; cursor: not-allowed; }
 .w8-field { display: grid; gap: .35rem; margin-bottom: 1rem; max-width: 32rem; }
+fieldset.w8-field { border: 0; margin-inline: 0; padding: 0; }
 .w8-label { display: block; font-weight: 600; }
 .w8-help { color: var(--w8-muted); font-size: .875rem; }
 .w8-check, .w8-radio { accent-color: var(--w8-accent); block-size: 1rem; inline-size: 1rem; margin: 0 .35rem 0 0; vertical-align: -.1em; }
@@ -15,3 +16,33 @@
 .w8-toggle__input:checked::before { background: #fff; left: 1.35rem; }
 .w8-toggle__input:focus-visible { outline-offset: 3px; }
 .w8-toggle__input:disabled { cursor: not-allowed; opacity: .5; }
+
+/* Slider: a bar with a square thumb, the Windows 8 range control. */
+.w8-slider { appearance: none; background: transparent; display: block; height: 1.6rem; margin: .25rem 0; max-width: 24rem; width: 100%; }
+.w8-slider::-webkit-slider-runnable-track { background: #c8c8c8; border: 0; height: .3rem; }
+.w8-slider::-moz-range-track { background: #c8c8c8; height: .3rem; }
+.w8-slider::-moz-range-progress { background: var(--w8-accent); height: .3rem; }
+.w8-slider::-webkit-slider-thumb { appearance: none; background: var(--w8-accent); border: 0; border-radius: 0; cursor: pointer; height: 1.1rem; margin-top: -.4rem; width: .45rem; }
+.w8-slider::-moz-range-thumb { background: var(--w8-accent); border: 0; border-radius: 0; cursor: pointer; height: 1.1rem; width: .45rem; }
+.w8-slider:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--w8-focus); outline-offset: 2px; }
+.w8-slider:disabled { cursor: not-allowed; opacity: .5; }
+.w8-slider__value { color: var(--w8-muted); font-variant-numeric: tabular-nums; }
+
+/* Search box: the magnifier sits inside the field. */
+.w8-search { display: inline-flex; max-width: 100%; position: relative; width: 20rem; }
+.w8-search__input { padding-left: 2.1rem; }
+.w8-search__icon { color: var(--w8-muted); left: .7rem; pointer-events: none; position: absolute; top: 50%; transform: translateY(-50%); }
+.w8-search--dark .w8-search__input { background: #1f1f1f; border-color: #8a8a8a; color: #fff; }
+.w8-search--dark .w8-search__icon { color: rgb(255 255 255 / .7); }
+
+/* Rating: five radios drawn as stars, filled up to the checked value. */
+.w8-rating { border: 0; display: inline-flex; flex-direction: row-reverse; gap: .15rem; justify-content: flex-end; margin: 0; padding: 0; }
+.w8-rating__input { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+.w8-rating__star { color: #b8b8b8; cursor: pointer; font-size: 1.35rem; line-height: 1; padding: .15rem; }
+.w8-rating__star:hover,
+.w8-rating__star:hover ~ .w8-rating__star,
+.w8-rating__input:checked + .w8-rating__star,
+.w8-rating__input:checked ~ .w8-rating__star { color: #d4a017; }
+.w8-rating__input:focus-visible + .w8-rating__star { outline: 2px solid var(--w8-focus); outline-offset: 1px; }
+.w8-rating:disabled .w8-rating__star,
+.w8-rating__input:disabled ~ .w8-rating__star { color: #ccc; cursor: not-allowed; }

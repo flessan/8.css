@@ -62,6 +62,12 @@ for (const selector of [
   ".w8-split",
   ".w8-progress-ring",
   ".w8-app-bar--circular",
+  ".w8-slider",
+  ".w8-rating",
+  ".w8-search",
+  ".w8-nav-bar",
+  ".w8-list-view",
+  ".w8-flip-view",
   ".w8-dialog",
   ".w8-icon-button",
   ".w8-icon--large",
@@ -513,6 +519,43 @@ for (const id of ["lock-gallery", "taskbar-gallery"]) {
   assert.ok(galleryPage.includes(`id="${id}"`), `The gallery must include #${id}.`);
 }
 assert.match(galleryPage, /shell\.html/, "The gallery must link to the shell demo.");
+
+// Extra controls: the rating is a radio group, the slider a range input.
+const formsCss = await read("gui/forms.css");
+for (const selector of [".w8-slider", ".w8-slider::-webkit-slider-thumb", ".w8-rating__input", ".w8-rating__star", ".w8-search__icon"]) {
+  assert.ok(formsCss.includes(selector), `gui/forms.css is missing ${selector}.`);
+}
+assert.match(formsCss, /--w8-accent[\s\S]*-webkit-slider-thumb/, "The slider thumb must use the accent colour.");
+assert.match(formsCss, /fieldset\.w8-field \{ border: 0;/, "Fieldsets used as fields must not draw a frame.");
+
+const controlsSection = docsPage.slice(docsPage.indexOf('id="controls"'), docsPage.indexOf('id="navigation"'));
+assert.match(controlsSection, /type="range"/, "The slider demo must use a native range input.");
+assert.equal(
+  (controlsSection.match(/class="w8-rating__input"/g) || []).length,
+  5,
+  "The rating demo must offer five stars.",
+);
+for (const radio of controlsSection.match(/class="w8-rating__input"[^>]*>/g) || []) {
+  assert.match(radio, /aria-hidden|id="rate-\d"/, "Each rating radio needs an id for its label.");
+}
+assert.equal((controlsSection.match(/:checked|checked\/>/g) || []).length >= 1, true, "The rating demo needs a selected star.");
+assert.match(controlsSection, /w8-search__icon/, "The search demo must show the magnifier hook.");
+assert.equal(
+  (controlsSection.match(/<span class="w8-sr-only">/g) || []).length,
+  5,
+  "Every rating star needs an accessible label.",
+);
+
+// Navigation module: state comes from ARIA, not from extra classes.
+const navCss = await read("gui/navigation.css");
+for (const selector of [".w8-back", ".w8-nav-bar__item", ".w8-list-view__item", ".w8-flip-view__button"]) {
+  assert.ok(navCss.includes(selector), `gui/navigation.css is missing ${selector}.`);
+}
+assert.match(navCss, /\[aria-current="page"\]/, "Navigation selection must follow aria-current.");
+assert.match(navCss, /\[aria-selected="true"\]/, "List selection must follow aria-selected.");
+assert.match(navCss, /\.w8-list-view__item:focus-visible/, "List rows need a visible focus ring.");
+assert.ok(docsPage.includes('id="navigation"'), "The documentation must cover navigation and lists.");
+assert.ok((await read("examples/components.html")).includes('class="w8-flip-view"'), "The gallery must show the flip view.");
 
 // Every page that uses the new surfaces must load the bundle.
 for (const page of ["docs/index.html", "examples/components.html", "examples/shell.html"]) {

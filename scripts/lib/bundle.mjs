@@ -11,6 +11,7 @@ export const moduleOrder = [
   "live-tiles.css",
   "buttons.css",
   "forms.css",
+  "navigation.css",
   "feedback.css",
   "window.css",
   "taskbar.css",
