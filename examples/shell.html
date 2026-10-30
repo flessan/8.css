@@ -72,6 +72,12 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   .scene .w8-lock { height: auto; min-height: calc(100svh - 5.5rem); }
   .desk { padding-top: .75rem; }
   .start-canvas .w8-start-heading { display: none; }
+  /* Compact two-column group, like the snapped Start screen. */
+  .start-canvas .w8-tiles { grid-auto-rows: minmax(5rem, auto); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .start-canvas .w8-tile--wide { grid-column: span 2; }
+  .start-canvas .w8-tiles .w8-tile { min-height: 5rem; }
+  .start-canvas .w8-tile__meta { display: none; }
+  .start-top { align-items: center; }
   .desk-taskbar .w8-taskbar__tray-item:not(:nth-of-type(2)) { display: none; }
   .desk-taskbar .w8-taskbar__clock { font-size: .72rem; padding: 0 .45rem; }
   .demo-bar button, .demo-bar a { font-size: .68rem; padding: .3rem .45rem; }
