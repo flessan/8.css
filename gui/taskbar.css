@@ -1,11 +1,18 @@
-/* Desktop taskbar */
+/* Desktop taskbar
+ *
+ * Windows 8 draws a 40px dark bar with full-height task buttons: a running app
+ * carries a 1px outline and a slightly lighter fill, the foreground app is
+ * brighter still, and there is no underline indicator. The tray sits in its own
+ * cluster beside the clock, and a thin sliver at the far right shows the desktop.
+ */
 .w8-taskbar {
   align-items: stretch;
-  background: var(--w8-chrome, #1c1c1c);
+  background: var(--w8-taskbar-background, var(--w8-chrome, #1f1f1f));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .06);
   color: #fff;
   display: flex;
-  font-size: .78rem;
-  min-height: 2.5rem;
+  font-size: .75rem;
+  min-height: var(--w8-taskbar-height, 2.5rem);
   min-width: 0;
   overflow: hidden;
   position: relative;
@@ -26,95 +33,121 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  min-width: 3rem;
-  padding: 0 .6rem;
+  min-width: 2.9rem;
+  padding: 0 .55rem;
 }
+.w8-taskbar__start .fa { font-size: 1.15rem; }
 .w8-taskbar__start:hover { background: var(--w8-chrome-hover, #333); }
-.w8-taskbar__start[aria-expanded="true"] { background: #0078d7; }
-.w8-taskbar__apps { align-items: center; display: flex; gap: .1rem; padding: .15rem 0; }
+.w8-taskbar__start:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.w8-taskbar__start[aria-expanded="true"] { background: var(--w8-accent, #0078d7); }
+
+.w8-taskbar__apps { align-items: stretch; display: flex; gap: .15rem; padding: .2rem .15rem; }
 .w8-taskbar__app {
   align-items: center;
   background: transparent;
-  border: 0;
+  border: 1px solid transparent;
   color: #fff;
   cursor: pointer;
   display: flex;
   justify-content: center;
-  min-height: 2.2rem;
-  min-width: 2.6rem;
-  padding: 0 .5rem;
+  min-width: 2.75rem;
+  padding: 0 .55rem;
   position: relative;
 }
 .w8-taskbar__app .fa { font-size: 1.05rem; }
-.w8-taskbar__app:hover { background: var(--w8-chrome-hover, #333); }
+.w8-taskbar__app:hover { background: rgb(255 255 255 / .14); }
+/* Running but behind: outline plus a lift in brightness. */
+.w8-taskbar__app--running {
+  background: var(--w8-taskbar-button, #292929);
+  border-color: var(--w8-taskbar-border, #454545);
+}
+.w8-taskbar__app--running:hover { background: #353535; }
+/* Foreground app: the brightest of the three states. */
 .w8-taskbar__app[aria-current="page"],
-.w8-taskbar__app--active { background: #3a3a3a; box-shadow: inset 0 0 0 1px #545454; }
-.w8-taskbar__app:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.w8-taskbar__app--active {
+  background: var(--w8-taskbar-button-active, #3c3c3c);
+  border-color: var(--w8-taskbar-border-active, #6e6e6e);
+}
+.w8-taskbar__app:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
 .w8-taskbar__spacer { flex: 1; }
-.w8-taskbar__tray { align-items: center; display: flex; gap: .15rem; }
+
+.w8-taskbar__tray { align-items: center; display: flex; gap: .1rem; padding-right: .1rem; }
 .w8-taskbar__tray-item {
   align-items: center;
   background: transparent;
   border: 0;
-  color: rgb(255 255 255 / .92);
+  color: rgb(255 255 255 / .88);
   cursor: pointer;
   display: flex;
-  font-size: .85rem;
-  gap: .35rem;
-  min-height: 2.2rem;
-  padding: 0 .55rem;
+  font-size: .82rem;
+  gap: .3rem;
+  height: calc(var(--w8-taskbar-height, 2.5rem) - .6rem);
+  justify-content: center;
+  min-width: 1.9rem;
+  padding: 0 .35rem;
 }
-.w8-taskbar__tray-item:hover { background: var(--w8-chrome-hover, #333); }
+.w8-taskbar__tray-item .fa { font-size: .85rem; }
+.w8-taskbar__tray-item:hover { background: rgb(255 255 255 / .14); }
+.w8-taskbar__tray-item:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
 .w8-taskbar__clock {
-  align-items: center;
+  align-items: flex-end;
   background: transparent;
   border: 0;
   color: #fff;
   cursor: default;
   display: flex;
   flex-direction: column;
+  font-size: .74rem;
   font-variant-numeric: tabular-nums;
   justify-content: center;
-  line-height: 1.3;
-  padding: 0 .7rem;
+  line-height: 1.25;
+  padding: 0 .6rem;
   white-space: nowrap;
 }
+.w8-taskbar__clock span { color: rgb(255 255 255 / .82); font-size: .7rem; }
+.w8-taskbar__clock:hover { background: rgb(255 255 255 / .14); }
+.w8-taskbar__clock:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
 .w8-taskbar__show-desktop {
   align-self: stretch;
-  border: 0;
-  border-left: 1px solid rgb(255 255 255 / .28);
   background: transparent;
+  border: 0;
+  border-left: 1px solid rgb(255 255 255 / .18);
   color: #fff;
   cursor: pointer;
-  width: .4rem;
+  flex: 0 0 auto;
+  padding: 0;
+  width: .35rem;
 }
 .w8-taskbar__show-desktop:hover { background: rgb(255 255 255 / .22); }
 
 /* Taskbar thumbnail preview, revealed on hover or keyboard focus. */
-.w8-taskbar__item { position: relative; }
+.w8-taskbar__item { display: flex; position: relative; }
 .w8-taskbar__preview {
   background: #2b2b2b;
-  border: 1px solid #5a5a5a;
+  border: 1px solid #6e6e6e;
   bottom: calc(100% + .35rem);
   box-shadow: 0 .5rem 1.5rem rgb(0 0 0 / .45);
   color: #fff;
   display: none;
   left: 0;
   min-width: 12rem;
-  padding: .5rem .6rem;
+  padding: .4rem;
   position: absolute;
   z-index: 30;
 }
+.w8-taskbar__item:last-child .w8-taskbar__preview { left: auto; right: 0; }
 .w8-taskbar__item:hover .w8-taskbar__preview,
 .w8-taskbar__item:focus-within .w8-taskbar__preview { display: block; }
-.w8-taskbar__preview-title { align-items: center; display: flex; font-size: .78rem; gap: .4rem; margin-bottom: .35rem; }
+.w8-taskbar__preview-title { align-items: center; display: flex; font-size: .75rem; gap: .4rem; margin: 0 0 .35rem; padding: 0 .15rem; }
 .w8-taskbar__preview-shot { background: #f2f2f2; color: #444; display: block; font-size: .7rem; padding: 1.5rem .5rem; text-align: center; }
 
 /* Narrow screens keep the essentials: start, pinned apps, network and clock. */
 @media (max-width: 30rem) {
   .w8-taskbar { font-size: .7rem; }
   .w8-taskbar__preview { display: none; }
-  .w8-taskbar__tray-item { padding: 0 .35rem; }
+  .w8-taskbar__tray-item { min-width: 1.6rem; padding: 0 .25rem; }
   .w8-taskbar__clock { padding: 0 .45rem; }
   /* The date is the first thing Windows drops when the bar runs out of room. */
   .w8-taskbar__clock span { display: none; }

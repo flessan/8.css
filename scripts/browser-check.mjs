@@ -579,6 +579,60 @@ check(
 );
 await shoot("shell-start");
 
+// Lock screen design: the wallpaper stays unscrimmed while idle, and signing in
+// replaces it with a flat personalization colour and a single account row.
+await visit("/examples/shell.html", 1440, 900);
+const lockDesign = await evaluate(`(async () => {
+  const surface = document.getElementById("lock-surface");
+  // getComputedStyle returns a live object, so snapshot the idle values first.
+  const idleImage = getComputedStyle(surface).backgroundImage;
+  const idleBefore = getComputedStyle(surface, "::before").backgroundImage;
+  surface.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const signedIn = surface.classList.contains("w8-lock--dimmed");
+  const signedInStyle = getComputedStyle(surface);
+  const avatar = surface.querySelector(".w8-lock__avatar").getBoundingClientRect();
+  const details = surface.querySelector(".w8-lock__details").getBoundingClientRect();
+  const account = surface.querySelector(".w8-lock__account");
+  const input = surface.querySelector(".w8-lock__input").getBoundingClientRect();
+  const submit = surface.querySelector(".w8-lock__submit").getBoundingClientRect();
+  const power = surface.querySelectorAll(".w8-lock__tool");
+  const powerRect = power[power.length - 1].getBoundingClientRect();
+  return {
+    signedIn,
+    idleImage: idleImage.includes("url("),
+    idleBeforeStill: idleBefore.includes("gradient"),
+    flatImage: signedInStyle.backgroundImage,
+    flatColour: signedInStyle.backgroundColor,
+    row: Math.round(details.left - avatar.right),
+    avatarSquare: Math.round(avatar.width) === Math.round(avatar.height) && avatar.width >= 80,
+    accountText: account.textContent.trim(),
+    accountVisible: account.getBoundingClientRect().height > 0,
+    submitInsideField: submit.left >= input.right - 1 && Math.abs(submit.height - input.height) <= 1,
+    powerBottomRight: powerRect.right > innerWidth - 40 && powerRect.bottom > innerHeight - 40,
+  };
+})()`);
+check(
+  "sign-in drops the wallpaper for a flat colour and lays out the account row",
+  lockDesign.signedIn === true &&
+    lockDesign.idleImage === true &&
+    lockDesign.flatImage === "none" &&
+    lockDesign.flatColour === "rgb(1, 64, 81)" &&
+    lockDesign.row >= 8 &&
+    lockDesign.row <= 40 &&
+    lockDesign.avatarSquare === true &&
+    lockDesign.accountVisible === true &&
+    /@/.test(lockDesign.accountText) &&
+    lockDesign.submitInsideField === true &&
+    lockDesign.powerBottomRight === true,
+  JSON.stringify(lockDesign),
+);
+await shoot("shell-signin");
+// Leave the page on the Start screen for the checks that follow.
+await visit("/examples/shell.html", 1440, 900);
+await realClick('[data-scene="start"]');
+await evaluate("new Promise((done) => setTimeout(done, 200))");
+
 const zoom = await evaluate(`(async () => {
   const groups = document.getElementById("tile-groups");
   const toggle = document.getElementById("zoom-toggle");
@@ -659,6 +713,47 @@ check(
     desktop.shareOpened.expanded === "true" &&
     desktop.shareClosed === true,
   JSON.stringify({ opened: desktop.opened, closed: desktop.closed, share: desktop.shareOpened, shareClosed: desktop.shareClosed }),
+);
+const taskbarStates = await evaluate(`(() => {
+  const bar = document.querySelector(".desk-taskbar");
+  const rect = bar.getBoundingClientRect();
+  const apps = [...bar.querySelectorAll(".w8-taskbar__app")];
+  const style = (node) => getComputedStyle(node);
+  const running = apps.filter((app) => app.classList.contains("w8-taskbar__app--running"));
+  const active = bar.querySelector('.w8-taskbar__app[aria-current="page"]');
+  const tray = bar.querySelector(".w8-taskbar__tray").getBoundingClientRect();
+  const clock = bar.querySelector(".w8-taskbar__clock");
+  const heights = apps.map((app) => Math.round(app.getBoundingClientRect().height));
+  return {
+    height: Math.round(rect.height),
+    heights,
+    fullHeight: heights.every((height) => height >= Math.round(rect.height) - 8 && height <= Math.round(rect.height)),
+    running: running.length,
+    runningBg: running[0] ? style(running[0]).backgroundColor : null,
+    runningBorder: running[0] ? style(running[0]).borderTopColor : null,
+    activeBg: style(active).backgroundColor,
+    activeBorder: style(active).borderTopColor,
+    idleBg: style(apps.find((app) => !app.classList.contains("w8-taskbar__app--running") && app !== active) || active).backgroundColor,
+    trayRightOfApps: tray.left > apps[apps.length - 1].getBoundingClientRect().right,
+    clockLines: clock.querySelectorAll("span").length,
+    clockRight: Math.round(clock.getBoundingClientRect().right) <= Math.round(rect.right),
+    showDesktopWidth: Math.round(bar.querySelector(".w8-taskbar__show-desktop").getBoundingClientRect().width),
+  };
+})()`);
+check(
+  "taskbar draws full-height task buttons with running and foreground states",
+  taskbarStates.height === 40 &&
+    taskbarStates.fullHeight === true &&
+    taskbarStates.running >= 2 &&
+    taskbarStates.runningBg === "rgb(41, 41, 41)" &&
+    taskbarStates.runningBorder === "rgb(69, 69, 69)" &&
+    taskbarStates.activeBg === "rgb(60, 60, 60)" &&
+    taskbarStates.activeBorder === "rgb(110, 110, 110)" &&
+    taskbarStates.idleBg === "rgba(0, 0, 0, 0)" &&
+    taskbarStates.trayRightOfApps === true &&
+    taskbarStates.clockLines === 1 &&
+    taskbarStates.showDesktopWidth <= 8,
+  JSON.stringify(taskbarStates),
 );
 check(
   "desktop taskbar pins to the bottom with tray, clock and an active app",

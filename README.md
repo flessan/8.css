@@ -12,7 +12,7 @@
 - Font Awesome 4.7.0, bundled unmodified and served from your own site instead of a third-party CDN.
 - A Windows 8 / 8.1 wallpaper pack with a Personalize preview, curated titles, dominant and accent colours, and optional per-wallpaper CSS classes.
 - Start screen customize mode with tile selection and the contextual app bar.
-- A lock screen with sign-in panel and battery indicator, live tiles with badges and flips, a taskbar with tray and clock, flyouts, toasts, hubs and snapped split views.
+- A lock screen that keeps the wallpaper clean and switches to the flat sign-in view with the account picture, account band and arrow-submit password field, live tiles with badges and flips, a Windows 8 taskbar with outlined running apps, tray and clock, flyouts, toasts, hubs and snapped split views.
 - Icon helpers with sizing hooks, square app-bar buttons, and accessible visually-hidden labels.
 - Interactive documentation, copyable HTML snippets, a one-page component gallery, and modular stylesheets.
 

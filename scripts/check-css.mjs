@@ -448,7 +448,7 @@ for (const [id, marker] of [
 }
 
 const lockMarkup = docsPage.slice(docsPage.indexOf('id="lock"'), docsPage.indexOf('id="livetiles"'));
-for (const cls of ["w8-lock__time", "w8-lock__date", "w8-lock__status-item", "w8-lock__panel", "w8-battery__level"]) {
+for (const cls of ["w8-lock__idle", "w8-lock__time", "w8-lock__date", "w8-lock__status-item", "w8-lock__footer", "w8-lock__panel", "w8-lock__account", "w8-lock__submit", "w8-battery__level"]) {
   assert.ok(lockMarkup.includes(cls), `The lock screen example must show ${cls}.`);
 }
 assert.ok(lockMarkup.includes("--w8-lock-image"), "The lock screen docs must mention --w8-lock-image.");
@@ -463,6 +463,39 @@ assert.match(
   await read("gui/lock-screen.css"),
   /\.w8-lock--dimmed::before/,
   "The lock screen must expose a dimmed state for sign-in.",
+);
+
+// Windows 8 replaces the wallpaper with a flat personalization colour at
+// sign-in, and lays the account picture beside the name and password field.
+const lockCss = await read("gui/lock-screen.css");
+assert.match(
+  lockCss,
+  /\.w8-lock--dimmed \{[^}]*background-image: none/,
+  "Sign-in must drop the lock wallpaper for a flat colour.",
+);
+assert.match(
+  lockCss,
+  /\.w8-lock__panel \{[^}]*display: flex/,
+  "The sign-in panel must lay the account picture beside the details.",
+);
+for (const selector of [".w8-lock__details", ".w8-lock__account-chip", ".w8-lock__form", ".w8-lock__submit", ".w8-lock__footer"]) {
+  assert.ok(lockCss.includes(selector), `gui/lock-screen.css is missing ${selector}.`);
+}
+assert.match(
+  lockCss,
+  /--w8-lock-signin-background/,
+  "Sign-in needs its own background hook.",
+);
+
+// The taskbar uses full-height task buttons with running and foreground states.
+const taskbarChrome = await read("gui/taskbar.css");
+for (const selector of [".w8-taskbar__app--running", "--w8-taskbar-height", "--w8-taskbar-button", "--w8-taskbar-border"]) {
+  assert.ok(taskbarChrome.includes(selector), `gui/taskbar.css is missing ${selector}.`);
+}
+assert.match(
+  taskbarChrome,
+  /\.w8-taskbar__item \{[^}]*display: flex/,
+  "Taskbar items must stretch their button to the full bar height.",
 );
 
 // Live tiles: a badge, a two faced flip, and the semantic zoom overview.

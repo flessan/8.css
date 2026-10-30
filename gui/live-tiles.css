@@ -107,7 +107,7 @@
 .w8-tile-group .w8-tiles { max-width: none; }
 
 /* Semantic zoom overview: groups sit side by side and tiles shrink to blocks. */
-.w8-tile-groups--overview { align-items: start; display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; }
+.w8-tile-groups--overview { align-items: start; display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; min-width: 0; width: auto; }
 .w8-tile-groups--overview .w8-tile-group { flex: 0 1 auto; }
 .w8-tile-groups--overview .w8-tile-group__label { font-size: 1rem; margin-bottom: .4rem; }
 .w8-tile-groups--overview .w8-tiles {

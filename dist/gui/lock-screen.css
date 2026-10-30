@@ -1,4 +1,6 @@
 /* Lock screen and sign-in surface */
+/* Windows 8 does not scrim its lock screen: the wallpaper stays flat and the
+   time, date and status rely on a text shadow instead. */
 .w8-lock {
   background-color: var(--w8-lock-background, #0b3b60);
   background-image: var(--w8-lock-image, none);
@@ -16,58 +18,79 @@
   position: relative;
 }
 .w8-lock::before {
-  background: linear-gradient(to top, rgb(0 0 0 / .62), rgb(0 0 0 / .22) 46%, rgb(0 0 0 / .08));
+  background: linear-gradient(to top, rgb(0 0 0 / .3), rgb(0 0 0 / 0) 46%);
   content: "";
   inset: 0;
   pointer-events: none;
   position: absolute;
   z-index: -1;
 }
-.w8-lock--dimmed::before { background: rgb(0 0 0 / .62); }
+/* Sign-in: Windows 8 leaves the artwork behind and paints a flat colour,
+   normally the user's personalization colour. */
+.w8-lock--dimmed {
+  background-color: var(--w8-lock-signin-background, #014051);
+  background-image: none;
+}
+.w8-lock--dimmed::before { background: none; }
 .w8-lock__time {
-  font-size: clamp(3rem, 9vw, 5.5rem);
+  font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 200;
-  letter-spacing: -.035em;
+  letter-spacing: -.04em;
   line-height: 1;
   margin: 0;
-  text-shadow: 0 2px 14px rgb(0 0 0 / .45);
+  text-shadow: 0 2px 16px rgb(0 0 0 / .5);
 }
 .w8-lock__date {
-  font-size: clamp(1.05rem, 2.4vw, 1.65rem);
+  font-size: clamp(1rem, 2vw, 1.35rem);
   font-weight: 300;
-  margin: .4rem 0 0;
-  text-shadow: 0 1px 10px rgb(0 0 0 / .45);
+  letter-spacing: -.01em;
+  margin: .35rem 0 0;
+  text-shadow: 0 1px 12px rgb(0 0 0 / .5);
 }
+.w8-lock__idle { padding-bottom: 1.6rem; }
 .w8-lock__detail {
   align-items: center;
   display: flex;
   gap: .6rem;
-  margin-top: 1.15rem;
+  margin-top: 1.1rem;
   max-width: 30rem;
 }
 .w8-lock__detail .fa { font-size: 1.35rem; }
 .w8-lock__detail-text { font-size: .95rem; line-height: 1.35; }
 .w8-lock__detail-text strong { display: block; font-weight: 600; }
+.w8-lock__footer {
+  align-items: center;
+  bottom: clamp(.5rem, 2vw, 1rem);
+  display: flex;
+  gap: .35rem;
+  left: clamp(.5rem, 2vw, 1rem);
+  position: absolute;
+  right: clamp(.5rem, 2vw, 1rem);
+}
+.w8-lock__footer > .w8-lock__tools { margin-left: auto; }
 .w8-lock__status {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 1.1rem;
-  margin-top: 1.5rem;
+  gap: .85rem;
 }
+/* Status that stays in the idle column instead of the bottom bar. */
+.w8-lock__idle .w8-lock__status { margin-top: 1.35rem; }
 .w8-lock__status-item {
   align-items: center;
   display: inline-flex;
-  font-size: .85rem;
-  gap: .4rem;
+  font-size: .82rem;
+  gap: .35rem;
+  opacity: .92;
 }
-.w8-lock__status-item .fa { font-size: 1.05rem; }
-.w8-lock__badges { display: flex; gap: .85rem; margin-top: .9rem; }
+.w8-lock__status-item .fa { font-size: .95rem; }
+.w8-lock__badges { display: flex; gap: .85rem; margin-top: .8rem; }
 .w8-lock__badge {
   align-items: center;
   display: inline-flex;
-  font-size: .8rem;
+  font-size: .78rem;
   gap: .3rem;
+  opacity: .9;
 }
 .w8-lock__badge .fa { font-size: 1.1rem; }
 .w8-lock__badge-count { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -77,38 +100,99 @@
   display: flex;
   font-size: .8rem;
   gap: .45rem;
-  margin-top: 1.6rem;
+  margin-top: 1.25rem;
 }
+/* The sign-in column sits in the middle, so the sheet needs room for the bar. */
+.w8-lock--dimmed { padding-bottom: 4rem; }
+/* Sign-in is a single row: the account picture on the left, the name, the
+   account band and the password field on the right. No card, no scrim. */
 .w8-lock__panel {
+  align-items: center;
   align-self: center;
-  background: rgb(0 0 0 / .45);
+  display: flex;
+  gap: 1.25rem;
   margin: auto;
-  max-width: 22rem;
-  padding: 1.75rem 1.5rem;
-  text-align: center;
-  width: 100%;
+  max-width: 100%;
+  width: auto;
 }
 .w8-lock__avatar {
   align-items: center;
-  background: rgb(255 255 255 / .14);
-  border: 2px solid rgb(255 255 255 / .72);
-  border-radius: 50%;
+  background: rgb(255 255 255 / .16);
+  border: 1px solid rgb(255 255 255 / .55);
   display: flex;
-  font-size: 2.15rem;
-  height: 5rem;
+  flex: 0 0 auto;
+  font-size: 2.5rem;
+  height: 6rem;
   justify-content: center;
-  margin: 0 auto .85rem;
-  width: 5rem;
+  overflow: hidden;
+  width: 6rem;
 }
-.w8-lock__user { font-size: 1.35rem; font-weight: 300; margin: 0 0 1rem; }
-.w8-lock__panel .w8-input { background: rgb(255 255 255 / .92); border-color: transparent; color: var(--w8-text); width: 100%; }
-.w8-lock__panel .w8-button { margin-top: .75rem; width: 100%; }
-.w8-lock__tools {
-  bottom: clamp(1.25rem, 4vw, 3rem);
+.w8-lock__avatar img,
+.w8-lock__avatar picture,
+.w8-lock__avatar > img { display: block; height: 100%; object-fit: cover; width: 100%; }
+.w8-lock__details { display: flex; flex-direction: column; gap: .4rem; min-width: 0; width: min(16.5rem, 60vw); }
+.w8-lock__user { font-size: 1.5rem; font-weight: 300; letter-spacing: -.01em; line-height: 1.2; margin: 0; }
+/* The account band: darker strip under the name with the account identity. */
+.w8-lock__account {
+  align-items: center;
+  background: rgb(255 255 255 / .1);
   display: flex;
-  gap: .5rem;
-  position: absolute;
-  right: clamp(1.25rem, 4vw, 3rem);
+  font-size: .8rem;
+  gap: .4rem;
+  margin: 0;
+  min-height: 1.5rem;
+  padding: 0 .4rem;
+}
+.w8-lock__account-chip {
+  align-items: center;
+  background: rgb(255 255 255 / .22);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 1rem;
+  justify-content: center;
+  overflow: hidden;
+  width: 1rem;
+}
+.w8-lock__account-chip .fa { font-size: .55rem; }
+.w8-lock__account-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Password field with the arrow submit button tucked into its right edge. */
+.w8-lock__form { align-items: stretch; display: flex; margin-top: .15rem; }
+.w8-lock__input,
+.w8-lock__panel .w8-input {
+  background: #fff;
+  border: 0;
+  color: var(--w8-text);
+  flex: 1 1 auto;
+  font-size: .85rem;
+  min-height: 2rem;
+  min-width: 0;
+  padding: 0 .5rem;
+  width: 100%;
+}
+.w8-lock__input:focus-visible,
+.w8-lock__panel .w8-input:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.w8-lock__submit {
+  align-items: center;
+  background: var(--w8-lock-accent, #007b80);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  width: 2rem;
+}
+.w8-lock__submit:hover { background: color-mix(in srgb, var(--w8-lock-accent, #007b80) 84%, #fff); }
+.w8-lock__submit:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+.w8-lock__submit .fa { font-size: .85rem; }
+/* Older markup that dropped a button under the field still lines up. */
+.w8-lock__panel > .w8-button { margin-top: .5rem; }
+.w8-lock__hint + .w8-lock__hint { margin-top: .5rem; }
+.w8-lock__details .w8-lock__hint { margin-top: .25rem; }
+.w8-lock__tools {
+  align-items: center;
+  display: flex;
+  gap: .15rem;
 }
 .w8-lock__tool {
   align-items: center;
@@ -117,13 +201,22 @@
   color: #fff;
   cursor: pointer;
   display: inline-flex;
-  font-size: 1rem;
-  height: 2.5rem;
+  font-size: .95rem;
+  height: 2.25rem;
   justify-content: center;
-  width: 2.5rem;
+  opacity: .92;
+  width: 2.25rem;
 }
 .w8-lock__tool:hover { background: rgb(255 255 255 / .16); }
 .w8-lock__tool:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+
+@media (max-width: 34rem) {
+  /* Too narrow for the picture beside the name: stack, as Windows 8 does in
+     portrait, and let the details fill the sheet. */
+  .w8-lock__panel { align-items: flex-start; flex-direction: column; gap: .85rem; width: 100%; }
+  .w8-lock__details { width: 100%; }
+  .w8-lock__avatar { height: 4.5rem; width: 4.5rem; }
+}
 
 /* Battery indicator used by the lock screen and the taskbar tray. */
 .w8-battery {

@@ -82,6 +82,7 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   .demo-bar { flex-wrap: wrap; justify-content: center; left: .5rem; max-width: calc(100vw - 1rem); right: .5rem; transform: none; }
   .scene { padding-top: 5.5rem; }
   .scene .w8-lock { height: auto; min-height: calc(100svh - 5.5rem); }
+  .w8-lock__panel { margin-block: 3rem; }
   .desk { padding-top: .75rem; }
   .start-canvas .w8-start-heading { display: none; }
   /* Snapped view: shorter columns of smaller tiles, still panned sideways. */
@@ -123,26 +124,32 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
           <span class="w8-lock__badge"><i class="fa fa-envelope" aria-hidden="true"></i>Mail <span class="w8-lock__badge-count">3</span></span>
           <span class="w8-lock__badge"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Store <span class="w8-lock__badge-count">2</span></span>
         </div>
-        <div class="w8-lock__status">
-          <span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span>
-          <span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span>
-          <span class="w8-lock__status-item"><i class="fa fa-universal-access" aria-hidden="true"></i>Ease of access</span>
-        </div>
         <p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Click or press any key to unlock</p>
       </div>
 
       <div class="w8-lock__panel" id="lock-signin" hidden>
         <div class="w8-lock__avatar"><i class="fa fa-user" aria-hidden="true"></i></div>
-        <p class="w8-lock__user">Thio</p>
-        <label class="w8-sr-only" for="lock-password">Password</label>
-        <input class="w8-input" id="lock-password" type="password" placeholder="Password" autocomplete="current-password"/>
-        <button class="w8-button w8-button--primary" type="button" id="lock-signin-button">Sign in</button>
-        <p class="w8-lock__hint">Press Escape to go back to the lock screen</p>
+        <div class="w8-lock__details">
+          <p class="w8-lock__user">Thio</p>
+          <p class="w8-lock__account"><span class="w8-lock__account-chip"><i class="fa fa-user" aria-hidden="true"></i></span><span class="w8-lock__account-name">thio@outlook.com</span></p>
+          <form class="w8-lock__form" id="lock-signin-form">
+            <label class="w8-sr-only" for="lock-password">Password</label>
+            <input class="w8-input w8-lock__input" id="lock-password" type="password" placeholder="Password" autocomplete="current-password"/>
+            <button class="w8-lock__submit" type="submit" id="lock-signin-button" aria-label="Sign in"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+          </form>
+          <p class="w8-lock__hint">Press Escape to go back to the lock screen</p>
+        </div>
       </div>
 
-      <div class="w8-lock__tools">
-        <button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button>
-        <button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+      <div class="w8-lock__footer">
+        <div class="w8-lock__status">
+          <span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span>
+          <span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span>
+        </div>
+        <div class="w8-lock__tools">
+          <button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button>
+          <button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button>
+        </div>
       </div>
     </div>
   </section>
@@ -350,14 +357,14 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
           </div>
         </div>
         <div class="w8-taskbar__item">
-          <button class="w8-taskbar__app" type="button" aria-label="File Explorer"><i class="fa fa-folder-o" aria-hidden="true"></i></button>
+          <button class="w8-taskbar__app w8-taskbar__app--running" type="button" aria-label="File Explorer"><i class="fa fa-folder-o" aria-hidden="true"></i></button>
           <div class="w8-taskbar__preview">
             <p class="w8-taskbar__preview-title"><i class="fa fa-folder-o" aria-hidden="true"></i>File Explorer</p>
             <span class="w8-taskbar__preview-shot">Pictures</span>
           </div>
         </div>
         <div class="w8-taskbar__item">
-          <button class="w8-taskbar__app" type="button" aria-label="Internet Explorer"><i class="fa fa-internet-explorer" aria-hidden="true"></i></button>
+          <button class="w8-taskbar__app w8-taskbar__app--running" type="button" aria-label="Internet Explorer"><i class="fa fa-internet-explorer" aria-hidden="true"></i></button>
           <div class="w8-taskbar__preview">
             <p class="w8-taskbar__preview-title"><i class="fa fa-internet-explorer" aria-hidden="true"></i>Internet Explorer</p>
             <span class="w8-taskbar__preview-shot">Start page</span>
@@ -517,7 +524,8 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
     if (event.key === "Tab") return;
     openSignin();
   });
-  document.getElementById("lock-signin-button").addEventListener("click", () => {
+  document.getElementById("lock-signin-form").addEventListener("submit", (event) => {
+    event.preventDefault();
     showScene("start");
     document.getElementById("start-heading").focus();
     showToast();

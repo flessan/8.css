@@ -214,24 +214,44 @@ import &quot;@flessan/8.css/dist/gui/responsive.css&quot;;</code></pre><button c
 &lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
 <p>Public classes: <code>w8-charms</code>, <code>w8-charm</code>, <code>w8-charm__icon</code>, <code>w8-charm__label</code>, <code>w8-charm-pane</code>, <code>w8-charm-pane__title</code>, <code>w8-charm-pane__group</code>, <code>w8-charm-pane__item</code>. Modifiers: <code>w8-charms--right</code> pins the bar to the right edge of a positioned container and <code>w8-charms--fixed</code> pins it to the viewport. The active charm uses <code>aria-expanded="true"</code> or <code>aria-pressed="true"</code> and is filled with <code>--w8-accent</code>.</p></section>
 
-<section class="docs-section" id="lock"><h2>Lock Screen</h2><p>The lock screen is a full-bleed image with the time, date and system status along the bottom edge. It is the first surface a Windows 8 user sees, so the component keeps the same reading order: time, date, an optional detailed status from one app, then network and battery. Point it at any image with <code>--w8-lock-image</code>, or leave it to the solid <code>--w8-lock-background</code>.</p>
-<div class="example"><div class="example-caption">Lock screen with app status, and the sign-in panel in the same surface</div><div class="preview"><div class="w8-lock lock-demo" style="--w8-lock-image:url('../styles/images/Windows8RTM/img3.jpg')"><div><p class="w8-lock__time">9:41</p><p class="w8-lock__date">Thursday, October 30</p><div class="w8-lock__detail"><i class="fa fa-calendar-o" aria-hidden="true"></i><span class="w8-lock__detail-text"><strong>9:41 Design review</strong>Studio 3 &middot; 45 minutes</span></div><div class="w8-lock__status"><span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span><span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span></div><p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Click or press any key to unlock</p></div><div class="w8-lock__tools"><button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button><button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button></div></div></div><details class="code"><summary>Show code</summary><pre><code>&lt;div class=&quot;w8-lock&quot; style=&quot;--w8-lock-image:url('wallpaper.jpg')&quot;&gt;
-  &lt;p class=&quot;w8-lock__time&quot;&gt;9:41&lt;/p&gt;
-  &lt;p class=&quot;w8-lock__date&quot;&gt;Thursday, October 30&lt;/p&gt;
-  &lt;div class=&quot;w8-lock__detail&quot;&gt;
-    &lt;i class=&quot;fa fa-calendar-o&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;
-    &lt;span class=&quot;w8-lock__detail-text&quot;&gt;
-      &lt;strong&gt;9:41 Design review&lt;/strong&gt;Studio 3
-    &lt;/span&gt;
+<section class="docs-section" id="lock"><h2>Lock Screen</h2><p>The lock screen is a full-bleed wallpaper with the time and date set low on the left, an optional detailed status from one app underneath, and a quiet bottom bar with the network and battery on one side and the ease-of-access and power tools on the other. Windows 8 keeps the artwork clean: there is no scrim, so the text carries a shadow instead. Point it at any image with <code>--w8-lock-image</code>, or leave it to the solid <code>--w8-lock-background</code>.</p>
+<div class="example"><div class="example-caption">Lock screen: time, date, one app's status and the idle bottom bar</div><div class="preview preview-flush"><div class="w8-lock lock-demo" style="--w8-lock-image:url('../styles/images/Windows8RTM/img3.jpg')"><div class="w8-lock__idle"><p class="w8-lock__time">9:41</p><p class="w8-lock__date">Thursday, October 30</p><div class="w8-lock__detail"><i class="fa fa-calendar-o" aria-hidden="true"></i><span class="w8-lock__detail-text"><strong>9:41 Design review</strong>Studio 3 &middot; 45 minutes</span></div><div class="w8-lock__badges"><span class="w8-lock__badge"><i class="fa fa-envelope" aria-hidden="true"></i>Mail <span class="w8-lock__badge-count">3</span></span><span class="w8-lock__badge"><i class="fa fa-shopping-bag" aria-hidden="true"></i>Store <span class="w8-lock__badge-count">2</span></span></div><p class="w8-lock__hint"><i class="fa fa-chevron-up" aria-hidden="true"></i>Swipe up or press any key to unlock</p></div><div class="w8-lock__footer"><div class="w8-lock__status"><span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span><span class="w8-lock__status-item"><span class="w8-battery" style="--w8-battery-level:82%"><span class="w8-battery__level"></span></span>82%</span></div><div class="w8-lock__tools"><button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button><button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button></div></div></div></div>
+<details class="code"><summary>Show code</summary><pre><code>&lt;div class="w8-lock" style="--w8-lock-image:url('wallpaper.jpg')"&gt;
+  &lt;div class="w8-lock__idle"&gt;
+    &lt;p class="w8-lock__time"&gt;9:41&lt;/p&gt;
+    &lt;p class="w8-lock__date"&gt;Thursday, October 30&lt;/p&gt;
+    &lt;div class="w8-lock__detail"&gt;
+      &lt;i class="fa fa-calendar-o" aria-hidden="true"&gt;&lt;/i&gt;
+      &lt;span class="w8-lock__detail-text"&gt;
+        &lt;strong&gt;9:41 Design review&lt;/strong&gt;Studio 3
+      &lt;/span&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;w8-lock__status&quot;&gt;
-    &lt;span class=&quot;w8-lock__status-item&quot;&gt;
-      &lt;i class=&quot;fa fa-wifi&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Home
-    &lt;/span&gt;
+  &lt;div class="w8-lock__footer"&gt;
+    &lt;div class="w8-lock__status"&gt;&hellip;&lt;/div&gt;
+    &lt;div class="w8-lock__tools"&gt;&hellip;&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
-<div class="example"><div class="example-caption">Sign-in panel: avatar, user name and password field</div><div class="preview"><div class="w8-lock lock-demo" style="--w8-lock-image:url('../styles/images/Windows81RTMWallpapers/img1.jpg');--w8-lock-image:url('../styles/images/Windows8.1RTMWallpapers/img1.jpg')"><div class="w8-lock__panel"><div class="w8-lock__avatar"><i class="fa fa-user" aria-hidden="true"></i></div><p class="w8-lock__user">Thio</p><input class="w8-input" type="password" placeholder="Password" aria-label="Password"/><button class="w8-button w8-button--primary" type="button">Sign in</button></div></div></div></div>
-<p>Public classes: <code>w8-lock</code>, <code>w8-lock__time</code>, <code>w8-lock__date</code>, <code>w8-lock__detail</code>, <code>w8-lock__detail-text</code>, <code>w8-lock__badges</code>, <code>w8-lock__badge</code>, <code>w8-lock__badge-count</code>, <code>w8-lock__status</code>, <code>w8-lock__status-item</code>, <code>w8-lock__hint</code>, <code>w8-lock__panel</code>, <code>w8-lock__avatar</code>, <code>w8-lock__user</code>, <code>w8-lock__tools</code>, <code>w8-lock__tool</code>. Modifier: <code>w8-lock--dimmed</code>. Battery: <code>w8-battery</code> with <code>--w8-battery-level</code>, plus <code>w8-battery--low</code>.</p>
+<div class="example"><div class="example-caption">Sign-in: the wallpaper is replaced by a flat personalization colour, with the account picture beside the name, account band and password field</div><div class="preview preview-flush"><div class="w8-lock lock-demo w8-lock--dimmed" style="--w8-lock-signin-background:#014051;--w8-lock-accent:#007b80"><div class="w8-lock__panel"><div class="w8-lock__avatar"><i class="fa fa-user" aria-hidden="true"></i></div><div class="w8-lock__details"><p class="w8-lock__user">Thio</p><p class="w8-lock__account"><span class="w8-lock__account-chip"><i class="fa fa-user" aria-hidden="true"></i></span><span class="w8-lock__account-name">thio@outlook.com</span></p><div class="w8-lock__form"><label class="w8-sr-only" for="lock-demo-password">Password</label><input class="w8-input w8-lock__input" id="lock-demo-password" type="password" placeholder="Password"/><button class="w8-lock__submit" type="submit" aria-label="Sign in"><i class="fa fa-arrow-right" aria-hidden="true"></i></button></div></div></div><div class="w8-lock__footer"><div class="w8-lock__status"><span class="w8-lock__status-item"><i class="fa fa-wifi" aria-hidden="true"></i>Home</span></div><div class="w8-lock__tools"><button class="w8-lock__tool" type="button" aria-label="Ease of access"><i class="fa fa-universal-access" aria-hidden="true"></i></button><button class="w8-lock__tool" type="button" aria-label="Power"><i class="fa fa-power-off" aria-hidden="true"></i></button></div></div></div></div>
+<details class="code"><summary>Show code</summary><pre><code>&lt;div class="w8-lock w8-lock--dimmed"&gt;
+  &lt;div class="w8-lock__panel"&gt;
+    &lt;div class="w8-lock__avatar"&gt;&lt;i class="fa fa-user" aria-hidden="true"&gt;&lt;/i&gt;&lt;/div&gt;
+    &lt;div class="w8-lock__details"&gt;
+      &lt;p class="w8-lock__user"&gt;Thio&lt;/p&gt;
+      &lt;p class="w8-lock__account"&gt;
+        &lt;span class="w8-lock__account-chip"&gt;&hellip;&lt;/span&gt;
+        &lt;span class="w8-lock__account-name"&gt;thio@outlook.com&lt;/span&gt;
+      &lt;/p&gt;
+      &lt;div class="w8-lock__form"&gt;
+        &lt;input class="w8-input w8-lock__input" type="password" placeholder="Password"/&gt;
+        &lt;button class="w8-lock__submit" type="submit" aria-label="Sign in"&gt;
+          &lt;i class="fa fa-arrow-right" aria-hidden="true"&gt;&lt;/i&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre><button class="w8-button copy" type="button">Copy Code</button></details></div>
+<p>Public classes: <code>w8-lock</code>, <code>w8-lock__idle</code>, <code>w8-lock__time</code>, <code>w8-lock__date</code>, <code>w8-lock__detail</code>, <code>w8-lock__detail-text</code>, <code>w8-lock__badges</code>, <code>w8-lock__badge</code>, <code>w8-lock__badge-count</code>, <code>w8-lock__hint</code>, <code>w8-lock__footer</code>, <code>w8-lock__status</code>, <code>w8-lock__status-item</code>, <code>w8-lock__tools</code>, <code>w8-lock__tool</code>, and the sign-in set <code>w8-lock__panel</code>, <code>w8-lock__avatar</code>, <code>w8-lock__details</code>, <code>w8-lock__user</code>, <code>w8-lock__account</code>, <code>w8-lock__account-chip</code>, <code>w8-lock__account-name</code>, <code>w8-lock__form</code>, <code>w8-lock__input</code>, <code>w8-lock__submit</code>. Modifier: <code>w8-lock--dimmed</code>, which drops the wallpaper for a flat colour. Custom properties: <code>--w8-lock-image</code>, <code>--w8-lock-background</code>, <code>--w8-lock-signin-background</code> and <code>--w8-lock-accent</code>. Battery: <code>w8-battery</code> with <code>--w8-battery-level</code>, plus <code>w8-battery--low</code>.</p>
 <p>The lock screen is presentation only: the click-or-key-to-unlock behaviour and the sign-in form belong to your application. The <a href="../examples/shell.html">shell demo</a> wires one up with plain DOM scripting.</p></section>
 
 <section class="docs-section" id="livetiles"><h2>Live Tiles</h2><p>A live tile carries a badge, flips between two faces, or shrinks into the semantic zoom overview. All three are additive: the base <code>w8-tile</code> markup keeps working when you add them.</p>
