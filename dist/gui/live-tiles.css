@@ -1,0 +1,144 @@
+/* Live tile badges, flip animation, and tile groups */
+.w8-tile__badge {
+  bottom: .55rem;
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  position: absolute;
+  right: .55rem;
+  text-shadow: 0 1px 3px rgb(0 0 0 / .45);
+}
+.w8-tile__badge--solid {
+  align-items: center;
+  background: #fff;
+  border-radius: 50%;
+  color: #1f1f1f;
+  display: inline-flex;
+  height: 1.35rem;
+  justify-content: center;
+  min-width: 1.35rem;
+  padding: 0 .3rem;
+  text-shadow: none;
+}
+.w8-tile__badge--alert { background: var(--w8-tile-red); color: #fff; }
+
+/* A flip tile swaps between two faces on a timer. */
+.w8-tile--live { display: block; padding: 0; perspective: 60rem; }
+.w8-tile__flipper {
+  animation: w8-tile-flip 10s cubic-bezier(.4, 0, .2, 1) infinite;
+  inset: 0;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.w8-tile__face {
+  align-items: flex-start;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  justify-content: flex-end;
+  padding: .85rem;
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+}
+.w8-tile__face--back {
+  background: var(--w8-tile-color, var(--w8-tile-blue));
+  transform: rotateY(180deg);
+}
+.w8-tile__face .fa { font-size: 1.35rem; margin-bottom: auto; }
+.w8-tile__face .w8-tile__symbol { margin-bottom: auto; }
+.w8-tile__face--back .w8-tile__label { font-size: 1.15rem; font-weight: 300; }
+.w8-tile--wide .w8-tile__face--back .w8-tile__label { font-size: 1.5rem; }
+@keyframes w8-tile-flip {
+  0%, 42% { transform: rotateY(0); }
+  50%, 92% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+/* Empty slot shown while a Start Screen group is being arranged. */
+.w8-tile--placeholder { background: rgb(255 255 255 / .12); }
+
+/* Tile groups carry the Start Screen group headings. */
+.w8-tile-groups { display: grid; gap: clamp(1.5rem, 3vw, 2.25rem); }
+
+/* Horizontal Start screen: groups of tile columns that pan sideways.
+   Windows 8 lays tiles out top to bottom inside a column, then starts the
+   next column, and the screen scrolls horizontally (unlike Windows 10). */
+.w8-start-screen__pan {
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  padding-bottom: .35rem;
+  scrollbar-color: rgb(255 255 255 / .55) transparent;
+  scrollbar-width: thin;
+  touch-action: pan-x pan-y;
+}
+.w8-start-screen__pan::-webkit-scrollbar { height: .45rem; }
+.w8-start-screen__pan::-webkit-scrollbar-track { background: transparent; }
+.w8-start-screen__pan::-webkit-scrollbar-thumb { background: rgb(255 255 255 / .5); }
+.w8-start-screen__pan:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+.w8-tile-groups--columns { align-items: flex-start; display: flex; flex-wrap: nowrap; gap: clamp(1.25rem, 3vw, 2.5rem); max-width: none; min-width: 100%; width: max-content; }
+.w8-tile-groups--columns .w8-tile-group { flex: 0 0 auto; scroll-snap-align: start; }
+.w8-tile-groups--columns .w8-tiles {
+  grid-auto-flow: column;
+  grid-auto-rows: auto;
+  grid-auto-columns: var(--w8-tile-size, 6.5rem);
+  grid-template-columns: none;
+  grid-template-rows: repeat(var(--w8-start-rows, 3), var(--w8-tile-size, 6.5rem));
+  max-width: none;
+}
+.w8-tile-groups--columns .w8-tile { height: 100%; min-height: 0; }
+.w8-tile-groups--columns .w8-tile__face { padding: .85rem; }
+@media (max-width: 40rem) {
+  /* Snapped view keeps a narrow column of tiles, still panned sideways. */
+  .w8-tile-groups--columns .w8-tiles { --w8-start-rows: 4; --w8-tile-size: 5.5rem; }
+}
+.w8-tile-group__label {
+  color: rgb(255 255 255 / .86);
+  display: block;
+  font-size: .9rem;
+  font-weight: 400;
+  margin-bottom: .5rem;
+}
+.w8-tile-groups--dark .w8-tile-group__label { color: var(--w8-muted); }
+.w8-tile-group .w8-tiles { max-width: none; }
+
+/* Semantic zoom overview: groups sit side by side and tiles shrink to blocks. */
+.w8-tile-groups--overview { align-items: start; display: flex; flex-wrap: wrap; gap: 1.1rem 1.6rem; min-width: 0; width: auto; }
+.w8-tile-groups--overview .w8-tile-group { flex: 0 0 auto; }
+.w8-tile-groups--overview .w8-tile-group__label { font-size: 1rem; margin-bottom: .4rem; }
+/* The overview must undo the column Start layout: tiles flow in rows again,
+   and the column row template no longer applies. */
+.w8-tile-groups--overview .w8-tiles {
+  gap: .25rem;
+  grid-auto-columns: auto;
+  grid-auto-flow: row;
+  grid-auto-rows: 2.25rem;
+  grid-template-columns: repeat(auto-fill, 2.25rem);
+  grid-template-rows: none;
+  justify-content: start;
+  max-width: 26rem;
+}
+.w8-tile-groups--overview .w8-tile { min-height: 2.25rem; padding: 0; }
+@media (max-width: 40rem) {
+  .w8-tile-groups--overview { gap: .9rem 1.1rem; }
+  .w8-tile-groups--overview .w8-tiles { grid-auto-rows: 1.75rem; grid-template-columns: repeat(auto-fill, 1.75rem); }
+  .w8-tile-groups--overview .w8-tile { min-height: 1.75rem; }
+}
+.w8-tile-groups--overview .w8-tile__label,
+.w8-tile-groups--overview .w8-tile__meta,
+.w8-tile-groups--overview .w8-tile__symbol,
+.w8-tile-groups--overview .w8-tile__count,
+.w8-tile-groups--overview .w8-tile__badge,
+.w8-tile-groups--overview .w8-tile__flipper { display: none; }
+.w8-tile-groups--overview .w8-tile--wide,
+.w8-tile-groups--overview .w8-tile--large { grid-column: span 2; }
+.w8-tile-groups--overview .w8-tile--tall,
+.w8-tile-groups--overview .w8-tile--large { grid-row: span 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  .w8-tile__flipper { animation: none; }
+}

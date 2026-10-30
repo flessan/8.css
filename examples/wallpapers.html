@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0078d7" />
+<meta name="description" content="The 8.css Windows wallpaper pack: Windows 8 and Windows 8.1 RTM wallpapers with a Personalize preview, accent colours and copyable CSS." />
+<title>Wallpaper pack | 8.css</title>
+<link rel="stylesheet" href="../dist/8.css" />
+<link rel="stylesheet" href="../styles/images/wallpapers/wallpapers.css" />
+<style>
+:root{color-scheme:light}
+body{background:#f2f2f2;color:#1a1a1a;font:14px/1.5 "Segoe UI","Segoe UI Variable",Arial,sans-serif;margin:0}
+main{margin:0 auto;max-width:72rem;padding:1.5rem 1.25rem 3rem}
+a{color:#005a9e}
+h1{font-size:clamp(2.4rem,5vw,3.4rem);font-weight:200;letter-spacing:-.045em;line-height:1;margin:.4rem 0 .5rem}
+.lead{color:#5e5e5e;max-width:48rem;margin:0 0 1.5rem}
+.back{font-size:.8rem;text-decoration:none}
+.layout{align-items:start;display:grid;gap:1.5rem;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+@media(max-width:860px){.layout{grid-template-columns:1fr}}
+.preview-shell{background:#fff;border:1px solid #d1d1d1;padding:.75rem}
+.preview-note{color:#5e5e5e;font-size:.78rem;margin:.5rem 0 0}
+#preview{--w8-start-image:url("../styles/images/Windows8RTM/img0.jpg");--w8-start-background:#60b0f5;--w8-accent:#3a96fe;aspect-ratio:16/10;min-width:0;width:100%}
+@media(max-width:860px){#preview{aspect-ratio:auto;min-height:26rem}}
+#preview .w8-start-heading{font-size:2.6rem;text-shadow:0 1px 3px rgb(0 0 0 / .55)}
+#preview .w8-start-subtitle{color:#fff;text-shadow:0 1px 3px rgb(0 0 0 / .6)}
+#preview .w8-tiles{grid-auto-flow:row dense;grid-auto-rows:minmax(4.6rem,auto);gap:.3rem;grid-template-columns:repeat(3,minmax(0,1fr))}
+#preview .w8-tile{min-height:4.6rem;padding:.6rem}
+#preview .w8-tile__symbol{font-size:1.5rem}
+.panel{background:#fff;border:1px solid #d1d1d1;padding:1rem}
+.panel h2{font-size:1.05rem;font-weight:600;margin:0 0 .75rem}
+.field-row{display:grid;gap:.9rem}
+.field label,.field span.label{display:block;font-weight:600;margin-bottom:.3rem}
+.accent-row{display:flex;flex-wrap:wrap;gap:.35rem}
+.accent-option{cursor:pointer;display:inline-flex}
+.accent-chip{align-items:center;border:2px solid transparent;display:inline-flex;height:1.85rem;justify-content:center;width:1.85rem}
+.accent-chip .fa{color:#fff;font-size:.8rem;opacity:0;text-shadow:0 1px 1px rgb(0 0 0 / .35)}
+.accent-option input:checked + .accent-chip .fa{opacity:1}
+.accent-option input:focus-visible + .accent-chip{outline:2px solid #005a9e;outline-offset:2px}
+.swatches{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.35rem}
+.swatch{border:1px solid #8a8a8a;cursor:pointer;height:2rem;width:2rem}
+.swatch[aria-pressed="true"]{outline:2px solid #005a9e;outline-offset:1px}
+#wallpapers{scroll-margin-top:1rem}
+.wp-grid{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr));margin-top:.75rem}
+.wp-option{cursor:pointer;display:grid;gap:.4rem}
+.wp-frame{background:#fff;border:1px solid #c7c7c7;display:block;line-height:0;padding:3px}
+.wp-frame img{aspect-ratio:16/10;height:auto;object-fit:cover;width:100%}
+.wp-option:hover .wp-frame{border-color:#8a8a8a}
+.wp-radio:checked + .wp-frame{border-color:#0078d7;box-shadow:0 0 0 2px #0078d7}
+.wp-radio:focus-visible + .wp-frame{outline:2px solid #005a9e;outline-offset:3px}
+.wp-meta{display:grid;font-size:.78rem;gap:.05rem}
+.wp-title{font-weight:600}
+.wp-sub{color:#666}
+.wp-check{color:#0078d7;display:none;margin-right:.25rem}
+.wp-radio:checked ~ .wp-meta .wp-check{display:inline}
+.wp-group-title{align-items:baseline;border-top:1px solid #d5d5d5;display:flex;font-size:1.05rem;font-weight:600;gap:.6rem;justify-content:space-between;margin:2rem 0 0;padding-top:1.25rem}
+.wp-group-title small{color:#666;font-size:.78rem;font-weight:400}
+.code{border:1px solid #d3d3d3;margin-top:1rem}
+.code summary{cursor:pointer;padding:.55rem .75rem;text-decoration:underline;text-underline-offset:3px}
+.code pre{background:#1e1e1e;color:#f2f2f2;font-family:Consolas,"Cascadia Mono",monospace;font-size:12px;line-height:1.65;margin:0;overflow-x:auto;padding:.9rem}
+.copy{display:block;margin:.6rem .6rem .6rem auto}
+.footer{border-top:1px solid #d5d5d5;color:#5e5e5e;font-size:.8rem;margin-top:2.5rem;padding-top:1rem}
+.sample-row{align-items:center;display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.75rem}
+</style>
+</head>
+<body>
+<main class="w8">
+<p><a class="back" href="../index.html">← Back to 8.css</a> · <a class="back" href="./components.html">Component gallery</a></p>
+<h1>Wallpaper pack</h1>
+<p class="lead">Every wallpaper that shipped with Windows 8 and Windows 8.1 RTM, ready to use as an 8.css Start Screen background. Pick one, choose a fit and an accent colour, then copy the CSS.</p>
+
+<div class="layout">
+  <section class="preview-shell" aria-labelledby="preview-title">
+    <h2 id="preview-title" class="w8-sr-only">Preview</h2>
+    <section class="w8-start-screen" id="preview" aria-label="Start Screen preview">
+      <h2 class="w8-start-heading">Start</h2>
+      <p class="w8-start-subtitle">Everything in one place.</p>
+      <div class="w8-tiles">
+        <a class="w8-tile w8-tile--wide w8-tile--blue" href="#wallpapers"><i class="fa fa-envelope w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Mail</span><span class="w8-tile__meta">2 new messages</span></a>
+        <a class="w8-tile w8-tile--purple" href="#wallpapers"><i class="fa fa-file-photo-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Photos</span></a>
+        <a class="w8-tile w8-tile--green" href="#wallpapers"><i class="fa fa-windows w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Desktop</span></a>
+        <a class="w8-tile w8-tile--orange" href="#wallpapers"><span class="w8-tile__count">08</span><span class="w8-tile__label">Calendar</span></a>
+        <a class="w8-tile w8-tile--cyan" href="#wallpapers"><i class="fa fa-sun-o w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Weather</span></a>
+        <a class="w8-tile w8-tile--magenta" href="#wallpapers"><i class="fa fa-music w8-tile__symbol" aria-hidden="true"></i><span class="w8-tile__label">Music</span></a>
+      </div>
+    </section>
+    <p class="preview-note" id="preview-note">Daisy · Windows 8 · 1920×1200 · single-monitor artwork</p>
+    <div class="sample-row" aria-label="Accent colour preview">
+      <button class="w8-button w8-button--primary" type="button"><i class="fa fa-check" aria-hidden="true"></i>Primary</button>
+      <button class="w8-button" type="button">Secondary</button>
+      <div class="w8-tabs" style="border:0"><button class="w8-tab" type="button" aria-selected="true">Personalize</button><button class="w8-tab" type="button" aria-selected="false">Accounts</button></div>
+      <progress class="w8-progress" value="62" max="100" style="max-width:10rem">62%</progress>
+    </div>
+  </section>
+
+  <div class="panel">
+    <h2>Personalize</h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="fit">Choose a fit</label>
+        <select class="w8-select" id="fit">
+          <option value="cover" selected>Fill</option>
+          <option value="contain">Fit</option>
+          <option value="100% 100%">Stretch</option>
+          <option value="auto">Tile</option>
+          <option value="center">Center</option>
+          <option value="span">Span</option>
+        </select>
+      </div>
+      <div class="field">
+        <span class="label" id="accent-label">Accent colour</span>
+        <div class="accent-row" role="radiogroup" aria-labelledby="accent-label">
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#3a96fe" aria-label="Accent #3a96fe" /><span class="accent-chip" style="background:#3a96fe"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#72a9d6" aria-label="Accent #72a9d6" /><span class="accent-chip" style="background:#72a9d6"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#f0b251" aria-label="Accent #f0b251" /><span class="accent-chip" style="background:#f0b251"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#0586ad" aria-label="Accent #0586ad" /><span class="accent-chip" style="background:#0586ad"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#162830" aria-label="Accent #162830" /><span class="accent-chip" style="background:#162830"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#4f8f12" aria-label="Accent #4f8f12" /><span class="accent-chip" style="background:#4f8f12"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#b78768" aria-label="Accent #b78768" /><span class="accent-chip" style="background:#b78768"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#007687" aria-label="Accent #007687" /><span class="accent-chip" style="background:#007687"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#f9eaf4" aria-label="Accent #f9eaf4" /><span class="accent-chip" style="background:#f9eaf4"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#8fcdaf" aria-label="Accent #8fcdaf" /><span class="accent-chip" style="background:#8fcdaf"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#4f3109" aria-label="Accent #4f3109" /><span class="accent-chip" style="background:#4f3109"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#ccedb0" aria-label="Accent #ccedb0" /><span class="accent-chip" style="background:#ccedb0"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#8ecc09" aria-label="Accent #8ecc09" /><span class="accent-chip" style="background:#8ecc09"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#1871ab" aria-label="Accent #1871ab" /><span class="accent-chip" style="background:#1871ab"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#ecb10b" aria-label="Accent #ecb10b" /><span class="accent-chip" style="background:#ecb10b"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#16054a" aria-label="Accent #16054a" /><span class="accent-chip" style="background:#16054a"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#8da9d1" aria-label="Accent #8da9d1" /><span class="accent-chip" style="background:#8da9d1"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#080c0d" aria-label="Accent #080c0d" /><span class="accent-chip" style="background:#080c0d"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#020305" aria-label="Accent #020305" /><span class="accent-chip" style="background:#020305"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#fab602" aria-label="Accent #fab602" /><span class="accent-chip" style="background:#fab602"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#01adfd" aria-label="Accent #01adfd" /><span class="accent-chip" style="background:#01adfd"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#01f0f8" aria-label="Accent #01f0f8" /><span class="accent-chip" style="background:#01f0f8"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#009048" aria-label="Accent #009048" /><span class="accent-chip" style="background:#009048"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#e93400" aria-label="Accent #e93400" /><span class="accent-chip" style="background:#e93400"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#720caf" aria-label="Accent #720caf" /><span class="accent-chip" style="background:#720caf"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#67b3d8" aria-label="Accent #67b3d8" /><span class="accent-chip" style="background:#67b3d8"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#f88d07" aria-label="Accent #f88d07" /><span class="accent-chip" style="background:#f88d07"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        <label class="accent-option"><input class="w8-sr-only" type="radio" name="accent" value="#6c5400" aria-label="Accent #6c5400" /><span class="accent-chip" style="background:#6c5400"><i class="fa fa-check" aria-hidden="true"></i></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="label">Picked wallpaper</span>
+        <p style="margin:0;color:#5e5e5e;font-size:.82rem" id="picked">Daisy — Windows8RTM/img0.jpg</p>
+      </div>
+    </div>
+    <details class="code">
+      <summary>Show CSS</summary>
+      <pre><code id="snippet">&lt;section class="w8-start-screen" style="
+  --w8-start-image: url('styles/images/Windows8RTM/img0.jpg');
+  --w8-start-background: #60b0f5;
+  --w8-accent: #3a96fe;
+"&gt;</code></pre>
+      <button class="w8-button copy" type="button">Copy CSS</button>
+    </details>
+  </div>
+</div>
+
+<section id="wallpapers">
+  <h2 class="wp-group-title"><span>Windows 8</span><small>19 wallpapers · 1920×1200 plus 2 panoramas</small></h2>
+  <div class="wp-grid">
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper" checked
+          value="win8-img0" data-file="../styles/images/Windows8RTM/img0.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img0.jpg" data-dominant="#60b0f5"
+          data-accent="#3a96fe" data-title="Daisy"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Daisy (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img0.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Daisy</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img1" data-file="../styles/images/Windows8RTM/img1.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img1.jpg" data-dominant="#7eaeda"
+          data-accent="#72a9d6" data-title="Blue Ice"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Blue Ice (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img1.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Blue Ice</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img2" data-file="../styles/images/Windows8RTM/img2.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img2.jpg" data-dominant="#c6aa79"
+          data-accent="#f0b251" data-title="Desert Dunes"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Desert Dunes (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img2.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Desert Dunes</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img3" data-file="../styles/images/Windows8RTM/img3.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img3.jpg" data-dominant="#4d96b0"
+          data-accent="#0586ad" data-title="Shallows"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Shallows (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img3.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Shallows</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img4" data-file="../styles/images/Windows8RTM/img4.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img4.jpg" data-dominant="#828686"
+          data-accent="#162830" data-title="Stone River"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Stone River (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img4.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Stone River</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img5" data-file="../styles/images/Windows8RTM/img5.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img5.jpg" data-dominant="#588418"
+          data-accent="#4f8f12" data-title="Green Fields"
+          data-window="Windows 8" data-size="3840×1200"
+          data-span="triple" aria-label="Green Fields (Windows 8, 3840x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img5.jpg" alt="" width="480" height="150" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Green Fields</span><span class="wp-sub">Windows 8 · 3840×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img6" data-file="../styles/images/Windows8RTM/img6.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img6.jpg" data-dominant="#ad9780"
+          data-accent="#b78768" data-title="Sand Sea"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Sand Sea (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img6.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Sand Sea</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img7" data-file="../styles/images/Windows8RTM/img7.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img7.jpg" data-dominant="#488694"
+          data-accent="#007687" data-title="Red Bloom"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Red Bloom (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img7.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Red Bloom</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img8" data-file="../styles/images/Windows8RTM/img8.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img8.jpg" data-dominant="#f7dbdb"
+          data-accent="#f9eaf4" data-title="Pink Flower"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Pink Flower (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img8.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Pink Flower</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img9" data-file="../styles/images/Windows8RTM/img9.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img9.jpg" data-dominant="#b7cec2"
+          data-accent="#8fcdaf" data-title="Pink Bloom"
+          data-window="Windows 8" data-size="3840×1200"
+          data-span="triple" aria-label="Pink Bloom (Windows 8, 3840x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img9.jpg" alt="" width="480" height="150" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Pink Bloom</span><span class="wp-sub">Windows 8 · 3840×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img10" data-file="../styles/images/Windows8RTM/img10.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img10.jpg" data-dominant="#543618"
+          data-accent="#4f3109" data-title="Tulips"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Tulips (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img10.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Tulips</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img11" data-file="../styles/images/Windows8RTM/img11.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img11.jpg" data-dominant="#d3dfaa"
+          data-accent="#ccedb0" data-title="Blossom"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Blossom (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img11.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Blossom</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img12" data-file="../styles/images/Windows8RTM/img12.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img12.jpg" data-dominant="#bbd444"
+          data-accent="#8ecc09" data-title="Fern"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Fern (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img12.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Fern</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img100" data-file="../styles/images/Windows8RTM/img100.png"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img100.jpg" data-dominant="#57938d"
+          data-accent="#1871ab" data-title="Space Needle"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Space Needle (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img100.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Space Needle</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img101" data-file="../styles/images/Windows8RTM/img101.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img101.jpg" data-dominant="#c77c08"
+          data-accent="#ecb10b" data-title="Honeycomb"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Honeycomb (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img101.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Honeycomb</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img102" data-file="../styles/images/Windows8RTM/img102.png"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img102.jpg" data-dominant="#512265"
+          data-accent="#16054a" data-title="Prism"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Prism (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img102.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Prism</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img103" data-file="../styles/images/Windows8RTM/img103.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img103.jpg" data-dominant="#67717c"
+          data-accent="#8da9d1" data-title="Transit"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Transit (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img103.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Transit</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img104" data-file="../styles/images/Windows8RTM/img104.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img104.jpg" data-dominant="#4e4c32"
+          data-accent="#080c0d" data-title="Nautilus"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Nautilus (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img104.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Nautilus</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win8-img105" data-file="../styles/images/Windows8RTM/img105.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win8-img105.jpg" data-dominant="#61666f"
+          data-accent="#020305" data-title="Piano"
+          data-window="Windows 8" data-size="1920×1200"
+          data-span="single" aria-label="Piano (Windows 8, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win8-img105.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Piano</span><span class="wp-sub">Windows 8 · 1920×1200</span></span>
+      </label>
+  </div>
+  <h2 class="wp-group-title"><span>Windows 8.1</span><small>9 wallpapers · 1920×1200 plus 1 panorama</small></h2>
+  <div class="wp-grid">
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img0" data-file="../styles/images/Windows8.1RTMWallpapers/img0.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img0.jpg" data-dominant="#f4b017"
+          data-accent="#fab602" data-title="Amber Fold"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Amber Fold (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img0.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Amber Fold</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img1" data-file="../styles/images/Windows8.1RTMWallpapers/img1.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img1.jpg" data-dominant="#0297e9"
+          data-accent="#01adfd" data-title="Blue Lines"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Blue Lines (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img1.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Blue Lines</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img2" data-file="../styles/images/Windows8.1RTMWallpapers/img2.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img2.jpg" data-dominant="#2d91ed"
+          data-accent="#01f0f8" data-title="Blue Ribbon"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Blue Ribbon (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img2.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Blue Ribbon</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img3" data-file="../styles/images/Windows8.1RTMWallpapers/img3.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img3.jpg" data-dominant="#129c59"
+          data-accent="#009048" data-title="Green Ribbon"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Green Ribbon (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img3.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Green Ribbon</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img4" data-file="../styles/images/Windows8.1RTMWallpapers/img4.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img4.jpg" data-dominant="#e63000"
+          data-accent="#e93400" data-title="Crimson Fold"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Crimson Fold (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img4.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Crimson Fold</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img5" data-file="../styles/images/Windows8.1RTMWallpapers/img5.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img5.jpg" data-dominant="#8137c2"
+          data-accent="#720caf" data-title="Violet Waves"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Violet Waves (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img5.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Violet Waves</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img6" data-file="../styles/images/Windows8.1RTMWallpapers/img6.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img6.jpg" data-dominant="#7ebad8"
+          data-accent="#67b3d8" data-title="Steel Curve"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Steel Curve (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img6.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Steel Curve</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img13" data-file="../styles/images/Windows8.1RTMWallpapers/img13.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img13.jpg" data-dominant="#835533"
+          data-accent="#f88d07" data-title="Sunset Facade"
+          data-window="Windows 8.1" data-size="3840×1200"
+          data-span="triple" aria-label="Sunset Facade (Windows 8.1, 3840x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img13.jpg" alt="" width="480" height="150" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Sunset Facade</span><span class="wp-sub">Windows 8.1 · 3840×1200</span></span>
+      </label>
+      <label class="wp-option">
+        <input class="wp-radio w8-sr-only" type="radio" name="wallpaper"
+          value="win81-img100" data-file="../styles/images/Windows8.1RTMWallpapers/img100.jpg"
+          data-thumb="../styles/images/wallpapers/thumbs/win81-img100.jpg" data-dominant="#8a6e49"
+          data-accent="#6c5400" data-title="Ribbon Fan"
+          data-window="Windows 8.1" data-size="1920×1200"
+          data-span="single" aria-label="Ribbon Fan (Windows 8.1, 1920x1200)" />
+        <span class="wp-frame"><img src="../styles/images/wallpapers/thumbs/win81-img100.jpg" alt="" width="480" height="300" loading="lazy" decoding="async" /></span>
+        <span class="wp-meta"><i class="fa fa-check wp-check" aria-hidden="true"></i><span class="wp-title">Ribbon Fan</span><span class="wp-sub">Windows 8.1 · 1920×1200</span></span>
+      </label>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Windows 8 and Windows 8.1 RTM wallpapers, © Microsoft. Included with the 8.css demo site for demonstration only; they are not covered by the MIT license and are not published to npm. <a href="../styles/images/wallpapers/NOTICE.md">Read the wallpaper notice</a>.</p>
+  <p>Metadata: <a href="../styles/images/wallpapers/manifest.json">manifest.json</a> · Optional classes: <a href="../styles/images/wallpapers/wallpapers.css">wallpapers.css</a> · <a href="../docs/index.html#personalize">Documentation</a></p>
+</footer>
+</main>
+
+<script>
+(() => {
+  const preview = document.getElementById("preview");
+  const note = document.getElementById("preview-note");
+  const picked = document.getElementById("picked");
+  const snippet = document.getElementById("snippet");
+  const fit = document.getElementById("fit");
+  const radios = Array.from(document.querySelectorAll(".wp-radio"));
+  const accents = Array.from(document.querySelectorAll('input[name="accent"]'));
+  if (!preview) return;
+
+  const paint = () => {
+    const radio = radios.find((item) => item.checked) || radios[0];
+    const root = document.documentElement;
+    const fitValue = fit ? fit.value : "cover";
+    const accent = (accents.find((item) => item.checked) || { value: radio.dataset.accent }).value;
+    preview.style.setProperty("--w8-start-image", `url("${radio.dataset.file}")`);
+    preview.style.setProperty("--w8-start-background", radio.dataset.dominant);
+    preview.style.setProperty("--w8-accent", accent);
+    preview.style.backgroundSize = fitValue === "span" ? "auto 100%" : fitValue === "auto" ? "auto" : fitValue;
+    preview.style.backgroundRepeat = fitValue === "auto" ? "repeat" : "no-repeat";
+    preview.style.backgroundPosition = "center";
+    note.textContent = `${radio.dataset.title} · ${radio.dataset.window} · ${radio.dataset.size} · ${radio.dataset.span}-monitor artwork`;
+    picked.textContent = `${radio.dataset.title} — ${radio.dataset.file.replace("../styles/images/", "")}`;
+    snippet.textContent = [
+      '<section class="w8-start-screen" style="',
+      `  --w8-start-image: url('${radio.dataset.file.replace("../", "")}');`,
+      `  --w8-start-background: ${radio.dataset.dominant};`,
+      `  --w8-accent: ${accent};`,
+      '">',
+    ].join("\n");
+    root.style.setProperty("--w8-demo-accent", accent);
+  };
+
+  radios.forEach((radio) => radio.addEventListener("change", paint));
+  accents.forEach((radio) => radio.addEventListener("change", paint));
+  if (fit) fit.addEventListener("change", paint);
+
+  const details = document.querySelector(".code");
+  const button = details && details.querySelector(".copy");
+  if (button) {
+    button.addEventListener("click", async () => {
+      const original = button.textContent;
+      const value = snippet.textContent;
+      let copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        try { await navigator.clipboard.writeText(value); copied = true; } catch {}
+      }
+      if (!copied) {
+        const field = document.createElement("textarea");
+        field.value = value;
+        field.setAttribute("readonly", "");
+        field.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+        document.body.appendChild(field);
+        field.select();
+        try { copied = document.execCommand("copy"); } catch {}
+        field.remove();
+      }
+      button.textContent = copied ? "Copied" : "Copy failed";
+      window.setTimeout(() => { button.textContent = original; }, 1400);
+    });
+  }
+  paint();
+})();
+</script>
+</body></html>

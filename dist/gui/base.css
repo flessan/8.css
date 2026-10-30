@@ -2,11 +2,15 @@
  * 8.css — Windows 8-inspired UI styles
  * MIT License. See LICENSE.
  * CSS-only presentation layer. Components do not require JavaScript.
+ * Icons come from the bundled Font Awesome 4.7.0 font
+ * (load dist/font-awesome/css/font-awesome.min.css before this stylesheet).
  */
 :root {
   --w8-font-family: "Segoe UI", "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
   --w8-text: #1a1a1a; --w8-muted: #666; --w8-surface: #fff; --w8-surface-subtle: #f2f2f2;
   --w8-border: #c8c8c8; --w8-accent: #0078d7; --w8-accent-hover: #006cc1; --w8-focus: #005a9e;
+  --w8-chrome: #1c1c1c; --w8-chrome-hover: #333; --w8-toast-background: #202020;
+  --w8-lock-background: #0b3b60;
   --w8-tile-blue: #0078d7; --w8-tile-cyan: #0099bc; --w8-tile-purple: #744da9;
   --w8-tile-magenta: #b4009e; --w8-tile-green: #107c10; --w8-tile-orange: #da3b01;
   --w8-tile-red: #e81123; --w8-tile-dark: #333;

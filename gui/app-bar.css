@@ -2,3 +2,19 @@
 .w8-app-bar { align-items: center; background: #1f1f1f; color: #fff; display: flex; flex-wrap: wrap; gap: .35rem; padding: .5rem; }
 .w8-app-bar__item { align-items: center; background: transparent; border: 0; color: inherit; cursor: pointer; display: inline-flex; gap: .45rem; min-height: 2.5rem; padding: .45rem .75rem; }
 .w8-app-bar__item:hover { background: #3a3a3a; }
+.w8-app-bar--top { box-shadow: inset 0 -1px 0 #4a4a4a; }
+.w8-app-bar--contextual { box-shadow: inset 0 2px 0 var(--w8-accent); }
+.w8-app-bar__item[aria-pressed="true"], .w8-app-bar__item--selected { background: var(--w8-accent); }
+.w8-app-bar__item[disabled], .w8-app-bar__item[aria-disabled="true"] { cursor: not-allowed; opacity: .45; }
+.w8-app-bar__separator { align-self: stretch; background: #4a4a4a; margin: .35rem .45rem; width: 1px; }
+.w8-app-bar--circular .w8-app-bar__item { flex-direction: column; font-size: .72rem; gap: .3rem; min-width: 4.25rem; padding: .4rem .5rem; }
+.w8-app-bar--circular .w8-app-bar__item .fa {
+  align-items: center;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  display: flex;
+  font-size: 1rem;
+  height: 2.25rem;
+  justify-content: center;
+  width: 2.25rem;
+}

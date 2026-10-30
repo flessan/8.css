@@ -2,23 +2,102 @@
 *{box-sizing:border-box}body{background:#fff;color:var(--ink);font-size:14px;line-height:1.55;margin:0}a{color:#005a9e}button,input,select,textarea{font:inherit}
 .docs-sidebar{background:#f4f4f4;border-right:1px solid var(--line);bottom:0;display:flex;flex-direction:column;left:0;padding:12px;position:fixed;top:0;width:248px;z-index:30}
 .docs-brand{align-items:center;color:var(--ink);display:flex;gap:10px;margin:3px 4px 24px;text-decoration:none}.docs-mark{align-items:center;background:var(--blue);color:#fff;display:inline-flex;flex:0 0 38px;font-size:22px;font-weight:300;height:38px;justify-content:center}.docs-brand strong{display:block;font-size:18px;line-height:1.2}.docs-brand small{color:var(--muted);display:block;font-size:11px;font-weight:400;letter-spacing:.04em;margin-top:3px}
-.sidebar-label{color:#707070;font-size:10px;font-weight:700;letter-spacing:.11em;margin:0 8px 9px;text-transform:uppercase}.tree-view{display:flex;flex:1;flex-direction:column;gap:2px;overflow-y:auto;padding:0 0 10px}.tree-link{border-left:3px solid transparent;color:#303030;display:block;padding:7px 10px;text-decoration:none}.tree-link:hover{background:#e7e7e7;color:#111}.tree-link[aria-current=location]{background:#dceefa;border-left-color:var(--blue);color:#004578;font-weight:600}.tree-group{color:#585858;font-size:12px;font-weight:700;margin:16px 10px 4px}.tree-sub{font-size:13px;margin-left:12px;padding-left:12px}
+.sidebar-label{color:#707070;font-size:10px;font-weight:700;letter-spacing:.11em;margin:0 8px 9px;text-transform:uppercase}.tree-view{display:flex;flex:1;flex-direction:column;gap:2px;overflow-y:auto;padding:0 0 10px}.tree-link{border-left:3px solid transparent;color:#303030;display:block;padding:7px 10px;text-decoration:none}.tree-link:hover{background:#e7e7e7;color:#111}.tree-link[aria-current=location]{background:#dceefa;border-left-color:var(--blue);color:#004578;font-weight:600}.tree-group{color:#585858;font-size:12px;font-weight:700;margin:16px 10px 4px}
+.sidebar-label[hidden]{display:none}.tree-sub{font-size:13px;margin-left:12px;padding-left:12px}
 .sidebar-footer{border-top:1px solid var(--line);display:grid;gap:6px;padding:12px 5px 4px}.release-status{background:#fff;border:1px solid #c7c7c7;color:#444;display:inline-flex;font-size:10px;font-weight:700;letter-spacing:.08em;padding:4px 7px;width:fit-content}.sidebar-footer small{color:var(--muted);font-size:11px}
 .mobile-topbar{align-items:center;background:#fff;border-bottom:1px solid var(--line);display:none;gap:12px;padding:10px 14px;position:sticky;top:0;z-index:20}.mobile-menu-button{background:#fff;border:1px solid #aaa;color:var(--ink);cursor:pointer;min-height:36px;padding:6px 10px}.mobile-topbar a{color:var(--ink);font-weight:600;text-decoration:none}
 .docs-main{margin:0 34px 70px 278px;max-width:1040px;padding-top:28px}.docs-main h1{font-size:clamp(3.2rem,7vw,5rem);font-weight:300;letter-spacing:-.06em;line-height:1;margin:5px 0 16px}.docs-main h2{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:300;letter-spacing:-.035em;margin:0 0 12px}.docs-main h3{font-size:1.45rem;font-weight:400;margin:0 0 10px}.docs-main p{line-height:1.65;margin:0 0 14px;max-width:68rem}.docs-main ul{line-height:1.7;padding-left:22px}.docs-main code,.inline-code{background:#eaeaea;font-family:Consolas,"Cascadia Mono",monospace;font-size:.92em;padding:1px 4px}
 .page-rule{border:0;border-top:1px solid #cfcfcf;margin:20px 0 22px;max-width:620px}.intro-lead{font-size:1.08rem;max-width:56rem!important}.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin:20px 0 25px}.doc-tag{background:#ededed;border:1px solid #d2d2d2;color:#333;font-size:11px;letter-spacing:.04em;padding:4px 7px}.doc-tag-blue{background:#dceefa;border-color:#a7d3f0;color:#004578}
 .docs-section{border-top:1px solid var(--line);margin-top:36px;padding-top:28px;scroll-margin-top:22px}.docs-section:first-of-type{border-top:0;margin-top:0;padding-top:0}.docs-subsection{border-top:1px solid #e5e5e5;margin-top:30px;padding-top:24px;scroll-margin-top:24px}.callout{background:#f5f5f5;border-left:4px solid var(--blue);margin:18px 0;padding:14px 16px}.callout.warning{border-left-color:#b15c00}.callout strong{display:block;margin-bottom:4px}.callout p:last-child{margin-bottom:0}
-.example{margin:18px 0 28px}.example-caption{color:var(--muted);font-size:12px;margin-bottom:8px}.preview{background:#fff;border:1px solid var(--line);border-left:3px solid #b7b7b7;min-width:0;padding:clamp(14px,3vw,24px)}.preview.gray{background:#f6f6f6}.preview .w8-start-screen{padding:18px}.preview .w8-start-heading{font-size:2.7rem}.preview .w8-start-subtitle{margin-bottom:15px}.preview .w8-tiles{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(92px,auto);gap:5px}.preview .w8-tile{min-height:92px;padding:10px}.preview .w8-tile__symbol{font-size:1.5rem}
-.code{border:1px solid #d3d3d3;margin-top:10px}.code summary{cursor:pointer;padding:9px 12px;text-decoration:underline;text-underline-offset:3px}.code summary:focus-visible,.copy:focus-visible{outline:2px dotted #222;outline-offset:2px}.code[open] summary{border-bottom:1px solid #d3d3d3}.code pre{background:var(--code);margin:0;overflow-x:auto;padding:14px}.code pre code{background:transparent;font-size:12px;line-height:1.7;padding:0;white-space:pre}.copy{display:block;margin:9px 10px 10px auto}.button-row{align-items:center;display:flex;flex-wrap:wrap;gap:8px}.form-stack{display:grid;gap:12px;max-width:480px}.choice-stack{display:grid;gap:10px}.progress-wrap{max-width:520px}.docs-main .w8-window,.docs-main .w8-dialog{max-width:560px;margin:0}.docs-footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;margin-top:42px;padding:20px 0 0}.docs-footer a{color:#005a9e}
+.example{margin:18px 0 28px}.example-caption{color:var(--muted);font-size:12px;margin-bottom:8px}.preview{background:#fff;border:1px solid var(--line);border-left:3px solid #b7b7b7;min-width:0;padding:clamp(14px,3vw,24px)}.preview.gray{background:#f6f6f6}.preview .w8-start-screen{padding:18px}.preview .w8-start-heading{font-size:2.7rem}.preview .w8-start-subtitle{margin-bottom:15px}.preview .w8-tiles{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(92px,auto);grid-auto-flow:row dense;gap:5px}.preview .w8-tile{min-height:92px;padding:10px}.preview .w8-tile__symbol{font-size:1.5rem}
+.code{border:1px solid #d3d3d3;margin-top:10px}.code summary{cursor:pointer;padding:9px 12px;text-decoration:underline;text-underline-offset:3px}.code summary:focus-visible,.copy:focus-visible{outline:2px dotted #222;outline-offset:2px}
+.tree-link:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.docs-main:focus{outline:0}
+.skip-link{background:#fff;border:1px solid var(--blue);color:#004578;font-size:13px;font-weight:600;left:8px;padding:8px 12px;position:absolute;text-decoration:none;top:-48px;z-index:40}
+.skip-link:focus{top:8px}.code[open] summary{border-bottom:1px solid #d3d3d3}.code pre{background:var(--code);margin:0;overflow-x:auto;padding:14px}.code pre code{background:transparent;font-size:12px;line-height:1.7;padding:0;white-space:pre}.copy{display:block;margin:9px 10px 10px auto}.button-row{align-items:center;display:flex;flex-wrap:wrap;gap:8px}.form-stack{display:grid;gap:12px;max-width:480px}.choice-stack{display:grid;gap:10px}.progress-wrap{max-width:520px}.docs-main .w8-window,.docs-main .w8-dialog{max-width:560px;margin:0}.docs-footer{border-top:1px solid var(--line);color:var(--muted);font-size:12px;margin-top:42px;padding:20px 0 0}.docs-footer a{color:#005a9e}
 @media(max-width:760px){.mobile-topbar{display:flex}.docs-sidebar{box-shadow:8px 0 24px rgb(0 0 0 / .14);transform:translateX(-110%);transition:transform 150ms ease;width:min(84vw,280px)}.docs-sidebar.open{transform:translateX(0)}.docs-main{margin:0;padding:26px 18px 50px}.docs-main h1{font-size:3.5rem}.preview .w8-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}.docs-sidebar{transition-duration:.01ms}}
+
+/* The tile demo uses a three-column block so the size modifiers read as a
+   complete Start Screen group instead of leaving a half-empty row. */
+#tiles .preview .w8-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:760px){#tiles .preview .w8-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 /* Metro icon catalog */
 .icon-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); margin: 18px 0 28px; }
 .icon-card { align-items: center; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; justify-content: center; min-height: 104px; padding: 14px 8px; text-align: center; }
 .icon-card:hover { border-color: var(--blue); }
-.icon-card .w8-icon { color: #222; }
-.icon-card span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.icon-card .fa, .icon-card .w8-icon { color: #222; }
+.icon-card span { color: var(--muted); font-family: Consolas, "Cascadia Mono", monospace; font-size: 12px; overflow-wrap: anywhere; }
 .icon-demo-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
 .icon-demo-row .w8-icon-button { color: #222; }
 .icon-demo-row .w8-icon-button--accent { color: #fff; }
+
+/* Charms bar demo stage */
+.charm-stage { background: #1f1f1f; display: flex; justify-content: flex-end; min-height: 19rem; overflow: hidden; position: relative; }
+.charm-stage .w8-charms { padding-block: 1rem; }
+.charm-stage .w8-charm-pane { background: #f2f2f2; position: static; box-shadow: none; border-left: 1px solid #b8b8b8; width: auto; flex: 1; }
+.charm-stage .w8-charm-pane[hidden] { display: none; }
+
+/* Windows shell demos: lock screen, live tiles, taskbar, flyouts, toasts, hub */
+.lock-demo { min-height: 21rem; }
+.lock-demo .w8-lock__time { font-size: 3.2rem; }
+.lock-demo .w8-lock__date { font-size: 1.2rem; }
+.tile-demo .w8-tile-group__label { color: #444; }
+.tile-demo .w8-tiles.demo-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; grid-auto-rows: minmax(92px, auto); max-width: 34rem; }
+.tile-demo .w8-tile { min-height: 92px; padding: 10px; }
+.tile-demo .w8-tile__face { padding: 10px; }
+.tile-demo .w8-tile__symbol { font-size: 1.5rem; }
+.tile-demo .w8-tile-groups--overview { margin-top: 14px; }
+.tile-demo .w8-tile-groups--overview .w8-tile-group__label { color: #444; }
+.preview-flush { padding: 0; }
+/* Motion section: entrance classes sit side by side above a staggered group. */
+.motion-row { display: grid; gap: 5px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.motion-row .w8-tile { min-height: 5.5rem; padding: 10px; }
+/* Charms sample: the real bar is a vertical edge strip, so lay it flat here. */
+.motion-charms { background: #1f1f1f; color: #fff; display: flex; gap: 2rem; justify-content: center; padding: 16px 10px; }
+.motion-charms .w8-charm { background: none; border: 0; color: inherit; display: flex; flex-direction: column; gap: 6px; }
+.motion-charms .w8-charm .fa { font-size: 20px; }
+@media (max-width: 760px) { .motion-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.taskbar-demo { min-height: 2.6rem; }
+.flyout-stage { display: flex; flex-wrap: wrap; gap: 24px 96px; padding: 24px; position: relative; }
+.flyout-stage .w8-flyout { max-width: 100%; }
+.preview code { overflow-wrap: anywhere; }
+.flyout-stage .w8-flyout { position: relative; }
+.flyout-stage .w8-flyout--top { margin-bottom: .75rem; }
+.toast-stage { background: #4a4a4a; display: flex; justify-content: flex-end; padding: 16px; }
+.toast-stage .w8-toast-region { position: static; }
+.toast-stage .w8-toast { max-width: 20rem; }
+.toast-stage .w8-toast-region.toast-region-demo { display: grid; }
+.split-demo { min-height: 0; }
+.hub-demo { --w8-hub-section: 15rem; }
+@media (max-width: 760px) {
+  .tile-demo .w8-tiles.demo-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flyout-stage { gap: 20px; padding: 16px; }
+  .lock-demo { min-height: 18rem; }
+}
+
+/* Navigation, list and flip view demos */
+.nav-demo { display: flex; flex-wrap: wrap; gap: 24px 40px; }
+.nav-demo > div { min-width: 0; }
+.nav-demo .w8-list-view { flex: 1 1 20rem; }
+@media (max-width: 760px) {
+  .nav-demo { display: grid; gap: 18px; }
+  .nav-demo .w8-nav-bar { min-width: 0; }
+}
+
+/* Touch and gesture documentation previews. */
+/* The generic preview grid must not unset the column-major Start layout. */
+.preview .w8-start-screen__pan .w8-tile-groups--columns .w8-tiles {
+  grid-auto-flow: column;
+  grid-auto-rows: auto;
+  grid-template-columns: none;
+}
+.preview .w8-start-screen__pan .w8-tile { min-height: 0; }
+.touch-start-demo { --w8-start-rows: 3; --w8-tile-size: 5.5rem; padding: 1rem; }
+.touch-start-demo .w8-tile__label { font-size: .8rem; }
+.touch-preview { min-height: 17rem; overflow: hidden; padding: 0; position: relative; }
+.touch-preview .w8-edge-panel { position: absolute; }
+.touch-preview .w8-snap-preview { max-width: 34%; width: 30%; }
+.touch-coach { align-items: center; display: flex; justify-content: center; padding: 1rem; }
+.touch-coach .w8-touch-tutorial__panel { background: #1f1f1f; }

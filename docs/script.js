@@ -4,8 +4,20 @@
  const navLinks=Array.from(document.querySelectorAll(".docs-nav a"));
  if(menuButton&&sidebar)menuButton.addEventListener("click",()=>{const open=sidebar.classList.toggle("open");menuButton.setAttribute("aria-expanded",String(open));});
  navLinks.forEach(link=>link.addEventListener("click",()=>{if(sidebar)sidebar.classList.remove("open");if(menuButton)menuButton.setAttribute("aria-expanded","false");}));
- const fallback=value=>new Promise((resolve,reject)=>{const field=document.createElement("textarea");field.value=value;field.setAttribute("readonly","");field.style.position="fixed";field.style.opacity="0";document.body.appendChild(field);field.select();let ok=false;try{ok=document.execCommand("copy");}catch{}field.remove();ok?resolve():reject(new Error("Copy failed"));});
- document.querySelectorAll(".code").forEach(details=>{const button=details.querySelector(".copy"),code=details.querySelector("pre code");if(!button||!code)return;button.addEventListener("click",async()=>{const original=button.textContent;try{if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(code.textContent);else await fallback(code.textContent);button.textContent="Copied";}catch{button.textContent="Copy failed";}window.setTimeout(()=>{button.textContent=original;},1400);});});
- const sections=navLinks.map(link=>document.querySelector(link.getAttribute("href"))).filter(section=>section&&section.id);
- if("IntersectionObserver"in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;navLinks.forEach(link=>{if(link.getAttribute("href")==="#"+entry.target.id)link.setAttribute("aria-current","location");else link.removeAttribute("aria-current");});}),{rootMargin:"-12% 0px -70% 0px"});sections.forEach(section=>observer.observe(section));}
+ // Charms bar demo: a charm with data-charm-pane toggles the referenced pane.
+ const charms=Array.from(document.querySelectorAll("[data-charm-pane]"));
+ charms.forEach(charm=>{const pane=document.getElementById(charm.getAttribute("data-charm-pane"));if(!pane)return;const set=open=>{pane.hidden=!open;charm.setAttribute("aria-expanded",String(open));};set(charm.getAttribute("aria-expanded")==="true");charm.addEventListener("click",()=>set(pane.hidden));pane.addEventListener("keydown",event=>{if(event.key==="Escape"){set(false);charm.focus();}});});
+ // Selection-based copy fallback. Used when the async clipboard API is
+ // unavailable *or* rejects the write (iframe, denied permission, old browser).
+ const selectionCopy=value=>new Promise((resolve,reject)=>{const field=document.createElement("textarea");field.value=value;field.setAttribute("readonly","");field.style.position="fixed";field.style.top="0";field.style.left="0";field.style.opacity="0";document.body.appendChild(field);field.select();field.setSelectionRange(0,value.length);let ok=false;try{ok=document.execCommand("copy");}catch{}field.remove();ok?resolve():reject(new Error("Copy failed"));});
+ const copyText=async value=>{
+  if(navigator.clipboard&&window.isSecureContext){
+   try{await navigator.clipboard.writeText(value);return;}catch{}
+  }
+  await selectionCopy(value);
+ };
+ document.querySelectorAll(".code").forEach(details=>{const button=details.querySelector(".copy"),code=details.querySelector("pre code");if(!button||!code)return;button.addEventListener("click",async()=>{const original=button.textContent;try{await copyText(code.textContent);button.textContent="Copied";}catch{button.textContent="Copy failed";}window.setTimeout(()=>{button.textContent=original;},1400);});});
+ const sectionLinks=navLinks.filter(link=>{const href=link.getAttribute("href")||"";return href.startsWith("#")&&href.length>1;});
+ const sections=sectionLinks.map(link=>document.querySelector(link.getAttribute("href"))).filter(section=>section&&section.id);
+ if("IntersectionObserver"in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;sectionLinks.forEach(link=>{if(link.getAttribute("href")==="#"+entry.target.id)link.setAttribute("aria-current","location");else link.removeAttribute("aria-current");});}),{rootMargin:"-12% 0px -70% 0px"});sections.forEach(section=>observer.observe(section));}
 })();

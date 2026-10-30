@@ -1,95 +1,105 @@
 # 8.css consolidated reference
 
-8.css is a CSS-only library inspired by Windows 8 Start Screen / Modern UI and desktop. It uses semantic HTML and has no required JavaScript runtime. It is an independent community project, not official Microsoft software. The 50 Metro-style SVG symbols are original redrawings based on the clean geometry of Windows 8's visual language, rather than copied system artwork.
+8.css is a CSS-only library inspired by Windows 8 Start Screen / Modern UI and desktop. It uses semantic HTML and has no required JavaScript runtime. It is an independent community project, not official Microsoft software. Icons come from Font Awesome 4.7.0 by Dave Gandy, bundled unmodified and served from the package instead of a third-party CDN.
 
 ## Source of truth
 - Edit component modules in `gui/`.
-- Edit the source icon sprite in `icons/icons.svg`.
-- Run `npm run build` to regenerate `src/8.css`, `dist/8.css`, `dist/gui/*.css`, `dist/icons.svg`, `docs/8.css`, and `docs/icons.svg`.
-- Do not hand-edit generated CSS or sprite copies.
+- Edit icon usage in page markup; the icon assets themselves live in `vendor/font-awesome/` and are not modified.
+- Run `npm run build` to regenerate `src/8.css`, `dist/8.css`, `dist/gui/*.css`, `dist/font-awesome/`, `docs/8.css`, `docs/font-awesome/`, and `THIRD-PARTY-NOTICES.md`.
+- Do not hand-edit generated CSS or font copies.
 - Keep README.md, docs/index.html, docs/components.md, AGENTS.md, llms.txt, and this file synchronized.
-- Runtime must remain CSS-only; the sprite is a static SVG asset.
+- Runtime must remain CSS-only; icons are a static webfont. Gesture detection belongs to the consuming app: `examples/gestures.js` is demo wiring, not package code.
 
 ## CSS module order
-base.css, tiles.css, buttons.css, forms.css, feedback.css, window.css, app-bar.css, dialog.css, icons.css, responsive.css. The complete `dist/8.css` bundle combines these modules in order. For modular use, load `dist/gui/base.css` first, then required modules. Load `dist/gui/icons.css` for icon utility classes. The SVG sprite is a separate file.
+base.css, tiles.css, live-tiles.css, buttons.css, forms.css, navigation.css, feedback.css, window.css, taskbar.css, app-bar.css, charms.css, flyout.css, gestures.css, toast.css, lock-screen.css, hub.css, split-view.css, dialog.css, icons.css, motion.css, responsive.css. The complete `dist/8.css` bundle prepends the Font Awesome 4.7.0 stylesheet to these modules and patches its font URLs to `./font-awesome/fonts/`. For modular use, load `dist/font-awesome/css/font-awesome.min.css` first, then `dist/gui/base.css`, then the required modules. Load `dist/gui/icons.css` for the 8.css icon helpers.
 
 ## Package usage
-Install from npm using `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`. The sprite is at `dist/icons.svg`.
+Install from npm using `npm install @flessan/8.css`, then import `@flessan/8.css`. For plain HTML, use `https://unpkg.com/@flessan/8.css@0.2.0/dist/8.css`.
 
 ```html
-<svg class="w8-icon w8-icon--large" role="img" aria-label="Mail">
-  <use href="https://unpkg.com/@flessan/8.css@0.2.0/dist/icons.svg#w8-icon-mail"></use>
-</svg>
+<i class="fa fa-envelope" aria-hidden="true"></i>
+
+<button class="w8-button w8-button--primary" type="button">
+  <i class="fa fa-check" aria-hidden="true"></i>
+  Save changes
+</button>
+
+<button class="w8-icon-button" type="button" aria-label="Search">
+  <i class="fa fa-search w8-icon--large" aria-hidden="true"></i>
+  <span class="w8-icon-button__label">Search</span>
+</button>
 ```
 
-Icon-only controls must have accessible names. Use `aria-hidden="true"` on their nested SVGs when the control itself has a label. Since the SVG is external, make sure the `use` element's `href` points at the right file location.
+Icon-only controls must have accessible names. Use `aria-hidden="true"` on decorative glyphs. Icon color follows `currentColor`.
+
+## Icon system
+- Font Awesome 4.7.0, complete 675-icon set.
+- Classes: `fa` plus a glyph class such as `fa-home`, `fa-envelope`, `fa-cog`, `fa-search`, `fa-share-alt`, `fa-user`, `fa-calendar`, `fa-file-photo-o`, `fa-windows`, `fa-sun-o`, `fa-check`, `fa-times`, `fa-chevron-left`, `fa-chevron-right`.
+- Font Awesome utilities available unchanged: `fa-lg`, `fa-2x` to `fa-5x`, `fa-fw`, `fa-ul`, `fa-li`, `fa-border`, `fa-stack`, `fa-inverse`, `fa-spin`, `fa-pulse`, `fa-rotate-90/180/270`, `fa-flip-horizontal`, `fa-flip-vertical`, `fa-pull-left`, `fa-pull-right`.
+- 8.css size hooks: `w8-icon--small` (1rem), `w8-icon--large` (2rem), `w8-icon--xl` (3rem). They work with `.fa` or the `.w8-icon` alias.
+- `w8-icon` is an alias for the `fa` base class; it never changes the glyph mapping.
+- Window controls use `fa-window-minimize`, `fa-window-maximize`, `fa-window-close`.
+- Distribution: `dist/font-awesome/css/font-awesome.css`, `dist/font-awesome/css/font-awesome.min.css`, and `dist/font-awesome/fonts/fontawesome-webfont.{eot,svg,ttf,woff,woff2}`. License: `dist/font-awesome/LICENSE.txt` (also published as `THIRD-PARTY-NOTICES.md`).
+- Removed: the earlier bespoke SVG sprite (`icons.svg`) and its `w8-icon-{name}` symbol IDs are no longer shipped.
 
 ## Public API
 Start Screen: `.w8-start-screen`, `.w8-start-heading`, `.w8-start-subtitle`, `.w8-tiles`.
+Tile selection: `.w8-tile--selected`, `.w8-tile__check`, `.w8-tiles--selecting`.
 Tiles: `.w8-tile`, `.w8-tile__symbol`, `.w8-tile__label`, `.w8-tile__meta`, `.w8-tile__count`; size modifiers `.w8-tile--wide`, `.w8-tile--tall`, `.w8-tile--large`; colors `.w8-tile--blue`, `.w8-tile--cyan`, `.w8-tile--purple`, `.w8-tile--magenta`, `.w8-tile--green`, `.w8-tile--orange`, `.w8-tile--red`, `.w8-tile--dark`.
 Buttons: `.w8-button`, `.w8-button--primary`, `.w8-button--subtle`.
 Fields: `.w8-input`, `.w8-select`, `.w8-textarea`, `.w8-field`, `.w8-label`, `.w8-help`.
 Choices: `.w8-check`, `.w8-radio`, `.w8-choice`, `.w8-toggle`, `.w8-toggle__input`.
+Extra controls: `.w8-slider`, `.w8-slider__value`, `.w8-rating`, `.w8-rating__input`, `.w8-rating__star`, `.w8-search`, `.w8-search__input`, `.w8-search__icon`, `.w8-search--dark`.
+Navigation and lists: `.w8-back`, `.w8-nav-bar`, `.w8-nav-bar__item`, `.w8-nav-bar__title`, `.w8-nav-bar--dark`, `.w8-list-view`, `.w8-list-view__item`, `.w8-list-view__icon`, `.w8-list-view__title`, `.w8-list-view__meta`, `.w8-list-view__trailing`, `.w8-list-view--dark`, `.w8-flip-view`, `.w8-flip-view__frame`, `.w8-flip-view__slide`, `.w8-flip-view__title`, `.w8-flip-view__meta`, `.w8-flip-view__text`, `.w8-flip-view__nav`, `.w8-flip-view__button`, `.w8-flip-view__count`.
 Feedback: `.w8-progress`, `.w8-badge`, `.w8-notice` variants, `.w8-divider`.
 Tabs: `.w8-tabs`, `.w8-tab`.
 Desktop: `.w8-window`, `.w8-title-bar`, `.w8-title-bar__text`, `.w8-title-bar__controls`, `.w8-window-control`, `.w8-window-control--close`, `.w8-window-body`, `.w8-window-footer`.
-App bar and dialog: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
-Icons: `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
+App bar, Charms bar and dialogs: `.w8-app-bar`, `.w8-app-bar__item`, `.w8-charms`, `.w8-charm`, `.w8-charm__icon`, `.w8-charm__label`, `.w8-charm-pane`, `.w8-charm-pane__title`, `.w8-charm-pane__group`, `.w8-charm-pane__item`, `.w8-dialog`, `.w8-dialog__body`, `.w8-dialog__footer`.
+Lock screen: `.w8-lock`, `.w8-lock__idle`, `.w8-lock__time`, `.w8-lock__date`, `.w8-lock__detail`, `.w8-lock__detail-text`, `.w8-lock__badges`, `.w8-lock__badge`, `.w8-lock__badge-count`, `.w8-lock__hint`, `.w8-lock__footer`, `.w8-lock__status`, `.w8-lock__status-item`, `.w8-lock__tools`, `.w8-lock__tool`, `.w8-lock--dimmed`, `.w8-battery`, `.w8-battery__level`. Sign-in: `.w8-lock__panel`, `.w8-lock__avatar`, `.w8-lock__details`, `.w8-lock__user`, `.w8-lock__account`, `.w8-lock__account-chip`, `.w8-lock__account-name`, `.w8-lock__form`, `.w8-lock__input`, `.w8-lock__submit`.
+Live tiles: `.w8-tile__badge` (`.w8-tile__badge--solid`, `.w8-tile__badge--alert`), `.w8-tile--live`, `.w8-tile__flipper`, `.w8-tile__face`, `.w8-tile__face--back`, `.w8-tile-groups`, `.w8-tile-group`, `.w8-tile-group__label`, `.w8-tile-groups--overview`, `.w8-tile-groups--columns`, `.w8-start-screen__pan`.
+Taskbar: `.w8-taskbar`, `.w8-taskbar__start`, `.w8-taskbar__apps`, `.w8-taskbar__app`, `.w8-taskbar__item`, `.w8-taskbar__preview`, `.w8-taskbar__preview-title`, `.w8-taskbar__preview-shot`, `.w8-taskbar__tray`, `.w8-taskbar__tray-item`, `.w8-taskbar__clock`, `.w8-taskbar__spacer`, `.w8-taskbar__show-desktop`, `.w8-taskbar--fixed`, `.w8-taskbar--rtm`, `.w8-taskbar__app--running`, `.w8-taskbar__app--active`, `.w8-taskbar__clock`.
+Flyouts and toasts: `.w8-flyout` with `--top`, `--bottom`, `--left`, `--right`, `--menu`, `--dark`; `.w8-flyout__arrow`, `.w8-flyout__title`, `.w8-flyout__text`, `.w8-flyout__actions`, `.w8-flyout__item`, `.w8-flyout__separator`, `.w8-tooltip`; `.w8-toast-region`, `.w8-toast`, `.w8-toast__icon`, `.w8-toast__title`, `.w8-toast__body`, `.w8-toast__close`, `.w8-toast__actions`, `.w8-toast__action`, `.w8-toast--peek`.
+Hub and split view: `.w8-hub`, `.w8-hub__header`, `.w8-hub__title`, `.w8-hub__lead`, `.w8-hub__section`, `.w8-hub__section-title`, `.w8-hub__list`, `.w8-hub__item`, `.w8-hub__item-icon`, `.w8-hub__item-text`, `.w8-hub__item-title`, `.w8-hub__item-meta`, `.w8-hub__card`, `.w8-hub--dark`; `.w8-split`, `.w8-split__pane`, `.w8-split__main`, `.w8-split__title`, `.w8-split--snap-right`, `.w8-split--divider`.
+Progress ring and app bar: `.w8-progress-ring`, `.w8-progress-ring--small`, `.w8-app-bar--top`, `.w8-app-bar--contextual`, `.w8-app-bar--circular`, `.w8-app-bar__separator`.
+Motion: `.w8-anim-rise`, `.w8-anim-fade`, `.w8-anim-zoom`, `.w8-anim-slide-right`, `.w8-anim-slide-left`, `.w8-anim-slide-bottom`, `.w8-stagger`, `.w8-charms--enter`, `.w8-wallpaper`, `.w8-wallpaper__layer`, `.is-visible`, `.w8-ripple-host`, `.w8-ripple`, `.w8-bob`, `.w8-badge-pop`, `.w8-swap`.
+Icons: `.fa`, `.fa-{name}`, `.w8-icon`, `.w8-icon--small`, `.w8-icon--large`, `.w8-icon--xl`, `.w8-icon-button`, `.w8-icon-button--accent`, `.w8-icon-button__label`, `.w8-sr-only`.
 
-## Icon IDs
-- `w8-icon-home`
-- `w8-icon-mail`
-- `w8-icon-calendar`
-- `w8-icon-photos`
-- `w8-icon-desktop`
-- `w8-icon-weather`
-- `w8-icon-search`
-- `w8-icon-settings`
-- `w8-icon-share`
-- `w8-icon-user`
-- `w8-icon-people`
-- `w8-icon-phone`
-- `w8-icon-chat`
-- `w8-icon-globe`
-- `w8-icon-wifi`
-- `w8-icon-bluetooth`
-- `w8-icon-battery`
-- `w8-icon-power`
-- `w8-icon-lock`
-- `w8-icon-folder`
-- `w8-icon-file`
-- `w8-icon-download`
-- `w8-icon-upload`
-- `w8-icon-refresh`
-- `w8-icon-edit`
-- `w8-icon-delete`
-- `w8-icon-check`
-- `w8-icon-close`
-- `w8-icon-back`
-- `w8-icon-forward`
-- `w8-icon-play`
-- `w8-icon-pause`
-- `w8-icon-stop`
-- `w8-icon-volume`
-- `w8-icon-menu`
-- `w8-icon-camera`
-- `w8-icon-music`
-- `w8-icon-video`
-- `w8-icon-info`
-- `w8-icon-help`
-- `w8-icon-heart`
-- `w8-icon-pin`
-- `w8-icon-map`
-- `w8-icon-print`
-- `w8-icon-copy`
-- `w8-icon-save`
-- `w8-icon-star`
-- `w8-icon-clock`
-- `w8-icon-notifications`
-- `w8-icon-cloud`
+## Windows 8 shell behaviour
+Windows 8, not Windows 10: the Start screen lays tiles out top to bottom inside a column, then starts the next column and pans sideways. Use `.w8-start-screen__pan` around `.w8-tile-groups--columns`, and tune the grid with `--w8-tile-size` (default `6.5rem`) and `--w8-start-rows` (default `3`). A plain `.w8-tiles` grid still reflows vertically. The Charms order is Search, Share, Start, Devices, Settings. The RTM taskbar (`.w8-taskbar--rtm`) has no Start button; the bottom-left corner revealed Start through `.w8-start-hotspot`.
+
+Edge gestures: right edge brings in the Charms bar, the left edge opens the app switcher and, dragged slowly, snaps an app to the left quarter of the screen, the top and bottom edges raise the app bar, a swipe up on the lock screen reaches sign-in, press and hold selects a tile, and a pinch zooms out to the group overview.
+
+Touch and gestures: `.w8-edge-panel` with `--left`, `--right`, `--top`, `--bottom` and `is-open`, `.w8-switcher` with `__header`, `__title`, `__list`, `__item`, `__thumb`, `__name`, `__meta`, `__close`, `__footer`, `.w8-snap-preview` with `__label`, `.w8-gesture-hint` with `__text`, `.w8-touch-tutorial` with `__panel`, `__art`, `__step`, `__title`, `__text`, `__dots`, `__dot`, `__actions`, `.w8-edge` with `.w8-edge__grip`, `.w8-start-hotspot` with `__preview`, plus the utilities `.w8-touch-target`, `.w8-pan-x`, `.w8-pan-y`, `.w8-pan-none`, `.w8-no-select`, `.w8-grab`, `.w8-touch` and `.w8-touch-hints`. Charms, taskbar apps and icon buttons grow to 44px hit areas on coarse pointers or under a `.w8-touch` ancestor.
+
+## Motion
+`gui/motion.css` holds opt-in, one-shot motion. Entrance classes: `.w8-anim-rise` (Start screen), `.w8-anim-fade` (lock screen), `.w8-anim-zoom` (a window opening), `.w8-anim-slide-right` (toasts and edge panels), `.w8-anim-slide-left`, `.w8-anim-slide-bottom` (taskbar reveal). `.w8-stagger` settles its children in reading order with a 32ms delay each, and `.w8-charms--enter` brings the Charms bar in one charm at a time. `.w8-wallpaper` stacks two `.w8-wallpaper__layer` elements and cross-fades them by toggling `is-visible` on the incoming layer, so changing a Start background never flashes the fallback colour. Press feedback: `.w8-ripple-host` plus an appended `.w8-ripple` span that reads `--w8-ripple-x`, `--w8-ripple-y` and `--w8-ripple-size`. Small accents: `.w8-bob`, `.w8-badge-pop`, `.w8-swap`.
+
+Tokens on the `.w8` root: `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow`, `--w8-stagger`. Every animation is disabled under `prefers-reduced-motion: reduce`; the classes are safe to leave in markup.
+
+```html
+<div class="w8-tiles w8-stagger">
+  <a class="w8-tile w8-tile--blue" href="#">...</a>
+</div>
+<div class="w8-wallpaper" aria-hidden="true">
+  <div class="w8-wallpaper__layer is-visible"></div>
+  <div class="w8-wallpaper__layer"></div>
+</div>
+```
+
+## Wallpapers
+`styles/images/` holds the Windows 8 (19) and Windows 8.1 (9) RTM wallpapers used by the demo. The Start Screen accepts artwork through custom properties:
+
+```html
+<section class="w8-start-screen" style="--w8-start-image:url('styles/images/Windows8RTM/img3.jpg');--w8-start-background:#4d96b0;--w8-accent:#0078d7">
+```
+
+Optional generated classes: `.w8-wallpaper-<id>` sets `--w8-start-image`, `--w8-start-background` and `--w8-accent`; `.w8-wallpaper-cover` applies them as a cover background to any element. `styles/images/wallpapers/manifest.json` lists every wallpaper with id, title, window, file, dimensions, byte size, aspect ratio, monitor span, dominant and accent colour. `dist/wallpapers/` republishes 480x300 thumbnails with root-relative URLs for consumers. Artwork is Microsoft copyright, demonstration use only, excluded from the full resolution npm files.
+
+## Custom properties
+`--w8-font-family`, `--w8-text`, `--w8-muted`, `--w8-surface`, `--w8-surface-subtle`, `--w8-border`, `--w8-accent`, `--w8-accent-hover`, `--w8-focus`, `--w8-tile-blue`, `--w8-tile-cyan`, `--w8-tile-purple`, `--w8-tile-magenta`, `--w8-tile-green`, `--w8-tile-orange`, `--w8-tile-red`, `--w8-tile-dark`, plus `--w8-start-background` and `--w8-tile-color` for the Start Screen canvas and individual tiles, and `--w8-start-image` for optional wallpaper artwork. Motion adds `--w8-ease-standard`, `--w8-ease-decelerate`, `--w8-ease-accelerate`, `--w8-duration-fast`, `--w8-duration`, `--w8-duration-slow`, `--w8-duration-xslow` and `--w8-stagger`.
 
 ## Accessibility boundary
-Use semantic controls and accessible names. Keep focus visible, check contrast with custom colors, and respect reduced-motion settings. Icons are decorative unless given an accessible name. CSS styles controls but does not manage state, tab keyboard navigation, window controls, announcements, or focus management.
+Use semantic controls and accessible names. Hide decorative icons with `aria-hidden="true"` and label icon-only controls. Keep focus visible, check contrast with custom colors, and respect reduced-motion settings. CSS styles controls but does not manage state, tab keyboard navigation, window controls, announcements, or focus management.
 
 ## Validation
-Run `npm run build`, `npm test`, and `npm run build:site`. Checks validate module/bundle parity, CSS brace structure, icon symbol IDs, and parity of generated icon sprite files. They are not a full browser suite.
+Run `npm run build`, `npm test`, `npm run build:site`, and optionally `npm run test:browser` (needs a local Chromium; verifies rendered icons, console/network errors, horizontal overflow at 1280px and 390px, mobile menu, code copy, code snippets, skip link, the landing Start-screen wallpaper picker, the shell Personalize panel, semantic zoom and reduced-motion). Checks validate module/bundle parity, CSS brace structure, font and license asset parity between `vendor/`, `dist/`, and `docs/`, glyph coverage in the shipped font for every icon class used by the HTML pages, accessible icon markup, package `files`/`exports` integrity, and documentation consistency.
