@@ -26,10 +26,9 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
 /* Windows 8 hides the Charms bar until you reach for the right edge. The bar
    keeps its place in the layout, fades in when the pointer rests at that edge,
    on keyboard focus, or after a right-edge swipe. */
-.start-canvas .w8-charms { opacity: .55; transition: opacity 220ms cubic-bezier(.1, .9, .2, 1); }
-.start-canvas .w8-charms:hover,
-.start-canvas .w8-charms--peek,
-.start-canvas .w8-charms:focus-within { opacity: 1; }
+/* The bar stays solid: the Start screen pans sideways underneath it, so a
+   translucent strip would show clipped tiles through the charms. */
+.start-canvas .w8-charms { background: rgb(26 26 26 / .96); z-index: 4; }
 
 /* The toast column stops short of the Charms bar so neither surface covers the other. */
 .shell .w8-toast-region { right: 5.75rem; }
@@ -141,7 +140,11 @@ body { background: #0b0b0b; color: #1a1a1a; font: 14px/1.45 "Segoe UI", Arial, s
   .start-canvas .w8-tile-groups,
   .start-canvas .w8-tile-groups--overview,
   .start-top { padding-right: 0; }
-  .start-canvas .w8-charms { background: rgb(31 31 31 / .96); }
+  /* Narrow screens: keep the bar as a slim icon rail so the tiles keep room. */
+  .start-canvas .w8-charms { background: rgb(26 26 26 / .98); padding: .25rem; width: 3.25rem; }
+  .start-canvas .w8-charm { min-height: 2.9rem; padding: .3rem .2rem; }
+  .start-canvas .w8-charm__icon { font-size: 1.15rem; }
+  .start-canvas .w8-charm__label { display: none; }
   .start-top { align-items: center; }
   .start-allapps { bottom: 1rem; height: 2.6rem; right: 6rem; width: 2.6rem; }
   .desk-taskbar .w8-taskbar__tray-item:not(:nth-of-type(2)) { display: none; }
